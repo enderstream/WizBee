@@ -1,1 +1,2 @@
-initail commit
+initial commit
+second commit

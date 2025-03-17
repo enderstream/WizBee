@@ -1,0 +1,43 @@
+services:
+  mysql:
+    build: 
+      context: ./mysql
+    container_name: mysql
+    expose:
+      - "13306"
+    ports:
+      - "13306:13306"  # 외부:내부 포트 매핑
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+    restart: always
+
+  redis:
+    build: ./redis
+    container_name: redis
+    expose:
+      - "16379"
+    ports:
+      - "16379:16379"  # 외부:내부 포트 매핑
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/var/run/redis:/var/run/redis
+      - redis_data:/data
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+  mysql_pid:
+  redis_data:
+  redis_pid:
+
+networks:
+  app_network:
+    external: true
