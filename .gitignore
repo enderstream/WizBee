@@ -453,3 +453,6 @@ mysql/pid
 # Redis
 !redis/var/
 redis/var/run/redis/redis-server.pid
+
+# Nginx
+nginx/conf.d/default.conf
