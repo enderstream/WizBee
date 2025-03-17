@@ -456,3 +456,4 @@ redis/var/run/redis/redis-server.pid
 
 # Nginx
 nginx/conf.d/default.conf
+nginx/nginx.conf
