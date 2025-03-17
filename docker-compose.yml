@@ -5,8 +5,6 @@ services:
     container_name: mysql
     expose:
       - "13306"
-    ports:
-      - "13306:13306"  # 외부:내부 포트 매핑
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -23,8 +21,6 @@ services:
     container_name: redis
     expose:
       - "16379"
-    ports:
-      - "16379:16379"  # 외부:내부 포트 매핑
     volumes:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
       - ./redis/var/run/redis:/var/run/redis
