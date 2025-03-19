@@ -26,14 +26,15 @@ services:
       redis:
         condition: service_started
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:13306/backend?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+      SERVER_PORT: 18080
+      SPRING_DATASOURCE_URL: ${MYSQL_URL}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       SOCKETIO_SERVER_HOSTNAME: "0.0.0.0"
-      SOCKETIO_SERVER_PORT: 9090
+      SOCKETIO_SERVER_PORT: 19090
       SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PORT: 16379
       SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
       TZ: Asia/Seoul
       JAVA_SECURITY_PROPERTIES: 
