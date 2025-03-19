@@ -18,12 +18,14 @@ services:
     environment:
       TZ: Asia/Seoul
 
-  logs:
-    build: ./logs
-    container_name: logs
+  monitor:
+    build: ./monitor
+    container_name: monitor
     volumes:
       - ./nginx/logs:/var/log/nginx:ro # nginx 로그 디렉토리 읽기 전용으로 마운트
-      - ./logs/output:/etc/nginx/logs # 출력 파일 저장 디렉토리
+      - ./monitor/output:/etc/nginx/logs # 출력 파일 저장 디렉토리
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw # blacklist.conf 수정 위한 공유 볼륨 
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Docker API 접근을 위한 마운트
     networks:
       - wizbee
     restart: always
