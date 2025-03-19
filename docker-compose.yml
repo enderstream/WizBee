@@ -1,4 +1,57 @@
 services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    expose:
+      - "15173"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    networks:
+      - wizbee
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+
+  backend:
+    build: ./backend
+    container_name: backend
+    expose:
+      - "18080"
+      - "19090"
+    depends_on:
+      mysql:
+        condition: service_started
+      redis:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:13306/backend?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SOCKETIO_SERVER_HOSTNAME: "0.0.0.0"
+      SOCKETIO_SERVER_PORT: 9090
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
+      TZ: Asia/Seoul
+      JAVA_SECURITY_PROPERTIES: 
+        jdk.internal.reflect.permitAll=true
+        jdk.reflect.allowNativeAccess=true
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - wizbee
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
   mysql:
     build: 
       context: ./mysql
@@ -13,7 +66,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - app_network
+      - wizbee
     restart: always
 
   redis:
@@ -26,7 +79,7 @@ services:
       - ./redis/var/run/redis:/var/run/redis
       - redis_data:/data
     networks:
-      - app_network
+      - wizbee
 
 volumes:
   mysql_data:
@@ -35,5 +88,5 @@ volumes:
   redis_pid:
 
 networks:
-  app_network:
+  wizbee:
     external: true
