@@ -1,23 +1,37 @@
 services:
   nginx:
-    image: nginx:alpine
+    build: ./nginx
     container_name: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:rw  # 이거 rw로 해줘야함
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw # 이거 rw로 해줘야함
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/html:/usr/share/nginx/html:ro
       - ./nginx/logs:/var/log/nginx
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl/certs:/etc/ssl/certs:ro
     networks:
-      - app_network
+      - wizbee
     restart: always
     environment:
       TZ: Asia/Seoul
 
+  log_parser:
+    build: ./log_parser
+    container_name: log_parser
+    volumes:
+      - ./nginx/logs:/var/log/nginx:ro # nginx 로그 디렉토리 읽기 전용으로 마운트
+      - ./log_parser/output:/etc/nginx/logs # 출력 파일 저장 디렉토리
+    networks:
+      - wizbee
+    restart: always
+    depends_on:
+      - nginx
+    environment:
+      TZ: Asia/Seoul
+
 networks:
-  app_network:
-    external: true  # 기존 네트워크를 사용하기 위한 설정
+  wizbee:
+    external: true # 기존 네트워크를 사용하기 위한 설정

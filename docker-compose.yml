@@ -8,7 +8,7 @@ services:
       - ./frontend:/frontend
       - /frontend/node_modules
     networks:
-      - app_network
+      - wizbee
     restart: always
     environment:
       - TZ=Asia/Seoul
@@ -43,7 +43,7 @@ services:
         soft: 65536
         hard: 65536
     networks:
-      - app_network
+      - wizbee
     restart: always
     deploy:
       resources:
@@ -66,7 +66,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - app_network
+      - wizbee
     restart: always
 
   redis:
@@ -79,7 +79,7 @@ services:
       - ./redis/var/run/redis:/var/run/redis
       - redis_data:/data
     networks:
-      - app_network
+      - wizbee
 
 volumes:
   mysql_data:
@@ -88,5 +88,5 @@ volumes:
   redis_pid:
 
 networks:
-  app_network:
+  wizbee:
     external: true

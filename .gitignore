@@ -237,7 +237,11 @@ redis/var/run/redis/redis-server.pid
 
 # Nginx
 nginx/conf.d/default.conf
+nginx/conf.d/geo-block.conf
 nginx/nginx.conf
+
+#parsed logs
+log_parser/*
 
 # IDE
 .vscode/*
