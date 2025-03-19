@@ -236,12 +236,11 @@ mysql/pid
 redis/var/run/redis/redis-server.pid
 
 # Nginx
-nginx/conf.d/default.conf
-nginx/conf.d/geo-block.conf
+nginx/conf.d/*
 nginx/nginx.conf
 
 #parsed logs
-log_parser/*
+monitor/*
 
 # IDE
 .vscode/*

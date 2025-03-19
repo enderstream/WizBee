@@ -19,4 +19,4 @@ RUN npm install -g serve
 EXPOSE 15173
 
 # 빌드된 dist 폴더를 15173 포트로 서빙
-CMD ["serve", "-s", "dist", "-l", "15173", "--host", "0.0.0.0"]
+CMD ["serve", "-s", "dist", "-l", "15173"]
