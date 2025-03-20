@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { fileURLToPath } from 'node:url'
+import path from 'path'
 
 export default defineConfig((env) => {
   const isDevMode = env.mode === 'development'
@@ -12,7 +13,8 @@ export default defineConfig((env) => {
     },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        // '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@': path.resolve(__dirname, './src'),
       },
     },
     server: {
