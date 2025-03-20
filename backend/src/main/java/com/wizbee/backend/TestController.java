@@ -1,15 +1,16 @@
 package com.wizbee.backend;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class TestController {
 
     @GetMapping("/test")
-    public String test() {
-        return "redirect:/test.html"; // static/test.html을 서빙
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("test성공");
     }
 }

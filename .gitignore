@@ -283,3 +283,10 @@ out/
 # Spring properties
 /backend/src/main/resources/application.properties
 /backend/src/main/resources/application-secrets.properties
+
+# jenkins
+/jenkins/jenkins_home/
+
+# directories
+dir.txt
+tree.txt
