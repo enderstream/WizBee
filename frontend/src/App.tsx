@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import WelcomePage from './pages/WelcomePage'
 import SignUpPage from './pages/SignUpPage'
 import ProfilePage from './pages/ProfilePage'
-import Timelapse from './pages/TimeLapse'
+import Timelapse from './pages/Timelapse'
 import BlueSward from './pages/BlueSward'
 import Settings from './pages/Settings'
 import LoadingScreen from './components/LoadingScreen'
