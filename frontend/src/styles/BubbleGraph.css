@@ -1,0 +1,191 @@
+.bubble-graph-wrapper {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  .bubble-graph-container {
+    width: 100%;
+    max-width: 100%;
+    height: 400px; /* Fixed height for scrollable container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    background-color: #ffffff;
+    scroll-behavior: smooth; /* Smooth scrolling */
+  }
+  
+  .bubble-graph {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .days-header {
+    display: flex;
+    padding-left: 40px; /* Space for the month label */
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    z-index: 10;
+  }
+  
+  .day-label {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+    margin-right: 8px;
+  }
+  
+  .year-grid {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    padding-left: 0;
+  }
+  
+  .week-row {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 38px; /* Fixed height for consistent spacing */
+  }
+  
+  .month-labels {
+    width: 40px;
+    min-width: 40px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .month-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .days-container {
+    display: flex;
+    gap: 8px;
+    flex-grow: 1;
+  }
+  
+  .contribution-day {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ebedf0;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  
+  .contribution-day.empty {
+    background-color: transparent;
+    cursor: default;
+  }
+  
+  .contribution-day:not(.empty):hover {
+    transform: scale(1.1);
+  }
+  
+  /* Contribution levels */
+  .contribution-day.level-0 {
+    background-color: #ebedf0;
+  }
+  
+  .contribution-day.level-1 {
+    background-color: #c6e48b;
+  }
+  
+  .contribution-day.level-2 {
+    background-color: #7bc96f;
+  }
+  
+  .contribution-day.level-3 {
+    background-color: #239a3b;
+  }
+  
+  .contribution-day.level-4 {
+    background-color: #196127;
+  }
+  
+  /* Blue theme alternative - uncomment to use this theme instead */
+  /*
+  .contribution-day.level-1 {
+    background-color: #c5e3ff;
+  }
+  
+  .contribution-day.level-2 {
+    background-color: #8cbff2;
+  }
+  
+  .contribution-day.level-3 {
+    background-color: #4a90e2;
+  }
+  
+  .contribution-day.level-4 {
+    background-color: #1a56a0;
+  }
+  */
+  
+  .contribution-tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 12px;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    transition: visibility 0s, opacity 0.2s ease;
+    opacity: 0;
+  }
+  
+  .contribution-day:hover .contribution-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 375px) {
+    .day-label, .contribution-day {
+      width: 25px;
+      height: 25px;
+    }
+    
+    .days-container {
+      gap: 6px;
+    }
+    
+    .month-label {
+      width: 35px;
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .day-label, .contribution-day {
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+    }
+    
+    .days-container {
+      gap: 4px;
+    }
+    
+    .month-label {
+      width: 30px;
+      font-size: 12px;
+    }
+  }

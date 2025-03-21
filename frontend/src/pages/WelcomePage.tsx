@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Carousel from '../components/Carousel';
-import { useAuth } from '../contexts/AuthContext';
-import '../styles/WelcomePage.css';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Carousel from '../components/Carousel'
+import { useAuth } from '../contexts/AuthContext'
+import '../styles/WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
-  const { user, googleLogin } = useAuth();
-  const navigate = useNavigate();
+  const { user, googleLogin } = useAuth()
+  const navigate = useNavigate()
   console.log(user)
   console.log(useState)
   const handleGoogleLogin = () => {
-    googleLogin();
-    navigate('/signup');
-  };
+    googleLogin()
+    navigate('/signup')
+  }
 
   return (
     <div className="welcome-page">
@@ -32,7 +32,7 @@ const WelcomePage: React.FC = () => {
         Sign up with Google
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default WelcomePage;
+export default WelcomePage

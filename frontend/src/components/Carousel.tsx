@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/Carousel.css';
+import React, { useState, useEffect } from 'react'
+import '../styles/Carousel.css'
 
 // These would be your actual images in the real app
 const carouselImages = [
@@ -41,19 +41,19 @@ const carouselImages = [
       </div>
     ),
   },
-];
+]
 
 const Carousel: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0)
 
   useEffect(() => {
     // Auto rotate slides
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-    }, 3000);
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
+    }, 3000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="carousel">
@@ -70,7 +70,7 @@ const Carousel: React.FC = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Carousel;
+export default Carousel
