@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../styles/LoadingScreen.css'
+import '@/styles/LoadingScreen.css'
 
 const LoadingScreen: React.FC = () => {
   const [position, setPosition] = useState({ x: 50, y: 50 })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import '../styles/Carousel.css'
+import '@/styles/Carousel.css'
 
 // These would be your actual images in the real app
 const carouselImages = [

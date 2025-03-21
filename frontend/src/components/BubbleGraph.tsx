@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import '../styles/BubbleGraph.css'
+import '@/styles/BubbleGraph.css'
 
 interface ContributionDay {
   date: Date
