@@ -55,8 +55,7 @@ services:
           memory: 512M
 
   mysql:
-    build: 
-      context: ./mysql
+    build: ./mysql
     container_name: mysql
     expose:
       - "13306"
