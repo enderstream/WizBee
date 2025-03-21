@@ -5,7 +5,7 @@ import '../styles/ProfilePage.css';
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
-
+  console.log(user)
   const handleStartTimelapse = () => {
     // Start timelapse functionality here
     console.log('Starting timelapse');

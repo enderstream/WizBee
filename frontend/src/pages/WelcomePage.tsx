@@ -7,7 +7,8 @@ import '../styles/WelcomePage.css';
 const WelcomePage: React.FC = () => {
   const { user, googleLogin } = useAuth();
   const navigate = useNavigate();
-
+  console.log(user)
+  console.log(useState)
   const handleGoogleLogin = () => {
     googleLogin();
     navigate('/signup');
