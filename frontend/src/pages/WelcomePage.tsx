@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Carousel from '../components/Carousel'
 import { useAuth } from '../contexts/AuthContext'
-import '../styles/WelcomePage.css'
+import '@/styles/WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
   const { user, googleLogin } = useAuth()

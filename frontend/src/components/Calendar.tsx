@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/Calendar.css'
+import '@/styles/Calendar.css'
 
 interface CalendarProps {
   month: number

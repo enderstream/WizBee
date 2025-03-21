@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import BubbleGraph from '../components/BubbleGraph'
-import '../styles/BlueSward.css'
+import '@/styles/BlueSward.css'
 
 interface ContributionDay {
   date: Date

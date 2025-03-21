@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import '../styles/SignUpPage.css'
+import '@/styles/SignUpPage.css'
 
 const SignUpPage: React.FC = () => {
   const { updateUser } = useAuth()
