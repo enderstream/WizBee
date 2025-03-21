@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Calendar from '../components/Calendar'
-import '../styles/ProfilePage.css'
+import '@/styles/ProfilePage.css'
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuth()
