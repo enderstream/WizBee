@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import '../styles/SignUpPage.css';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import '../styles/SignUpPage.css'
 
 const SignUpPage: React.FC = () => {
-  const { updateUser } = useAuth();
-  const navigate = useNavigate();
+  const { updateUser } = useAuth()
+  const navigate = useNavigate()
   
   const [formData, setFormData] = useState({
     nickname: '',
@@ -14,28 +14,28 @@ const SignUpPage: React.FC = () => {
     month: '',
     day: '',
     agreeTerms: false
-  });
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
     // Update user data
     updateUser({
       name: formData.nickname,
       hasCompletedSignup: true
-    });
+    })
     
     // Navigate to profile page
-    navigate('/profile');
-  };
+    navigate('/profile')
+  }
 
   return (
     <div className="signup-page">
@@ -117,7 +117,7 @@ const SignUpPage: React.FC = () => {
         <button type="submit" className="signup-button">가입 완료!</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default SignUpPage;
+export default SignUpPage

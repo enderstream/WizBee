@@ -1,15 +1,15 @@
-import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import Calendar from '../components/Calendar';
-import '../styles/ProfilePage.css';
+import React from 'react'
+import { useAuth } from '../contexts/AuthContext'
+import Calendar from '../components/Calendar'
+import '../styles/ProfilePage.css'
 
 const ProfilePage: React.FC = () => {
-  const { user } = useAuth();
+  const { user } = useAuth()
   console.log(user)
   const handleStartTimelapse = () => {
     // Start timelapse functionality here
-    console.log('Starting timelapse');
-  };
+    console.log('Starting timelapse')
+  }
 
   return (
     <div className="profile-page">
@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
         <div className="nav-icon settings"></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage

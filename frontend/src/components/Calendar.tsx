@@ -1,22 +1,22 @@
-import React from 'react';
-import '../styles/Calendar.css';
+import React from 'react'
+import '../styles/Calendar.css'
 
 interface CalendarProps {
-  month: number;
+  month: number
 }
 
 const Calendar: React.FC<CalendarProps> = ({ month }) => {
   // Generate days for February 2025 (or current year)
-  const year = 2025;
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const firstDayOfMonth = new Date(year, month - 1, 1).getDay();
+  const year = 2025
+  const daysInMonth = new Date(year, month, 0).getDate()
+  const firstDayOfMonth = new Date(year, month - 1, 1).getDay()
   
   // Get day names
-  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토']
   
   // Generate calendar cells
   const generateCalendarCells = () => {
-    const cells = [];
+    const cells = []
     
     // Add day names header
     for (let i = 0; i < 7; i++) {
@@ -24,12 +24,12 @@ const Calendar: React.FC<CalendarProps> = ({ month }) => {
         <div key={`header-${i}`} className="calendar-header-cell">
           {dayNames[i]}
         </div>
-      );
+      )
     }
     
     // Add empty cells for days before the first of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
-      cells.push(<div key={`empty-${i}`} className="calendar-cell empty"></div>);
+      cells.push(<div key={`empty-${i}`} className="calendar-cell empty"></div>)
     }
     
     // Add cells for each day of the month
@@ -38,11 +38,11 @@ const Calendar: React.FC<CalendarProps> = ({ month }) => {
         <div key={`day-${day}`} className="calendar-cell">
           {day}
         </div>
-      );
+      )
     }
     
-    return cells;
-  };
+    return cells
+  }
   
   return (
     <div className="calendar">
@@ -53,7 +53,7 @@ const Calendar: React.FC<CalendarProps> = ({ month }) => {
         {generateCalendarCells()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Calendar;
+export default Calendar
