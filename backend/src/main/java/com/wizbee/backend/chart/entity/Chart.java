@@ -1,4 +1,4 @@
-package com.wizbee.backend.chart;
+package com.wizbee.backend.chart.entity;
 
 import com.wizbee.backend.user.User;
 import jakarta.persistence.*;
