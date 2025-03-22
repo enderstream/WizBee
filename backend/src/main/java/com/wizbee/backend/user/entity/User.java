@@ -1,4 +1,4 @@
-package com.wizbee.backend.user;
+package com.wizbee.backend.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
