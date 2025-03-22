@@ -1,6 +1,6 @@
 package com.wizbee.backend.timelapse;
 
-import com.wizbee.backend.user.User;
+import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
