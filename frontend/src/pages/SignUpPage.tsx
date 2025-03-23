@@ -33,8 +33,8 @@ const SignUpPage: React.FC = () => {
       hasCompletedSignup: true
     })
     
-    // Navigate to profile page
-    navigate('/profile')
+    // Navigate to home page
+    navigate('/home')
   }
 
   return (

@@ -1,16 +1,16 @@
-.profile-page {
+.home-page {
     padding: 20px;
     max-width: 500px;
     margin: 0 auto;
   }
   
-  .profile-header {
+  .home-header {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
   }
   
-  .profile-avatar {
+  .home-avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -18,16 +18,16 @@
     margin-right: 15px;
   }
   
-  .profile-greeting {
+  .home-greeting {
     flex: 1;
   }
   
-  .profile-greeting h2 {
+  .home-greeting h2 {
     margin: 0;
     color: #333;
   }
   
-  .profile-greeting p {
+  .home-greeting p {
     color: #777;
   }
   

@@ -19,7 +19,7 @@ const BottomNavBar: React.FC = () => {
 
   return (
     <div className="bottom-nav-bar">
-      <Link to="/profile" className={`nav-item ${isActive('/profile')}`}>
+      <Link to="/home" className={`nav-item ${isActive('/home')}`}>
         <div className="nav-icon home-icon"></div>
         <span>홈</span>
       </Link>

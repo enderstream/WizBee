@@ -4,6 +4,7 @@ import WelcomePage from './pages/WelcomePage'
 import SignUpPage from './pages/SignUpPage'
 import Home from './pages/Home'
 import Timelapse from './pages/Timelapse'
+import Shooting from './pages/Shooting'  // Shooting 컴포넌트 import 추가
 import BlueSward from './pages/BlueSward'
 import Settings from './pages/Settings'
 import LoadingScreen from './components/LoadingScreen'
@@ -49,9 +50,9 @@ function AppContent() {
         <Route path="/signup" element={
           user && !user.hasCompletedSignup 
             ? <SignUpPage /> 
-            : <Navigate to={user ? "/profile" : "/"} />
+            : <Navigate to={user ? "/home" : "/"} />
         } />
-        <Route path="/profile" element={
+        <Route path="/home/*" element={
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>
@@ -59,6 +60,12 @@ function AppContent() {
         <Route path="/timelapse" element={
           <ProtectedRoute>
             <Timelapse />
+          </ProtectedRoute>
+        } />
+        {/* Shooting 페이지를 위한 새 라우트 추가 */}
+        <Route path="/shooting" element={
+          <ProtectedRoute>
+            <Shooting />
           </ProtectedRoute>
         } />
         <Route path="/sward" element={

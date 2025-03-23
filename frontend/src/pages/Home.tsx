@@ -1,21 +1,25 @@
 import React from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Calendar from '../components/Calendar'
+import { useNavigate } from 'react-router-dom'
 import '@/styles/Home.css'
 
 const Home: React.FC = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
   console.log(user)
+  
   const handleStartTimelapse = () => {
-    // Start timelapse functionality here
-    console.log('Starting timelapse')
+    // 촬영 페이지로 이동
+    console.log('Starting shooting session')
+    navigate('/shooting')
   }
 
   return (
-    <div className="profile-page">
-      <div className="profile-header">
-        <div className="profile-avatar"></div>
-        <div className="profile-greeting">
+    <div className="home-page">
+      <div className="home-header">
+        <div className="home-avatar"></div>
+        <div className="home-greeting">
           <h2>권동환님!</h2>
           <p>오늘도 열공해봐요</p>
         </div>
