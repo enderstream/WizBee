@@ -7,5 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByMachine(String rassId);
+
+    User findById(int id);
+
 }
 
