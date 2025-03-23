@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import WelcomePage from './pages/WelcomePage'
 import SignUpPage from './pages/SignUpPage'
-import ProfilePage from './pages/ProfilePage'
+import Home from './pages/Home'
 import Timelapse from './pages/Timelapse'
 import BlueSward from './pages/BlueSward'
 import Settings from './pages/Settings'
@@ -53,7 +53,7 @@ function AppContent() {
         } />
         <Route path="/profile" element={
           <ProtectedRoute>
-            <ProfilePage />
+            <Home />
           </ProtectedRoute>
         } />
         <Route path="/timelapse" element={

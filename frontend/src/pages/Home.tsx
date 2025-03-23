@@ -1,9 +1,9 @@
 import React from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Calendar from '../components/Calendar'
-import '@/styles/ProfilePage.css'
+import '@/styles/Home.css'
 
-const ProfilePage: React.FC = () => {
+const Home: React.FC = () => {
   const { user } = useAuth()
   console.log(user)
   const handleStartTimelapse = () => {
@@ -44,4 +44,4 @@ const ProfilePage: React.FC = () => {
   )
 }
 
-export default ProfilePage
+export default Home
