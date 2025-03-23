@@ -7,10 +7,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
     public User findByMachine(String rassId) {
         return userRepository.findByMachine(rassId);
     }
+
+    public User findById(int id){
+        return userRepository.findById(id);
+    }
+
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
+
 }
