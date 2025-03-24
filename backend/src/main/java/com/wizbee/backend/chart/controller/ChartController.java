@@ -1,16 +1,18 @@
 package com.wizbee.backend.chart.controller;
 
 import com.wizbee.backend.chart.dto.ChartRequestDto;
+import com.wizbee.backend.chart.dto.ChartResponseDto;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/study")
@@ -61,6 +63,59 @@ public class ChartController {
         } else {
             return ResponseEntity.badRequest().body("저장 실패.");
         }
+    }
+
+    @GetMapping("/chart/{userId}")
+    public ResponseEntity<?> printTodayChart(@RequestParam String date, @PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        // 날짜 변환 (String → LocalDate)
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // "yyyy-MM-dd" 형식
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
+        }
+
+        // 오늘의 딴짓 통계
+        Chart oneDayChart = chartService.findByDate(searchUser, localDate);
+
+        if(oneDayChart != null){
+            return ResponseEntity.ok(oneDayChart);
+        } else {
+            return ResponseEntity.badRequest().body("해당 날짜에 통계 정보가 없습니다.");
+        }
+
+    }
+
+
+    @GetMapping("/chart/week/{userId}")
+    public ResponseEntity<?> printWeekChart(@RequestParam("date") String date, @PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        // 날짜 변환 (String → LocalDate)
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // "yyyy-MM-dd" 형식
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
+        }
+
+        // 이번주 순공시간 통계
+        List<Object[]> weekChart = chartService.findWeekByDate(searchUser, localDate);
+
+        if(weekChart != null){
+            return ResponseEntity.ok(weekChart);
+        } else {
+            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+        }
+
     }
 
 }
