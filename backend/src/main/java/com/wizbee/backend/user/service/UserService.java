@@ -1,5 +1,6 @@
 package com.wizbee.backend.user.service;
 
+//import com.wizbee.backend.user.dto.UserResponseDto;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class UserService {
     }
 
     public User findById(int id){
+        return userRepository.findById(id);
+    }
+
+    public User findLoginUserById(int id){
         return userRepository.findById(id);
     }
 
