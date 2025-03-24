@@ -23,17 +23,17 @@ const BottomNavBar: React.FC = () => {
         <div className="nav-icon home-icon"></div>
         <span>홈</span>
       </Link>
-      
+
       <Link to="/timelapse" className={`nav-item ${isActive('/timelapse')}`}>
         <div className="nav-icon video-icon"></div>
         <span>타임랩스</span>
       </Link>
-      
+
       <Link to="/sward" className={`nav-item ${isActive('/sward')}`}>
         <div className="nav-icon calendar-icon"></div>
         <span>잔디밭</span>
       </Link>
-      
+
       <Link to="/settings" className={`nav-item ${isActive('/settings')}`}>
         <div className="nav-icon settings-icon"></div>
         <span>설정</span>

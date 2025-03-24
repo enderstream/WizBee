@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   console.log(user)
-  
+
   const handleStartTimelapse = () => {
     // 촬영 페이지로 이동
     console.log('Starting shooting session')

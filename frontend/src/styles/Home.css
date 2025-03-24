@@ -1,103 +1,103 @@
 .home-page {
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .home-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .home-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: #eee;
-    margin-right: 15px;
-  }
-  
-  .home-greeting {
-    flex: 1;
-  }
-  
-  .home-greeting h2 {
-    margin: 0;
-    color: #333;
-  }
-  
-  .home-greeting p {
-    color: #777;
-  }
-  
-  .qr-code {
-    width: 60px;
-    height: 60px;
-    background-color: #eee;
-    border: 1px solid #ddd;
-  }
-  
-  .timelapse-container {
-    background-color: #f5f9ff;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .timelapse-container h3 {
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  .start-button {
-    background-color: transparent;
-    color: #333;
-    border: 2px solid #4285f4;
-    border-radius: 15px;
-    padding: 10px 40px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .start-button:hover {
-    background-color: #4285f4;
-    color: white;
-  }
-  
-  .study-records {
-    margin-bottom: 60px;
-  }
-  
-  .study-records h3 {
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
-  .navigation-icons {
-    display: flex;
-    justify-content: space-around;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .nav-icon {
-    width: 40px;
-    height: 40px;
-    background-color: #eee;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.home-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #eee;
+  margin-right: 15px;
+}
+
+.home-greeting {
+  flex: 1;
+}
+
+.home-greeting h2 {
+  margin: 0;
+  color: #333;
+}
+
+.home-greeting p {
+  color: #777;
+}
+
+.qr-code {
+  width: 60px;
+  height: 60px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+}
+
+.timelapse-container {
+  background-color: #f5f9ff;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.timelapse-container h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.start-button {
+  background-color: transparent;
+  color: #333;
+  border: 2px solid #4285f4;
+  border-radius: 15px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #4285f4;
+  color: white;
+}
+
+.study-records {
+  margin-bottom: 60px;
+}
+
+.study-records h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.navigation-icons {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.nav-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

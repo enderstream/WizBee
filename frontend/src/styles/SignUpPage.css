@@ -1,87 +1,87 @@
 .signup-page {
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .signup-title {
-    font-size: 32px;
-    color: #4285f4;
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .form-group {
-    margin-bottom: 24px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .input-container i {
-    position: absolute;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    color: #888;
-  }
-  
-  .user-icon::before {
-    content: "👤";
-  }
-  
-  .email-icon::before {
-    content: "✉️";
-  }
-  
-  .input-container input {
-    padding-left: 35px;
-  }
-  
-  .birthdate-container {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .birthdate-container input {
-    flex: 1;
-    text-align: center;
-  }
-  
-  .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .checkbox-group input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .signup-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .signup-button:hover {
-    background-color: #3367d6;
-  }
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.signup-title {
+  font-size: 32px;
+  color: #4285f4;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-container i {
+  position: absolute;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  color: #888;
+}
+
+.user-icon::before {
+  content: '👤';
+}
+
+.email-icon::before {
+  content: '✉️';
+}
+
+.input-container input {
+  padding-left: 35px;
+}
+
+.birthdate-container {
+  display: flex;
+  gap: 10px;
+}
+
+.birthdate-container input {
+  flex: 1;
+  text-align: center;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.signup-button:hover {
+  background-color: #3367d6;
+}
