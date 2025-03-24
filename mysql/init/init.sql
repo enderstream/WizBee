@@ -1,3 +1,5 @@
+use wizbee;
+
 CREATE TABLE TESTTABLE (
     id INTEGER PRIMARY KEY,
     name TEXT,
