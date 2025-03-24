@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,8 +24,9 @@ public class User {
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
 
+
     @Column(name = "user_birthday")
-    private String birthday;
+    private java.sql.Date birthday;
 
     @Column(name = "user_role", nullable = false)
     private String role;

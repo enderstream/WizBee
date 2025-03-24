@@ -2,6 +2,7 @@ package com.wizbee.backend.chart.controller;
 
 import com.wizbee.backend.chart.dto.ChartRequestDto;
 import com.wizbee.backend.chart.dto.ChartResponseDto;
+import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
@@ -117,5 +118,17 @@ public class ChartController {
         }
 
     }
+
+    @GetMapping("/chart/avg/{userId}")
+    public ResponseEntity<?> peerstatistics(@PathVariable("userId") int userId) {
+        try {
+            PeerStatisticsResponseDto peerStatisticsResponseDto = chartService.getPeerStats(userId);
+            return ResponseEntity.ok(peerStatisticsResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error:" + e.getMessage());
+        }
+    }
+
+
 
 }
