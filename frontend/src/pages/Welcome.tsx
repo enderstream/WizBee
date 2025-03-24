@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Carousel from '../components/Carousel'
 import { useAuth } from '../contexts/AuthContext'
-import '@/styles/WelcomePage.css'
+import '@/styles/Welcome.css'
 
-const WelcomePage: React.FC = () => {
+const Welcome: React.FC = () => {
   const { user, googleLogin } = useAuth()
   const navigate = useNavigate()
   console.log(user)
@@ -32,4 +32,4 @@ const WelcomePage: React.FC = () => {
   )
 }
 
-export default WelcomePage
+export default Welcome
