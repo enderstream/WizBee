@@ -29,60 +29,76 @@ interface DayData {
 const BubbleGraph: React.FC<BubbleGraphProps> = ({
   data,
   year = new Date().getFullYear(),
-  onDayClick
+  onDayClick,
 }) => {
   // Days of the week in Korean
   const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일']
-  
+
   // Month names in Korean
-  const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
-  
+  const monthNames = [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월',
+  ]
+
   // Reference to the container for scrolling
   const containerRef = useRef<HTMLDivElement>(null)
-  
+
   // Generate one full year of days
   const generateYearData = () => {
     // Start from January 1st of the year
     const startDate = new Date(year, 0, 1)
     // End on December 31st
     const endDate = new Date(year, 11, 31)
-    
+
     // Calculate total days in the year
-    const totalDays = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
-    
+    const totalDays =
+      Math.round(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+      ) + 1
+
     // Get day of week for January 1st (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
     let firstDayOfWeek = startDate.getDay()
     // Adjust to our week format (0 = Monday, ..., 6 = Sunday)
     firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
-    
+
     // Create an array of all days in the year
     const allDays: (DayData | null)[] = []
-    
+
     // Add empty cells for days before January 1st
     for (let i = 0; i < firstDayOfWeek; i++) {
       allDays.push(null)
     }
-    
+
     // Add all days of the year
     for (let i = 0; i < totalDays; i++) {
       const currentDate = new Date(year, 0, i + 1)
-      
+
       // Find contribution level from data
-      const matchingDay = data.find(item => isSameDay(item.date, currentDate))
+      const matchingDay = data.find((item) => isSameDay(item.date, currentDate))
       const level = matchingDay ? matchingDay.level : 0
-      
+
       allDays.push({
         date: currentDate,
         day: currentDate.getDate(),
         month: currentDate.getMonth(),
-        level
+        level,
       })
     }
-    
+
     // Calculate rows needed (each row has 7 days)
     const totalCells = allDays.length
     const rows = Math.ceil(totalCells / 7)
-    
+
     // Distribute days into rows
     const result: (DayData | null)[][] = []
     for (let row = 0; row < rows; row++) {
@@ -97,30 +113,32 @@ const BubbleGraph: React.FC<BubbleGraphProps> = ({
       }
       result.push(weekRow)
     }
-    
+
     return result
   }
-  
+
   // Helper function to check if two dates are the same day
   const isSameDay = (date1: Date, date2: Date): boolean => {
-    return date1.getDate() === date2.getDate() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getFullYear() === date2.getFullYear()
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    )
   }
-  
+
   // Handle day click
   const handleDayClick = (day: DayData) => {
     if (onDayClick && day) {
       onDayClick({
         date: day.date,
-        level: day.level
+        level: day.level,
       })
     }
   }
-  
+
   // Get all days for the entire year
   const yearData = generateYearData()
-  
+
   // Find rows where a new month starts
   const monthStartRows: MonthStartRow[] = []
   for (let i = 0; i < yearData.length; i++) {
@@ -131,32 +149,34 @@ const BubbleGraph: React.FC<BubbleGraphProps> = ({
       if (day && day.day === 1) {
         monthStartRows.push({
           rowIndex: i,
-          month: day.month
+          month: day.month,
         })
         break
       }
     }
   }
-  
+
   // Scroll to current month on initial render
   useEffect(() => {
     if (containerRef.current) {
       const currentMonth = new Date().getMonth()
-      
+
       // Find the row for the current month
-      const currentMonthRow = monthStartRows.find(m => m.month === currentMonth)
-      
+      const currentMonthRow = monthStartRows.find(
+        (m) => m.month === currentMonth,
+      )
+
       if (currentMonthRow) {
         // Calculate position to scroll to
         const rowHeight = 38 // Approximate height of a row in pixels
         const scrollPosition = currentMonthRow.rowIndex * rowHeight
-        
+
         // Scroll with a slight offset for better positioning
         containerRef.current.scrollTop = scrollPosition - 50
       }
     }
   }, [monthStartRows])
-  
+
   return (
     <div className="bubble-graph-wrapper">
       <div className="days-header">
@@ -166,7 +186,7 @@ const BubbleGraph: React.FC<BubbleGraphProps> = ({
           </div>
         ))}
       </div>
-      
+
       <div className="bubble-graph-container" ref={containerRef}>
         <div className="bubble-graph">
           <div className="year-grid">
@@ -175,27 +195,33 @@ const BubbleGraph: React.FC<BubbleGraphProps> = ({
                 {/* Check if this row starts a new month */}
                 <div className="month-labels">
                   {monthStartRows
-                    .filter(m => m.rowIndex === weekIndex)
-                    .map(m => (
+                    .filter((m) => m.rowIndex === weekIndex)
+                    .map((m) => (
                       <div key={`month-${m.month}`} className="month-label">
                         {monthNames[m.month]}
                       </div>
                     ))}
                 </div>
-                
+
                 <div className="days-container">
                   {week.map((day, dayIndex) => (
-                    <div 
+                    <div
                       key={`day-${weekIndex}-${dayIndex}`}
                       className={`contribution-day ${day ? `level-${day.level}` : 'empty'}`}
                       onClick={() => day && handleDayClick(day)}
-                      aria-label={day ? `Contribution level ${day.level} on ${day.date.toLocaleDateString()}` : 'Empty day'}
+                      aria-label={
+                        day
+                          ? `Contribution level ${day.level} on ${day.date.toLocaleDateString()}`
+                          : 'Empty day'
+                      }
                     >
                       {day && (
                         <span className="contribution-tooltip">
                           {day.date.toLocaleDateString('ko-KR')}
                           <br />
-                          {day.level === 0 ? '기여 없음' : `기여 레벨: ${day.level}`}
+                          {day.level === 0
+                            ? '기여 없음'
+                            : `기여 레벨: ${day.level}`}
                         </span>
                       )}
                     </div>

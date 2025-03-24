@@ -7,9 +7,9 @@ const LoadingScreen: React.FC = () => {
   useEffect(() => {
     // Animate the bee flying across the screen
     const interval = setInterval(() => {
-      setPosition(prev => ({
+      setPosition((prev) => ({
         x: prev.x + 1,
-        y: prev.y + Math.sin(prev.x / 10) * 2
+        y: prev.y + Math.sin(prev.x / 10) * 2,
       }))
     }, 20)
 
@@ -18,11 +18,11 @@ const LoadingScreen: React.FC = () => {
 
   return (
     <div className="loading-screen">
-      <div 
-        className="bee-logo" 
+      <div
+        className="bee-logo"
         style={{
           left: `${position.x}%`,
-          top: `${position.y}%`
+          top: `${position.y}%`,
         }}
       >
         {/* This would be your actual bee logo */}

@@ -6,41 +6,41 @@ import '@/styles/SignUpPage.css'
 const SignUpPage: React.FC = () => {
   const { updateUser } = useAuth()
   const navigate = useNavigate()
-  
+
   const [formData, setFormData] = useState({
     nickname: '',
     email: '',
     year: '',
     month: '',
     day: '',
-    agreeTerms: false
+    agreeTerms: false,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Update user data
     updateUser({
       name: formData.nickname,
-      hasCompletedSignup: true
+      hasCompletedSignup: true,
     })
-    
-    // Navigate to profile page
-    navigate('/profile')
+
+    // Navigate to home page
+    navigate('/home')
   }
 
   return (
     <div className="signup-page">
       <h1 className="signup-title">SIGN UP</h1>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="nickname">닉네임</label>
@@ -56,7 +56,7 @@ const SignUpPage: React.FC = () => {
             />
           </div>
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="email">이메일</label>
           <div className="input-container">
@@ -71,7 +71,7 @@ const SignUpPage: React.FC = () => {
             />
           </div>
         </div>
-        
+
         <div className="form-group">
           <label>생년월일</label>
           <div className="birthdate-container">
@@ -101,7 +101,7 @@ const SignUpPage: React.FC = () => {
             />
           </div>
         </div>
-        
+
         <div className="form-group checkbox-group">
           <input
             type="checkbox"
@@ -113,8 +113,10 @@ const SignUpPage: React.FC = () => {
           />
           <label htmlFor="agreeTerms">개인정보동의</label>
         </div>
-        
-        <button type="submit" className="signup-button">가입 완료!</button>
+
+        <button type="submit" className="signup-button">
+          가입 완료!
+        </button>
       </form>
     </div>
   )

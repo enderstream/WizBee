@@ -25,7 +25,9 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -44,9 +46,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newUser: User = {
       id: 'google-user-' + Date.now(),
       email: 'user@example.com',
-      hasCompletedSignup: false
+      hasCompletedSignup: false,
     }
-    
+
     setUser(newUser)
     localStorage.setItem('user', JSON.stringify(newUser))
   }
@@ -65,7 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, googleLogin, logout, updateUser }}>
+    <AuthContext.Provider
+      value={{ user, loading, googleLogin, logout, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   )
