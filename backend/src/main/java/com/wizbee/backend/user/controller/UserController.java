@@ -46,4 +46,33 @@ public class UserController {
 
     }
 
+    @GetMapping("/{userId}")
+
+    public ResponseEntity<?> searchUser(@PathVariable("userId") int userId){
+        User user = userService.findLoginUserById(userId);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @PutMapping("/withdraw/{userId}")
+    public ResponseEntity<?> withDrawUser(@PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        searchUser.setRole("WITHDRAW_USER");
+
+        User saveUser = userService.saveUser(searchUser);
+        if(saveUser == null){
+            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+        } else {
+            return ResponseEntity.ok("회원 탈퇴가 정상적으로 완료되었습니다.");
+        }
+
+    }
+
 }
