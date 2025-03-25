@@ -3,6 +3,7 @@ package com.wizbee.backend.chart.controller;
 import com.wizbee.backend.chart.dto.ChartRequestDto;
 import com.wizbee.backend.chart.dto.ChartResponseDto;
 import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
+import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
@@ -66,7 +67,7 @@ public class ChartController {
         }
     }
 
-    @GetMapping("/chart/{userId}")
+    @GetMapping("/chart/today/{userId}")
     public ResponseEntity<?> printTodayChart(@RequestParam String date, @PathVariable("userId") int userId){
         User searchUser = userService.findById(userId);
         if(searchUser == null){
@@ -124,6 +125,17 @@ public class ChartController {
         try {
             PeerStatisticsResponseDto peerStatisticsResponseDto = chartService.getPeerStats(userId);
             return ResponseEntity.ok(peerStatisticsResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error:" + e.getMessage());
+        }
+    }
+
+//     로그인한 유저 통계 정보 조회
+    @GetMapping("/chart/{userId}")
+    public ResponseEntity<?> userStatistics(@PathVariable("userId") int userId) {
+        try {
+            UserStatisticsResponseDto userStatisticsResponseDto = chartService.getUserStats(userId);
+            return ResponseEntity.ok(userStatisticsResponseDto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error:" + e.getMessage());
         }
