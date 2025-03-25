@@ -15,7 +15,7 @@ function QRScanner() {
 
   const apiTest = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log(userAPI.userInfo(1))
+    console.log(userAPI.userInfo(2))
     // userAPI.login()
   }
 
