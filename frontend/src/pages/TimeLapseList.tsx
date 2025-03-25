@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Timelapse = () => {
+const TimeLapseList = () => {
   const [selectedVideo, setSelectedVideo] = useState(null)
 
   // Sample video data - you can replace with your actual data
@@ -48,8 +48,8 @@ const Timelapse = () => {
   ]
 
   //   const playVideo = (id) => {
-  //     setSelectedVideo(timelapseVideos.find(video => video.id === id));
-  //   };
+  //     setSelectedVideo(timelapseVideos.find(video => video.id === id))
+  //   
 
   const closeVideo = () => {
     setSelectedVideo(null)
@@ -214,4 +214,4 @@ const Timelapse = () => {
   )
 }
 
-export default Timelapse
+export default TimeLapseList

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigation } from '@/hooks/useNavigation'
 import { useAuth } from '../contexts/AuthContext'
-import '@/styles/SignUpPage.css'
+import '@/styles/SignUp.css'
 
-const SignUpPage: React.FC = () => {
+const SignUp: React.FC = () => {
   const { updateUser } = useAuth()
-  const navigate = useNavigate()
+  const { toHome } = useNavigation()
 
   const [formData, setFormData] = useState({
     nickname: '',
@@ -34,7 +34,7 @@ const SignUpPage: React.FC = () => {
     })
 
     // Navigate to home page
-    navigate('/home')
+    toHome()
   }
 
   return (
@@ -122,4 +122,4 @@ const SignUpPage: React.FC = () => {
   )
 }
 
-export default SignUpPage
+export default SignUp
