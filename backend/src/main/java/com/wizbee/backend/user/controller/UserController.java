@@ -33,7 +33,7 @@ public class UserController {
         searchUser.setBirthday(inputUser.getBirthday());
         searchUser.setName(inputUser.getName());
         // 생년월일을 처음으로 입력한 유저일 경우
-        if(searchUser.getRole().equals("NO_BIRTH_USER") && !inputUser.getBirthday().isEmpty()){
+        if(searchUser.getRole().equals("NO_BIRTH_USER") && inputUser.getBirthday() != null){
             searchUser.setRole("USER");
         }
 
