@@ -1,14 +1,15 @@
 package com.wizbee.backend.chart.service;
 
-import com.wizbee.backend.chart.dto.ChartResponseDto;
+import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
+import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.repository.ChartRepository;
 import com.wizbee.backend.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -54,6 +55,44 @@ public class ChartService {
 
         }
         return result;
+    }
+
+    public PeerStatisticsResponseDto getPeerStats(Integer userId) {
+        Object result = chartRepository.getPeerStatistics(userId);
+        if (result == null) {
+            return new PeerStatisticsResponseDto();
+        }
+        Object[] arr = (Object[]) result;
+        PeerStatisticsResponseDto peerStatisticsResponseDto = new PeerStatisticsResponseDto();
+        peerStatisticsResponseDto.setAvgFullTime(((BigDecimal) arr[0]).floatValue());
+        peerStatisticsResponseDto.setAvgStudyTime(((BigDecimal) arr[1]).floatValue());
+        peerStatisticsResponseDto.setAvgOutTime(((BigDecimal) arr[2]).floatValue());
+        peerStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
+        peerStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
+        peerStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
+        peerStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
+        peerStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
+
+        return peerStatisticsResponseDto;
+    }
+
+    public UserStatisticsResponseDto getUserStats(Integer userId) {
+        Object result = chartRepository.getUserStatistics(userId);
+        if (result == null) {
+            return new UserStatisticsResponseDto();
+        }
+        Object[] arr = (Object[]) result;
+        UserStatisticsResponseDto userStatisticsResponseDto = new UserStatisticsResponseDto();
+        userStatisticsResponseDto.setAvgFullTime(((BigDecimal) arr[0]).floatValue());
+        userStatisticsResponseDto.setAvgStudyTime(((BigDecimal) arr[1]).floatValue());
+        userStatisticsResponseDto.setAvgOutTime(((BigDecimal) arr[2]).floatValue());
+        userStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
+        userStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
+        userStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
+        userStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
+        userStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
+
+        return userStatisticsResponseDto;
     }
 
 }
