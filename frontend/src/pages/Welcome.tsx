@@ -9,11 +9,11 @@ const Welcome: React.FC = () => {
   const { user } = useAuth()
   console.log(user)
   console.log(useState)
-  const { toHome } = useNavigation()
+  const { toSignUp } = useNavigation()
   const handleGoogleLogin = () => {
     // userAPI.login()
     console.log('ㄸ딸깎')
-    toHome()
+    toSignUp()
   }
 
   return (
