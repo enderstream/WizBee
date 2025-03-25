@@ -1,6 +1,6 @@
 import React from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import Calendar from '../components/Calendar'
+import { useAuth } from '@/contexts/AuthContext'
+import Calendar from '@/components/Calendar'
 import { useNavigation } from '@/hooks/useNavigation'
 import '@/styles/Home.css'
 
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="qr-code">
-          <button className='QR-button' onClick={registerQR}>
+          <button className="QR-button" onClick={registerQR}>
             QR
           </button>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigation } from '@/hooks/useNavigation'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import '@/styles/SignUp.css'
 
 const SignUp: React.FC = () => {

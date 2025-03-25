@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import BottomNavBar from '../components/BottomNavBar'
-import LoadingScreen from '../components/LoadingScreen'
+import { useAuth } from '@/contexts/AuthContext'
+import BottomNavBar from '@/components/BottomNavBar'
+import LoadingScreen from '@/components/LoadingScreen'
 
 const RootLayout: React.FC = () => {
   const [loading, setLoading] = useState(true)

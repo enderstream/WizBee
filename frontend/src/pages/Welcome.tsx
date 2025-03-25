@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Carousel from '../components/Carousel'
-import { useAuth } from '../contexts/AuthContext'
+import Carousel from '@/components/Carousel'
+import { useAuth } from '@/contexts/AuthContext'
 import '@/styles/Welcome.css'
+import { userAPI } from '@/api/userAPI'
 
 const Welcome: React.FC = () => {
-  const { user, googleLogin } = useAuth()
-  const navigate = useNavigate()
+  const { user } = useAuth()
   console.log(user)
   console.log(useState)
   const handleGoogleLogin = () => {
-    googleLogin()
-    navigate('/signup')
+    userAPI.login()
   }
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import DateSelector from '../components/DateSelector'
-import '../styles/Settings.css'
+import { useAuth } from '@/contexts/AuthContext'
+import DateSelector from '@/components/DateSelector'
+import '@/styles/Settings.css'
 
 const Settings: React.FC = () => {
   const { user } = useAuth()

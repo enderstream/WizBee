@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { userAPI } from '@/api/userAPI'
 
 function QRScanner() {
   const [source, setSource] = useState('')
@@ -11,17 +12,26 @@ function QRScanner() {
   //     }
   //   }
   // }
+
+  const apiTest = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    console.log(userAPI.userInfo(1))
+    // userAPI.login()
+  }
+
   return (
     <div>
       {source && <img src={source} alt={'snap'} width="500" height="500"></img>}
-
-      <input
+      <button type="button" onClick={apiTest}>
+        딸깍
+      </button>
+      {/* <input
         accept="image/*"
         id="icon-button-file"
         type="file"
         capture="environment"
         // onChange={(e) => handleCapture(e.target)}
-      />
+      /> */}
     </div>
   )
 }

@@ -1,11 +1,12 @@
 import { apiClient } from "@/api/apiClient"
 
+const baseURL = import.meta.env.VITE_API_URL
 
 export const userAPI = {
     // 로그인
     login: async () => {
         try {
-            window.location.href = '/oauth2/authorization/google'
+            window.location.href = `${baseURL}/oauth2/authorization/google`
         } catch (error) {
             alert("구글 로그인 리다이렉트 중 오류 발생")
             throw error

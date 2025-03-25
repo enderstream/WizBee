@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BubbleGraph from '../components/BubbleGraph'
+import BubbleGraph from '@/components/BubbleGraph'
 import '@/styles/BlueSward.css'
 
 interface ContributionDay {
