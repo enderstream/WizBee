@@ -46,13 +46,6 @@ const Home: React.FC = () => {
         <h3>나의 공부 기록</h3>
         <Calendar month={2} />
       </div>
-
-      {/* <div className="navigation-icons">
-        <div className="nav-icon home"></div>
-        <div className="nav-icon video"></div>
-        <div className="nav-icon calendar"></div>
-        <div className="nav-icon settings"></div>
-      </div> */}
     </div>
   )
 }

@@ -1,10 +1,11 @@
 import React from 'react'
-import { useAuth } from '../contexts/AuthContext'
+// import { useAuth } from '../contexts/AuthContext'
+import { useNavigation } from '@/hooks/useNavigation'
 import '../styles/Record.css' // CSS 파일이 필요하다면 만들어야 합니다
 
 const Record: React.FC = () => {
-  const { user } = useAuth()
-  console.log(user)
+  // const { user } = useAuth()
+  const { toHome } = useNavigation()
   return (
     <div className="record-page">
       <div className="record-header">
@@ -19,7 +20,9 @@ const Record: React.FC = () => {
 
         <div className="record-controls">
           <button className="capture-button">촬영</button>
-          <button className="stop-button">중지</button>
+          <button className="stop-button" onClick={toHome}>
+            중지
+          </button>
         </div>
       </div>
 
