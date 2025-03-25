@@ -1,13 +1,10 @@
 import React from 'react'
-import { useAuth } from '@/contexts/AuthContext'
 import Calendar from '@/components/Calendar'
 import { useNavigation } from '@/hooks/useNavigation'
 import '@/styles/Home.css'
 
 const Home: React.FC = () => {
-  const { user } = useAuth()
   const { toRecord, toQRScanner } = useNavigation()
-  console.log(user)
 
   const handleStartTimeLapse = () => {
     // 촬영 페이지로 이동

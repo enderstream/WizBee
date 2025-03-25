@@ -1,5 +1,4 @@
 import React from 'react'
-// import { useAuth } from '../contexts/AuthContext'
 import { useNavigation } from '@/hooks/useNavigation'
 import '@/styles/Record.css' // CSS 파일이 필요하다면 만들어야 합니다
 

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
 import BottomNavBar from '@/components/BottomNavBar'
 import LoadingScreen from '@/components/LoadingScreen'
 
 const RootLayout: React.FC = () => {
   const [loading, setLoading] = useState(true)
-  const { user } = useAuth()
   const location = useLocation()
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const RootLayout: React.FC = () => {
       <Outlet />
       
       {/* 인증된 사용자와 특정 페이지에서만 하단 네비게이션 바 표시 */}
-      {user && shouldShowNavBar && <BottomNavBar />}
+      {shouldShowNavBar && <BottomNavBar />}
     </div>
   )
 }

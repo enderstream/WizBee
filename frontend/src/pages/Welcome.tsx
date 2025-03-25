@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import Carousel from '@/components/Carousel'
-import { useAuth } from '@/contexts/AuthContext'
 import '@/styles/Welcome.css'
 import { userAPI } from '@/api/userAPI'
 import { useNavigation } from '@/hooks/useNavigation'
 
 const Welcome: React.FC = () => {
-  const { user } = useAuth()
-  console.log(user)
   console.log(useState)
   const { toSignUp } = useNavigation()
   const handleGoogleLogin = () => {

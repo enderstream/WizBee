@@ -1,6 +1,5 @@
 // import React, { useState } from 'react'
 // import { useNavigation } from '@/hooks/useNavigation'
-// import { useAuth } from '@/contexts/AuthContext'
 // import '@/styles/SignUp.css'
 // import { useNavigate } from 'react-router-dom'
 // import axios from 'axios'
@@ -204,11 +203,9 @@
 
 import React, { useState } from 'react'
 import { useNavigation } from '@/hooks/useNavigation'
-import { useAuth } from '../contexts/AuthContext'
 import '@/styles/SignUp.css'
 
 const SignUp: React.FC = () => {
-  const { updateUser } = useAuth()
   const { toHome } = useNavigation()
 
   const [formData, setFormData] = useState({
@@ -230,12 +227,6 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Update user data
-    updateUser({
-      name: formData.nickname,
-      hasCompletedSignup: true,
-    })
 
     // Navigate to home page
     toHome()
