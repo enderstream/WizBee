@@ -17,7 +17,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("{FRONTEND_URL")
+    @Value("${FRONTEND_URL}")
     private String frontendUrl;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,6 +33,11 @@ public class SecurityConfig {
 
 //        http
 //                .oauth2Login(Customizer.withDefaults());
+
+        // CORS 설정 추가
+        http
+
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         http
                 .authorizeHttpRequests((auth) -> auth
