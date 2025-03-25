@@ -32,7 +32,7 @@ const router = createBrowserRouter([
 
           // 보호된 경로 (Protected routes)
           {
-            // element: <ProtectedRoute />,
+            element: <ProtectedRoute />,
             children: [
               {
                 path: 'home',

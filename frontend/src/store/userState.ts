@@ -6,9 +6,11 @@ export const userState = atom<IUser>({
     key: "userState",
     default: {
         isLogin: false,
-        email: "email",
+        email: "",
         token: "",
-        nickname: "nickname",
+        nickname: "",
+        birthday: "",
+        hasCompletedSignup: false,
     },
     effects_UNSTABLE: [persistAtom],
 })

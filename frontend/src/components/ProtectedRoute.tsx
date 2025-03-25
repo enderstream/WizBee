@@ -1,18 +1,18 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
+import { useRecoilValue } from 'recoil'
+import { userState } from '@/store/userState' // 경로를 확인해주세요
 
 const ProtectedRoute: React.FC = () => {
-  const { user } = useAuth()
+  const user = useRecoilValue(userState)
   const location = useLocation()
 
-  if (!user) {
+  if (!user.isLogin) {
     // 로그인되지 않은 사용자는 welcome 페이지로 리디렉션
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
-  // 로그인된 사용자이지만 회원가입을 완료하지 않은 경우 signup 페이지로 리디렉션
-  if (user && !user.hasCompletedSignup) {
+  if (user.isLogin && !user.hasCompletedSignup) {
     return <Navigate to="/signup" state={{ from: location }} replace />
   }
 
