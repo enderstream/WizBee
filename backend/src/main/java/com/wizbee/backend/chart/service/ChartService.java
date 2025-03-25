@@ -70,9 +70,29 @@ public class ChartService {
         peerStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
         peerStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
         peerStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
-        peerStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[6]).floatValue());
-        peerStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[7]).floatValue());
+        peerStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
+        peerStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
 
         return peerStatisticsResponseDto;
     }
+
+    public UserStatisticsResponseDto getUserStats(Integer userId) {
+        Object result = chartRepository.getUserStatistics(userId);
+        if (result == null) {
+            return new UserStatisticsResponseDto();
+        }
+        Object[] arr = (Object[]) result;
+        UserStatisticsResponseDto userStatisticsResponseDto = new UserStatisticsResponseDto();
+        userStatisticsResponseDto.setAvgFullTime(((BigDecimal) arr[0]).floatValue());
+        userStatisticsResponseDto.setAvgStudyTime(((BigDecimal) arr[1]).floatValue());
+        userStatisticsResponseDto.setAvgOutTime(((BigDecimal) arr[2]).floatValue());
+        userStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
+        userStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
+        userStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
+        userStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
+        userStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
+
+        return userStatisticsResponseDto;
+    }
+
 }
