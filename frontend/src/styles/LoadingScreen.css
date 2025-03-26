@@ -1,0 +1,49 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.bee-logo {
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  transition: all 0.05s linear;
+}
+
+.bee-body {
+  width: 30px;
+  height: 20px;
+  background-color: black;
+  border-radius: 10px;
+  position: relative;
+}
+
+.bee-wing {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  width: 15px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  animation: flapWings 0.2s infinite alternate;
+}
+
+@keyframes flapWings {
+  from {
+    transform: rotate(45deg) scale(1);
+  }
+  to {
+    transform: rotate(45deg) scale(1.2);
+  }
+}

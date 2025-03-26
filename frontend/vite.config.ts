@@ -26,11 +26,19 @@ export default defineConfig((env) => {
       allowedHosts: ['j12b102.p.ssafy.io', 'localhost']
     },
     build: {
-      // 개발모드일 때와 프로덕션 모드일 때 다른 설정 적용
       minify: !isDevMode,
       sourcemap: isDevMode,
-      // manualChunks 설정 제거
       outDir: 'dist',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom'], // React 관련 라이브러리
+            router: ['react-router-dom'], // 라우팅 관련
+            state: ['zustand'], // 상태 관리 관련
+            http: ['axios'] // HTTP 요청 관련
+          },
+        },
+      },
     },
   }
 })

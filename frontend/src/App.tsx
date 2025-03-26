@@ -1,12 +1,9 @@
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 import './App.css'
 
-function App() {
-
-  return (
-    <>
-      <h1>Wizbee</h1>
-    </>
-  )
+const App: React.FC = () => {
+  return <Outlet />
 }
 
 export default App
