@@ -1,6 +1,6 @@
-package com.wizbee.backend.chart;
+package com.wizbee.backend.chart.entity;
 
-import com.wizbee.backend.user.User;
+import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

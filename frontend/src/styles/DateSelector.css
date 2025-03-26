@@ -1,0 +1,27 @@
+/* DateSelector.css */
+.native-date-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px; /* 모바일에서 자동 확대 방지를 위한 최소 크기 */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  appearance: none; /* 일부 브라우저에서 기본 스타일 제거 */
+  -webkit-appearance: none;
+  background-color: white;
+}
+
+/* iOS 스타일과 비슷하게 만들기 위한 스타일 */
+.native-date-input::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-width: thin;
+}
+
+/* 선택된 날짜 표시용 스타일 (선택 사항) */
+.selected-date-display {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+}

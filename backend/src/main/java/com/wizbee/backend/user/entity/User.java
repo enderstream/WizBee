@@ -1,9 +1,10 @@
-package com.wizbee.backend.user;
+package com.wizbee.backend.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -23,12 +24,17 @@ public class User {
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
 
+
     @Column(name = "user_birthday")
-    private String birthday;
+    private java.sql.Date birthday;
 
     @Column(name = "user_role", nullable = false)
     private String role;
 
     @Column(name = "user_machine")
     private String machine;
+
+    @Column(name = "user_imgurl")
+    private String imageUrl;
+
 }
