@@ -15,3 +15,13 @@ export interface UserState {
     updateUser: (userUpdate: Partial<IUser>) => void
     resetUser: () => void
 }
+
+export interface OAuthCallbackResponse {
+    token: string
+    userId: number
+    profileImageUrl: string
+    email: string
+    nickname: string | null
+    birthday: string | null
+    hasCompletedSignup: boolean
+}

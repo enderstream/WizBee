@@ -1,35 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigation } from '@/hooks/useNavigation'
-import {
-  selectHasCompletedSignup,
-  selectIsLogin,
-  selectNickname,
-  selectUser,
-  useUserStore,
-} from '@/store/userStore'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { selectUser, useUserStore } from '@/store/userStore'
+import { ROUTES } from '@/routes/routes'
 import '@/styles/SignUp.css'
 import { userAPI } from '@/api/userAPI'
 
 const SignUp: React.FC = () => {
-  const { toHome, toWelcome } = useNavigation()
+  const navigate = useNavigate()
   const updateUser = useUserStore((state) => state.updateUser)
-  const nickname = useUserStore(selectNickname)
-  const isLogin = useUserStore(selectIsLogin)
-  const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
   const user = useUserStore(selectUser)
   const [isLoading, setIsLoading] = useState(false)
 
-  // 로그인 상태 체크
-  useEffect(() => {
-    if (!isLogin) {
-      toWelcome()
-    } else if (hasCompletedSignup) {
-      toHome()
-    }
-  }, [isLogin, hasCompletedSignup, toWelcome, toHome])
-
   const [formData, setFormData] = useState({
-    nickname: nickname || '',
+    nickname: user.nickname || '',
     year: '',
     month: '',
     day: '',
@@ -45,17 +28,15 @@ const SignUp: React.FC = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // 기본이벤트 방지
     e.preventDefault()
     setIsLoading(true)
 
     try {
-      // 생년월일 형식 및 유효성 검사
+      // 생년월일 유효성 검사
       const year = parseInt(formData.year)
       const month = parseInt(formData.month)
       const day = parseInt(formData.day)
 
-      // 간단한 유효성 검사 >> 로직 강화할 것
       if (
         isNaN(year) ||
         year < 1900 ||
@@ -71,26 +52,29 @@ const SignUp: React.FC = () => {
         setIsLoading(false)
         return
       }
+      
       const birthday = `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`
 
-      // API 호출
+      // 추가 정보 입력 API 호출
       await userAPI.signUp(formData.nickname, birthday)
 
-      // zustand 스토어 업데이트
+      // 스토어 업데이트
       updateUser({
         nickname: formData.nickname,
         birthday: birthday,
         hasCompletedSignup: true,
       })
 
-      // 홈 페이지로 이동
-      toHome()
+      // 홈으로 이동
+      navigate(ROUTES.HOME)
     } catch (error) {
-      alert('회원가입 중 오류가 발생했습니다.')
+      console.error('회원가입 오류:', error)
+      alert('회원가입 중 오류가 발생했습니다')
     } finally {
       setIsLoading(false)
     }
   }
+
 
   return (
     <div className="signup-page">

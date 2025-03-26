@@ -12,9 +12,22 @@ import BlueSward from '@/pages/BlueSward'
 import NotFound from '@/pages/NotFound'
 import QRScanner from '@/pages/QRScanner'
 
+// URL 상수 정의
+export const ROUTES = {
+  ROOT: '/',
+  WELCOME: '/', // index route
+  SIGNUP: '/signup',
+  HOME: '/home',
+  SETTINGS: '/settings',
+  RECORD: '/record',
+  TIME_LAPSE_LIST: '/time-lapse-list',
+  BLUE_SWARD: '/blue-sward',
+  QR_SCANNER: '/qr-scanner',
+}
+
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.ROOT,
     element: <App />,
     errorElement: <NotFound />,
     children: [
