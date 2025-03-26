@@ -1,0 +1,116 @@
+.qr-scanner-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 1rem;
+    background-color: #f5f5f5;
+  }
+  
+  .scanner-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+  
+  .scanner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .qr-reader-container {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .permission-request {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .permission-button, .scan-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .permission-button:hover, .scan-button:hover {
+    background-color: #0069d9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .scan-result {
+    text-align: center;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .result-text {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 6px;
+    word-break: break-all;
+    margin: 1rem 0;
+    font-family: monospace;
+  }
+  
+  .error-message {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4444;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  .error-message button {
+    background-color: white;
+    color: #ff4444;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    margin-top: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
