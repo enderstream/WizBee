@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Carousel from '../components/Carousel'
-import { useAuth } from '../contexts/AuthContext'
-import '@/styles/WelcomePage.css'
+import Carousel from '@/components/Carousel'
+import { useAuth } from '@/contexts/AuthContext'
+import '@/styles/Welcome.css'
+import { userAPI } from '@/api/userAPI'
+import { useNavigation } from '@/hooks/useNavigation'
 
-const WelcomePage: React.FC = () => {
-  const { user, googleLogin } = useAuth()
-  const navigate = useNavigate()
+const Welcome: React.FC = () => {
+  const { user } = useAuth()
   console.log(user)
   console.log(useState)
+  const { toSignUp } = useNavigation()
   const handleGoogleLogin = () => {
-    googleLogin()
-    navigate('/signup')
+    // userAPI.login()
+    console.log('ㄸ딸깎')
+    toSignUp()
   }
 
   return (
@@ -32,4 +34,4 @@ const WelcomePage: React.FC = () => {
   )
 }
 
-export default WelcomePage
+export default Welcome

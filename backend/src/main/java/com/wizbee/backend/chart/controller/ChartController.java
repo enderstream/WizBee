@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/study")
+@RequestMapping("/api/v1/study")
 public class ChartController {
 
     @Autowired

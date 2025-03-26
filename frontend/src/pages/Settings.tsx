@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import '../styles/Settings.css'
+import { useAuth } from '@/contexts/AuthContext'
+import DateSelector from '@/components/DateSelector'
+import '@/styles/Settings.css'
 
 const Settings: React.FC = () => {
   const { user } = useAuth()
@@ -15,14 +16,19 @@ const Settings: React.FC = () => {
   const [birthYear, setBirthYear] = useState('')
   const [birthMonth, setBirthMonth] = useState('')
   const [birthDay, setBirthDay] = useState('')
-  const [gender, setGender] = useState('')
 
   // 프로필 수정 모달 열기
   const handleOpenProfileModal = () => {
     // 기존 사용자 정보로 폼 초기화 (실제로는 user 객체에서 가져와야 함)
     // setNickname(user?.displayName || "")
-    // setGender(user?.gender || "")
     setShowProfileModal(true)
+  }
+
+  // 날짜 변경 핸들러
+  const handleDateChange = (year: string, month: string, day: string) => {
+    setBirthYear(year)
+    setBirthMonth(month)
+    setBirthDay(day)
   }
 
   // 로그아웃 처리
@@ -50,7 +56,6 @@ const Settings: React.FC = () => {
       birthYear,
       birthMonth,
       birthDay,
-      gender,
     })
     setShowProfileModal(false)
     // Auth 컨텍스트의 프로필 업데이트 함수 호출 등의 추가 로직
@@ -58,8 +63,6 @@ const Settings: React.FC = () => {
 
   return (
     <div className="settings-page">
-      {/* <h2>설정</h2> */}
-
       {/* 버튼 컨테이너 */}
       <div className="settings-buttons">
         <button className="settings-button" onClick={handleOpenProfileModal}>
@@ -98,26 +101,12 @@ const Settings: React.FC = () => {
 
               <div className="form-group">
                 <label>생년월일</label>
-                <div className="date-inputs">
-                  <input
-                    type="text"
-                    placeholder="년"
-                    value={birthYear}
-                    onChange={(e) => setBirthYear(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="월"
-                    value={birthMonth}
-                    onChange={(e) => setBirthMonth(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="일"
-                    value={birthDay}
-                    onChange={(e) => setBirthDay(e.target.value)}
-                  />
-                </div>
+                <DateSelector
+                  initialYear={birthYear}
+                  initialMonth={birthMonth}
+                  initialDay={birthDay}
+                  onDateChange={handleDateChange}
+                />
               </div>
 
               <div className="modal-buttons">

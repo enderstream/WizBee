@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import '@/styles/BottomNavBar.css'
 
 const BottomNavBar: React.FC = () => {
@@ -24,12 +24,12 @@ const BottomNavBar: React.FC = () => {
         <span>홈</span>
       </Link>
 
-      <Link to="/timelapse" className={`nav-item ${isActive('/timelapse')}`}>
+      <Link to="/time-lapse-list" className={`nav-item ${isActive('/time-lapse-list')}`}>
         <div className="nav-icon video-icon"></div>
         <span>타임랩스</span>
       </Link>
 
-      <Link to="/sward" className={`nav-item ${isActive('/sward')}`}>
+      <Link to="/blue-sward" className={`nav-item ${isActive('/blue-sward')}`}>
         <div className="nav-icon calendar-icon"></div>
         <span>잔디밭</span>
       </Link>
