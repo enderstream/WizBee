@@ -34,7 +34,7 @@ export default defineConfig((env) => {
           manualChunks: {
             react: ['react', 'react-dom'], // React 관련 라이브러리
             router: ['react-router-dom'], // 라우팅 관련
-            state: ['recoil', 'recoil-persist'], // 상태 관리 관련
+            state: ['zustand'], // 상태 관리 관련
             http: ['axios'] // HTTP 요청 관련
           },
         },

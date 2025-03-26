@@ -6,3 +6,10 @@ export interface IUser {
     birthday: string,
     hasCompletedSignup: boolean,
 }
+
+export interface UserState {
+    user: IUser
+    setUser: (user: IUser) => void
+    updateUser: (userUpdate: Partial<IUser>) => void
+    resetUser: () => void
+}

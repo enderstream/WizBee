@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigation } from '@/hooks/useNavigation'
-import '@/styles/Record.css' // CSS 파일이 필요하다면 만들어야 합니다
+import '@/styles/Record.css' 
 
 const Record: React.FC = () => {
   // const { user } = useAuth()

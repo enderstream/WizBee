@@ -1,22 +1,23 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { userState } from '@/store/userState' // 경로를 확인해주세요
+import { useUserStore, selectIsLogin, selectHasCompletedSignup } from '@/store/userStore'
 
 const ProtectedRoute: React.FC = () => {
-  const user = useRecoilValue(userState)
+  const isLogin = useUserStore(selectIsLogin)
+  const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
   const location = useLocation()
 
-  if (!user.isLogin) {
-    // 로그인되지 않은 사용자는 welcome 페이지로 리디렉션
+  // 로그인되지 않은 사용자는 welcome 페이지로 리디렉션
+  if (!isLogin) {
     return <Navigate to="/" state={{ from: location }} replace />
   }
 
-  if (user.isLogin && !user.hasCompletedSignup) {
+  // 로그인은 했는데 회원가입을 덜 했다면 회원가입 페이지로
+  if (isLogin && !hasCompletedSignup) {
     return <Navigate to="/signup" state={{ from: location }} replace />
   }
 
-  // 인증된 사용자는 자식 라우트로 진행
+  // 가입까지 완료했으면 Outlet으로
   return <Outlet />
 }
 
