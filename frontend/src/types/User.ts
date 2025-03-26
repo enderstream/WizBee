@@ -1,6 +1,27 @@
-export interface IUser{
+export interface IUser {
     isLogin: boolean,
+    token: string,
+    userId: number,
+    profileImageUrl: string,
     email: string
-    token: string
     nickname: string,
+    birthday: string,
+    hasCompletedSignup: boolean,
+}
+
+export interface UserState {
+    user: IUser
+    setUser: (user: IUser) => void
+    updateUser: (userUpdate: Partial<IUser>) => void
+    resetUser: () => void
+}
+
+export interface OAuthCallbackResponse {
+    token: string
+    userId: number
+    profileImageUrl: string
+    email: string
+    nickname: string | null
+    birthday: string | null
+    hasCompletedSignup: boolean
 }

@@ -1,23 +1,23 @@
 import React from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import Calendar from '@/components/Calendar'
-import { useNavigation } from '@/hooks/useNavigation'
+import { useUserStore, selectNickname } from '@/store/userStore'
+import { ROUTES } from '@/routes/routes'
 import '@/styles/Home.css'
 
 const Home: React.FC = () => {
-  const { user } = useAuth()
-  const { toRecord, toQRScanner } = useNavigation()
-  console.log(user)
+  const navigate = useNavigate()
+  const nickname = useUserStore(selectNickname)
 
+  // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
-    // 촬영 페이지로 이동
-    console.log('Starting time-lapse session')
-    toRecord()
+    console.log('타임랩스 세션 시작')
+    navigate(ROUTES.RECORD)
   }
 
-  const registerQR = () => {
-    console.log(`QR start`)
-    toQRScanner()
+  const handleQRScanner = () => {
+    console.log('QR 스캐너 시작')
+    navigate(ROUTES.QR_SCANNER)
   }
 
   return (
@@ -25,11 +25,11 @@ const Home: React.FC = () => {
       <div className="home-header">
         <div className="home-avatar"></div>
         <div className="home-greeting">
-          <h2>권동환님!</h2>
+          <h2>{nickname || '사용자'}님!</h2>
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="qr-code">
-          <button className="QR-button" onClick={registerQR}>
+          <button className="QR-button" onClick={handleQRScanner}>
             QR
           </button>
         </div>

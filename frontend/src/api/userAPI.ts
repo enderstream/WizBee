@@ -1,22 +1,36 @@
 import { apiClient } from "@/api/apiClient"
+import { OAuthCallbackResponse } from "@/types/User"
+import axios from "axios"
 
 const baseURL = import.meta.env.VITE_API_URL
 
 export const userAPI = {
     // 로그인
-    login: async () => {
-        try {
+    login: {
+        // 구글 로그인 리다이렉션
+        googleRedirect: () => {
             window.location.href = `${baseURL}/oauth2/authorization/google`
-        } catch (error) {
-            alert("구글 로그인 리다이렉트 중 오류 발생")
-            throw error
+        },
+        // 콜백 처리
+        processCallback: async (code: string): Promise<OAuthCallbackResponse> => {
+            try {
+                // OAuth 코드를 토큰으로 교환하는 엔드포인트 
+                const response = await axios.get<OAuthCallbackResponse>(
+                    `${baseURL}/api/v1/auth/oauth/callback/google`,
+                    { params: { code } }
+                )
+                return response.data
+            } catch (error) {
+                alert(`OAuth 콜백 처리 오류: ${error}`)
+                throw error
+            }
         }
     },
 
     // 로그아웃
     logout: async (userId: number) => {
         try {
-            return await apiClient.post(`/api/v1/auth/logout${userId}`)
+            return await apiClient.post(`/api/v1/auth/logout/${userId}`)
         } catch (error) {
             alert("로그아웃 중 오류 발생")
             throw error
@@ -26,7 +40,7 @@ export const userAPI = {
     // 회원 가입
     signUp: async (name: string, birthday: string) => {
         try {
-            const response = await apiClient.post(`api/v1/auth/signup`, { name, birthday })
+            const response = await apiClient.post(`/api/v1/auth/signup`, { name, birthday })
             return response.data
         } catch (error) {
             alert("회원가입 중 오류 발생")
