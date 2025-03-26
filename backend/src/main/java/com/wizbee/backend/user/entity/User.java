@@ -33,4 +33,8 @@ public class User {
 
     @Column(name = "user_machine")
     private String machine;
+
+    @Column(name = "user_imgurl")
+    private String imageUrl;
+
 }
