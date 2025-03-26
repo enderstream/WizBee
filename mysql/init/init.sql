@@ -1,12 +1,14 @@
-use wizbee;
+USE wizbee;
 
+-- 테이블 생성 (PK 정의 포함)
 CREATE TABLE `users` (
     `user_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `user_name` VARCHAR(50) NOT NULL COMMENT '구글 소셜로그인으로 받아올 정보',
     `user_email` VARCHAR(100) NOT NULL COMMENT '구글 소셜로그인으로 받아올 정보',
-    `user_birthday` DATE NULL COMMENT '회원가입 과저에서 추가로 받을 정보',
+    `user_birthday` DATE NULL COMMENT '회원가입 과정에서 추가로 받을 정보',
     `user_role` VARCHAR(20) NOT NULL COMMENT '생년월일 정보를 입력했느냐 안 했느냐 구분 용도',
     `user_machine` VARCHAR(20) NULL COMMENT '유저가 사용하는 라즈베리파이 기기 고유 번호',
+    `user_imgurl` VARCHAR(255) NULL COMMENT '사용자 이미지 URL',
     PRIMARY KEY (`user_id`)
 );
 
@@ -32,26 +34,57 @@ CREATE TABLE `chart` (
     PRIMARY KEY (`chart_id`)
 );
 
+CREATE TABLE `pose` (
+    `pose_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `user_id2` INTEGER NOT NULL COMMENT 'user_id FK',
+    `pose_turtlecnt` INTEGER NULL DEFAULT 0 COMMENT '거북목 된 횟수',
+    `pose_shouldercnt` INTEGER NULL DEFAULT 0 COMMENT '어깨 틀어짐 횟수',
+    `pose_downcnt` INTEGER NULL DEFAULT 0 COMMENT '엎드림 횟수',
+    `pose_date` DATE NOT NULL COMMENT '그날 날짜',
+    PRIMARY KEY (`pose_id`)
+);
+
+CREATE TABLE `poseimage` (
+    `poseimage_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `user_id` INTEGER NOT NULL COMMENT 'user_id FK',
+    `pose_id` INTEGER NOT NULL COMMENT 'pose_id FK',
+    `poseimage_url` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`poseimage_id`)
+);
+
+-- 외래키 제약 조건 추가 (ALTER TABLE로 정의)
 ALTER TABLE `timelapse`
 ADD CONSTRAINT `FK_users_TO_timelapse_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `chart`
 ADD CONSTRAINT `FK_users_TO_chart_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
+ALTER TABLE `pose`
+ADD CONSTRAINT `FK_users_TO_pose_1` FOREIGN KEY (`user_id2`) REFERENCES `users` (`user_id`);
+
+ALTER TABLE `poseimage`
+ADD CONSTRAINT `FK_users_TO_poseimage_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+ALTER TABLE `poseimage`
+ADD CONSTRAINT `FK_pose_TO_poseimage_1` FOREIGN KEY (`pose_id`) REFERENCES `pose` (`pose_id`);
+
+-- 데이터 삽입
 INSERT INTO
     `users` (
         `user_name`,
         `user_email`,
         `user_birthday`,
         `user_role`,
-        `user_machine`
+        `user_machine`,
+        `user_imgurl`
     )
 VALUES (
         '김싸피',
         'wizbee@example.com',
         '2011-11-11',
         'USER',
-        'RASPI-2023-001'
+        'RASPI-2023-001',
+        'example.png'
     );
 
 INSERT INTO

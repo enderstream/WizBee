@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
 import { userAPI } from '@/api/userAPI'
 
 function QRScanner() {
   const apiTest = () => {
-    console.log(userAPI.userInfo(2))
+    console.log(userAPI.userInfo(1))
     // userAPI.login()
   }
 
