@@ -1,7 +1,9 @@
 export interface IUser {
     isLogin: boolean,
+    token: string,
+    userId: number,
+    profileImageUrl: string,
     email: string
-    token: string
     nickname: string,
     birthday: string,
     hasCompletedSignup: boolean,

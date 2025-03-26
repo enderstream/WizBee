@@ -1,13 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@/hooks/useNavigation'
+import {
+  selectHasCompletedSignup,
+  selectIsLogin,
+  selectNickname,
+  selectUser,
+  useUserStore,
+} from '@/store/userStore'
 import '@/styles/SignUp.css'
+import { userAPI } from '@/api/userAPI'
 
 const SignUp: React.FC = () => {
-  const { toHome } = useNavigation()
+  const { toHome, toWelcome } = useNavigation()
+  const updateUser = useUserStore((state) => state.updateUser)
+  const nickname = useUserStore(selectNickname)
+  const isLogin = useUserStore(selectIsLogin)
+  const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
+  const user = useUserStore(selectUser)
+  const [isLoading, setIsLoading] = useState(false)
+
+  // 로그인 상태 체크
+  useEffect(() => {
+    if (!isLogin) {
+      toWelcome()
+    } else if (hasCompletedSignup) {
+      toHome()
+    }
+  }, [isLogin, hasCompletedSignup, toWelcome, toHome])
 
   const [formData, setFormData] = useState({
-    nickname: '',
-    email: '',
+    nickname: nickname || '',
     year: '',
     month: '',
     day: '',
@@ -22,16 +44,63 @@ const SignUp: React.FC = () => {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    // 기본이벤트 방지
     e.preventDefault()
+    setIsLoading(true)
 
-    // Navigate to home page
-    toHome()
+    try {
+      // 생년월일 형식 및 유효성 검사
+      const year = parseInt(formData.year)
+      const month = parseInt(formData.month)
+      const day = parseInt(formData.day)
+
+      // 간단한 유효성 검사 >> 로직 강화할 것
+      if (
+        isNaN(year) ||
+        year < 1900 ||
+        year > 2100 ||
+        isNaN(month) ||
+        month < 1 ||
+        month > 12 ||
+        isNaN(day) ||
+        day < 1 ||
+        day > 31
+      ) {
+        alert('올바른 생년월일을 입력해주세요.')
+        setIsLoading(false)
+        return
+      }
+      const birthday = `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`
+
+      // API 호출
+      await userAPI.signUp(formData.nickname, birthday)
+
+      // zustand 스토어 업데이트
+      updateUser({
+        nickname: formData.nickname,
+        birthday: birthday,
+        hasCompletedSignup: true,
+      })
+
+      // 홈 페이지로 이동
+      toHome()
+    } catch (error) {
+      alert('회원가입 중 오류가 발생했습니다.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className="signup-page">
       <h1 className="signup-title">SIGN UP</h1>
+
+      {user.email && (
+        <div className="email-display">
+          <p>이메일: {user.email}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -91,8 +160,8 @@ const SignUp: React.FC = () => {
           <label htmlFor="agreeTerms">개인정보동의</label>
         </div>
 
-        <button type="submit" className="signup-button">
-          가입 완료!
+        <button type="submit" className="signup-button" disabled={isLoading}>
+          {isLoading ? '처리 중...' : '가입 완료!'}
         </button>
       </form>
     </div>

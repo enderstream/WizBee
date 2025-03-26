@@ -5,6 +5,7 @@ export const useNavigation = () => {
 
     // 일반적인 페이지 이동
     const toHome = () => navigate('/home')
+    const toWelcome = () => navigate('/welcome')
     const toSignUp = () => navigate('/signup')
     const toSettings = () => navigate('/settings')
     const toTimeLapse = () => navigate('/time-lapse')
@@ -14,6 +15,7 @@ export const useNavigation = () => {
     const toRecord = () => navigate('/record')
     return {
         toHome,
+        toWelcome,
         toSignUp,
         toSettings,
         toTimeLapse,

@@ -16,7 +16,7 @@ export const userAPI = {
     // 로그아웃
     logout: async (userId: number) => {
         try {
-            return await apiClient.post(`/api/v1/auth/logout${userId}`)
+            return await apiClient.post(`/api/v1/auth/logout/${userId}`)
         } catch (error) {
             alert("로그아웃 중 오류 발생")
             throw error
@@ -26,7 +26,7 @@ export const userAPI = {
     // 회원 가입
     signUp: async (name: string, birthday: string) => {
         try {
-            const response = await apiClient.post(`api/v1/auth/signup`, { name, birthday })
+            const response = await apiClient.post(`/api/v1/auth/signup`, { name, birthday })
             return response.data
         } catch (error) {
             alert("회원가입 중 오류 발생")
