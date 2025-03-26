@@ -9,8 +9,8 @@ const Home: React.FC = () => {
   const navigate = useNavigate()
   const nickname = useUserStore(selectNickname)
 
+  // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
-    // 촬영 페이지로 이동
     console.log('타임랩스 세션 시작')
     navigate(ROUTES.RECORD)
   }

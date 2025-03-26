@@ -11,8 +11,6 @@ const BottomNavBar: React.FC = () => {
   }
 
   // 로그인하지 않은 상태면 하단바를 표시하지 않음
-
-
   return (
     <div className="bottom-nav-bar">
       <Link to="/home" className={`nav-item ${isActive('/home')}`}>
@@ -20,7 +18,10 @@ const BottomNavBar: React.FC = () => {
         <span>홈</span>
       </Link>
 
-      <Link to="/time-lapse-list" className={`nav-item ${isActive('/time-lapse-list')}`}>
+      <Link
+        to="/time-lapse-list"
+        className={`nav-item ${isActive('/time-lapse-list')}`}
+      >
         <div className="nav-icon video-icon"></div>
         <span>타임랩스</span>
       </Link>

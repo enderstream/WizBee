@@ -25,7 +25,6 @@ const RootLayout: React.FC = () => {
     ROUTES.WELCOME,
     ROUTES.SIGNUP,
     ROUTES.QR_SCANNER,
-    ROUTES.TIME_LAPSE_LIST,
   ]
 
   // 정확한 경로 매칭 대신 경로가 포함되는지 확인

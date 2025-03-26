@@ -83,7 +83,7 @@
 
 // export default Welcome
 
-
+// 테스트 모드
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUserStore } from '@/store/userStore'
@@ -147,47 +147,6 @@ const Welcome: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  /* 실제 OAuth 콜백 처리 - 테스트를 위해 주석 처리
-  useEffect(() => {
-    const handleOAuthCallback = async () => {
-      const urlParams = new URLSearchParams(window.location.search)
-      const code = urlParams.get('code')
-
-      if (!code) return
-
-      setIsLoading(true)
-      try {
-        const userData = await userAPI.login.processCallback(code)
-
-        setUser({
-          isLogin: true,
-          token: userData.token,
-          userId: userData.userId,
-          profileImageUrl: userData.profileImageUrl,
-          email: userData.email,
-          nickname: userData.nickname || '',
-          birthday: userData.birthday || '',
-          hasCompletedSignup: userData.hasCompletedSignup,
-        })
-
-        if (userData.hasCompletedSignup) {
-          navigate(ROUTES.HOME)
-        } else {
-          navigate(ROUTES.SIGNUP)
-        }
-      } catch (error) {
-        console.error('OAuth 콜백 처리 오류:', error)
-        resetUser()
-        alert('로그인 처리 중 오류가 발생했습니다')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    handleOAuthCallback()
-  }, [navigate, setUser, resetUser])
-  */
 
   return (
     <div className="welcome-page">
