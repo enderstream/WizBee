@@ -75,4 +75,22 @@ public class UserController {
 
     }
 
+    @PutMapping("/machine/{userId}")
+    public ResponseEntity<?> saveMachine (@PathVariable("userId") int userId, @RequestParam("machineId") String machineId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        searchUser.setMachine(machineId);
+
+        User saveUser = userService.saveUser(searchUser);
+        if(saveUser == null){
+            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+        } else {
+            return ResponseEntity.ok("기기 등록이 정상적으로 완료되었습니다.");
+        }
+
+    }
+
 }
