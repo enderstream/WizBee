@@ -1,92 +1,115 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Html5Qrcode } from 'html5-qrcode'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/routes/routes'
-import useRegisterStore from '@/store/registerStore'
+import { create } from 'zustand'
+import { useUserStore } from '@/store/userStore'
 import { ScannerConfig } from '@/types/Register'
 
+// QRScanner 상태 관리를 위한 Zustand 스토어
+interface QRScannerState {
+  isRegistering: boolean
+  registrationStatus: 'idle' | 'success' | 'error'
+  scanResult: string
+  error: string
+  permissionGranted: boolean
+
+  setScanResult: (result: string) => void
+  setError: (error: string) => void
+  setPermissionGranted: (granted: boolean) => void
+  setRegistrationStatus: (status: 'idle' | 'success' | 'error') => void
+  setIsRegistering: (isRegistering: boolean) => void
+  resetState: () => void
+  registerDevice: (qrData: string) => void
+}
+
+// 초기 상태
+const initialState = {
+  isRegistering: false,
+  registrationStatus: 'idle' as const,
+  scanResult: '',
+  error: '',
+  permissionGranted: false
+}
+
+// 스캐너 기능을 위한 전역 Zustand 스토어
+export const useQRScannerStore = create<QRScannerState>((set, get) => ({
+  ...initialState,
+
+  setScanResult: (result) => set({ scanResult: result }),
+  setError: (error) => set({ error }),
+  setPermissionGranted: (granted) => set({ permissionGranted: granted }),
+  setRegistrationStatus: (status) => set({ registrationStatus: status }),
+  setIsRegistering: (isRegistering) => set({ isRegistering }),
+
+  resetState: () => set({
+    ...initialState,
+    permissionGranted: get().permissionGranted // 권한은 유지
+  }),
+
+  registerDevice: async (qrData) => {
+    try {
+      set({ isRegistering: true })
+
+      // userStore에서 userId 가져오기
+      const userId = useUserStore.getState().user.userId
+
+      if (!userId) {
+        throw new Error('사용자 정보를 찾을 수 없습니다.')
+      }
+
+      console.log('기기 등록 시작:', qrData, '사용자 ID:', userId)
+
+      // TODO: 실제 API 호출 구현
+      // await machineAPI.registerDevice(userId, qrData)
+
+      // 등록 성공 시뮬레이션 (실제 구현에서는 API 응답 사용)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      set({
+        isRegistering: false,
+        registrationStatus: 'success'
+      })
+
+      // 성공 시 사용자 정보 업데이트 (필요한 경우)
+      // const userUpdate = { hasRegisteredDevice: true }
+      // useUserStore.getState().updateUser(userUpdate)
+
+    } catch (error) {
+      console.error('기기 등록 실패:', error)
+      set({
+        isRegistering: false,
+        registrationStatus: 'error',
+        error: error instanceof Error ? error.message : '기기 등록에 실패했습니다.'
+      })
+    }
+  }
+}))
+
+// 컴포넌트 로직을 관리하는 훅
 export const useQRScanner = () => {
   const navigate = useNavigate()
+  const [scanning, setScanning] = useState<boolean>(false)
+  const qrReaderRef = useRef<HTMLDivElement | null>(null)
+  const lastErrorLog = useRef<number>(0)
 
-  // Zustand 스토어에서 상태와 액션 가져오기
+  // QRScannerStore에서 상태와 액션 가져오기
   const {
-    isRegistering,
-    registrationStatus,
-    scanResult,
-    error,
-    permissionGranted,
     setScanResult,
     setError,
     setPermissionGranted,
     resetState,
-    registerDevice
-  } = useRegisterStore()
-
-  // 로컬 상태 (스캐닝 활성화 여부만 로컬 상태로 유지)
-  const [scanning, setScanning] = useState<boolean>(false)
-  const qrReaderRef = useRef<HTMLDivElement | null>(null)
-
-  // 과도한 오류 로깅을 방지하기 위한 디바운스 변수
-  const lastErrorLog = useRef<number>(0)
-
-  // QR 스캐너 초기화 및 정리
-  useEffect((): (() => void) => {
-    if (!scanning || !qrReaderRef.current) return cleanupScanner
-
-    const qrReaderId: string = 'qr-reader-element'
-    qrReaderRef.current.id = qrReaderId
-
-    const html5QrCode: Html5Qrcode = new Html5Qrcode(qrReaderId)
-
-    // 스캐너 설정 최적화
-    const config: ScannerConfig = {
-      fps: 10,
-      qrbox: undefined,
-      aspectRatio: 1.0,
-      disableFlip: false
-    }
-
-    html5QrCode.start(
-      { facingMode: 'environment' },
-      config,
-      onScanSuccess,
-      onScanFailure
-    )
-      .catch((err: Error) => {
-        console.error('Scanner start error:', err)
-        setError('QR 스캐너를 시작할 수 없습니다.')
-        setScanning(false)
-      })
-
-    // Store scanner instance to window for cleanup
-    window.qrScanner = html5QrCode
-
-    return cleanupScanner
-  }, [scanning])
-
-  // 스캐너 정리 함수
-  const cleanupScanner = () => {
-    if (window.qrScanner) {
-      window.qrScanner.stop()
-        .then((): void => {
-          console.log('Scanner stopped')
-        })
-        .catch((err: Error): void => {
-          console.error('Scanner stop error:', err)
-        })
-        .finally((): void => {
-          window.qrScanner = null
-        })
-    }
-  }
+    registerDevice,
+    ...state
+  } = useQRScannerStore()
 
   // 카메라 권한 요청
-  const requestCameraPermission = async (): Promise<void> => {
+  const requestCameraPermission = useCallback(async (): Promise<void> => {
     try {
       const stream: MediaStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' }
       })
-      // Stop the stream immediately, we just wanted the permission
+      // 권한만 확인하고 스트림은 즉시 중지
       stream.getTracks().forEach((track: MediaStreamTrack): void => track.stop())
       setPermissionGranted(true)
       // 권한 획득 후 스캐닝 시작
@@ -95,10 +118,10 @@ export const useQRScanner = () => {
       console.error('Camera permission error:', error)
       setError('카메라 권한을 허용해주세요.')
     }
-  }
+  }, [setPermissionGranted, setError])
 
   // 스캐너 중지
-  const stopScanner = (): void => {
+  const stopScanner = useCallback((): void => {
     if (window.qrScanner) {
       window.qrScanner.stop()
         .then((): void => {
@@ -114,68 +137,61 @@ export const useQRScanner = () => {
     } else {
       setScanning(false)
     }
-  }
+  }, [])
 
-  // QR 코드 스캔 성공 핸들러
-  const onScanSuccess = (decodedText: string): void => {
+  // QR 스캔 성공 시 호출
+  const onScanSuccess = useCallback((decodedText: string): void => {
+    // 스캔 후 스캐너 중지
     stopScanner()
     setScanResult(decodedText)
 
+    // QR 코드 처리 로깅
     console.log('%c[QR 스캔 성공]', 'background: #4CAF50; color: white; padding: 2px 6px; border-radius: 2px; font-weight: bold;')
     console.log('인식된 QR 코드:', decodedText)
 
+    // QR 정보로 기기 등록 시작
     registerDevice(decodedText)
-  }
+  }, [stopScanner, setScanResult, registerDevice])
 
-  // QR 코드 스캔 실패 핸들러
-  const onScanFailure = (): void => {
+  // QR 스캔 실패 시 호출 (과도한 로깅 방지)
+  const onScanFailure = useCallback((): void => {
     const now = Date.now()
     if (now - lastErrorLog.current > 1000) {
       lastErrorLog.current = now
-      // 디버깅 목적으로만 사용하고 배포 환경에서는 제거할 수 있음
+      // 디버깅용 로그 (필요 시 활성화)
       // console.warn('QR scan error:', errorMessage)
     }
-  }
+  }, [])
 
-  // 뒤로가기 핸들러
-  const handleBack = (): void => {
+  // 뒤로 가기
+  const handleBack = useCallback((): void => {
     if (scanning) {
       stopScanner()
     }
     navigate(ROUTES.HOME)
-  }
+  }, [scanning, stopScanner, navigate])
 
-  // 스캔 시작 핸들러
-  const startScanner = (): void => {
-    resetState() // Zustand 스토어 상태 초기화
+  // 스캔 시작
+  const startScanner = useCallback((): void => {
+    resetState() // 상태 초기화
     setScanning(true)
-  }
+  }, [resetState])
 
   // 에러 메시지 초기화
-  const clearError = (): void => {
+  const clearError = useCallback((): void => {
     setError('')
-  }
-
-  // 홈으로 이동
-  const navigateToHome = (): void => {
-    navigate(ROUTES.HOME)
-  }
+  }, [setError])
 
   return {
-    // 상태
+    ...state,
     scanning,
-    isRegistering,
-    registrationStatus,
-    scanResult,
-    error,
-    permissionGranted,
     qrReaderRef,
-
-    // 액션
     requestCameraPermission,
+    stopScanner,
     startScanner,
     handleBack,
     clearError,
-    navigateToHome
+    onScanSuccess,
+    onScanFailure
   }
 }
