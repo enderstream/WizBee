@@ -40,7 +40,6 @@ const Home: React.FC = () => {
           start
         </button>
       </div>
-
     </div>
   )
 }
