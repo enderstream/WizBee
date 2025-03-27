@@ -98,3 +98,19 @@ VALUES (
         'eebziw@example.com',
         'NO_BIRTH_USER'
     );
+
+INSERT INTO
+    `timelapse` (`user_id`, `timelapse_url`)
+VALUES (1, 'www.naver.com');
+
+INSERT INTO
+    `timelapse` (`user_id`, `timelapse_url`)
+VALUES (1, 'www.google.com');
+
+INSERT INTO
+    `timelapse` (`user_id`, `timelapse_url`)
+VALUES (2, 'edu.ssafy.com');
+
+INSERT INTO
+    `timelapse` (`user_id`, `timelapse_url`)
+VALUES (2, 'github.com/');
