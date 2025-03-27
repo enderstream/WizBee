@@ -4,12 +4,14 @@ import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = "pose")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Pose {
 

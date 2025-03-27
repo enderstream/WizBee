@@ -1,4 +1,8 @@
 package com.wizbee.backend.pose.repository;
 
-public interface PoseRepository {
+import com.wizbee.backend.pose.entity.Pose;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PoseRepository extends JpaRepository<Pose, Integer> {
+
 }
