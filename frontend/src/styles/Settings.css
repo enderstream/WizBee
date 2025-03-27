@@ -7,6 +7,111 @@
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
+  position: relative;
+}
+
+/* DatePicker 스타일 */
+.datepicker-container {
+  width: 100%;
+}
+
+.custom-datepicker {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+.datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.month-nav-button {
+  background-color: #e6f0ff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: #007aff;
+}
+
+.month-nav-button:hover {
+  background-color: #d4e6ff;
+}
+
+.month-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.year-month-selects {
+  display: flex;
+  gap: 10px;
+}
+
+.year-select, .month-select {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* 달력 헤더 스타일 */
+.react-datepicker__header {
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #eee !important;
+}
+
+/* 달력 요일 헤더 스타일 */
+.react-datepicker__day-name {
+  color: #666 !important;
+  font-weight: 600 !important;
+}
+
+/* 일요일 색상 */
+.react-datepicker__day-name:first-child,
+.react-datepicker__day:nth-child(7n+1) {
+  color: #ff5252 !important;
+}
+
+/* 선택된 날짜 스타일 */
+.react-datepicker__day--selected {
+  background-color: #007aff !important;
+  border-radius: 50% !important;
+  color: white !important;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #0062cc !important;
+}
+
+/* 오늘 날짜 스타일 */
+.react-datepicker__day--today {
+  font-weight: bold !important;
+  border: 1px solid #007aff !important;
+  border-radius: 50% !important;
+}
+
+/* 호버 스타일 */
+.react-datepicker__day:hover {
+  background-color: #e6f0ff !important;
+  border-radius: 50% !important;
 }
 
 .settings-page h2 {
@@ -35,6 +140,11 @@
 
 .settings-button:hover {
   background-color: #d4e6ff;
+}
+
+.settings-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .delete-button {
@@ -100,6 +210,11 @@
   margin: 0 5px;
 }
 
+.modal-buttons button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .confirm-button {
   background-color: #007aff;
   color: white;
@@ -160,4 +275,58 @@
 .save-button {
   background-color: #007aff;
   color: white;
+}
+
+/* 상태 메시지 스타일 */
+.status-message-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 15px 20px;
+  min-width: 300px;
+  max-width: 90%;
+  text-align: center;
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.status-message {
+  margin-bottom: 10px;
+}
+
+.status-message p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.status-message button {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.status-message button:hover {
+  background-color: #0062cc;
 }
