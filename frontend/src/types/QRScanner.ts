@@ -27,5 +27,16 @@ export interface ScanResultProps {
 }
 
 export interface QRReaderProps {
-    qrReaderRef: React.RefObject<HTMLDivElement>
+    qrReaderRef: React.RefObject<HTMLDivElement | null>
+}
+
+export interface ScannerContentProps {
+    scanning: boolean
+    scanResult: string
+    isRegistering: boolean
+    registrationStatus: string
+    error: string
+    qrReaderRef: React.RefObject<HTMLDivElement | null>
+    onStartScan: () => void
+    onGoHome: () => void
 }

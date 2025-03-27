@@ -2,17 +2,7 @@ import React from 'react'
 import QRReader from '@/pages/QRScanner/components/QRReader'
 import ScanResult from '@/pages/QRScanner/components/ScanResult'
 import ScannerButton from '@/pages/QRScanner/components/ScannerButton'
-
-interface ScannerContentProps {
-  scanning: boolean
-  scanResult: string
-  isRegistering: boolean
-  registrationStatus: string
-  error: string
-  qrReaderRef: React.RefObject<HTMLDivElement>
-  onStartScan: () => void
-  onGoHome: () => void
-}
+import { ScannerContentProps } from '@/types/QRScanner'
 
 const ScannerContent: React.FC<ScannerContentProps> = ({
   scanning,
