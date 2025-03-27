@@ -1,4 +1,3 @@
-// types/TimeLapse.ts
 export interface TimeLapseVideo {
     id: number
     title: string

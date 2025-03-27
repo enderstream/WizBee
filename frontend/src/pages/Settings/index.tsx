@@ -1,69 +1,50 @@
-import React, { useState } from 'react'
-import StatusMessage from '@/pages/Settings/components/StatusMessage'
-import SettingsButtons from '@/pages/Settings/components/SettingsButtons'
-import ProfileModal from '@/pages/Settings/components/ProfileModal'
-import LogoutModal from '@/pages/Settings/components/LogoutModal'
-import DeleteAccountModal from '@/pages/Settings/components/DeleteAccountModal'
+import React from 'react'
+import { useSettingsState } from '@/hooks/useSettingsState'
+import { useProfileUpdate } from '@/hooks/useProfileUpdate'
+import { useAccountManagement } from '@/hooks/useAccountManagement'
+import StatusMessage from './components/StatusMessage'
+import SettingsButtons from './components/SettingsButtons'
+import ProfileModal from './components/ProfileModal'
+import ConfirmationModal from './components/ConfirmationModal'
 import '@/styles/Settings.css'
 
 const Settings: React.FC = () => {
-  // 모달 상태 관리
-  const [showProfileModal, setShowProfileModal] = useState(false)
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [statusMessage, setStatusMessage] = useState('')
-
-  // 프로필 수정 모달 열기
-  const handleOpenProfileModal = () => {
-    setShowProfileModal(true)
-  }
+  // Settings state management
+  const { 
+    showProfileModal, 
+    showLogoutModal, 
+    showDeleteModal, 
+    statusMessage,
+  } = useSettingsState()
+  
 
   return (
     <div className="settings-page">
-      {/* 상태 메시지 */}
-      {statusMessage && (
-        <StatusMessage
-          message={statusMessage}
-          onClose={() => setStatusMessage('')}
-        />
-      )}
+      {/* Status message component */}
+      {statusMessage && <StatusMessage />}
 
-      {/* 버튼 컨테이너 */}
-      <SettingsButtons
-        onOpenProfileModal={handleOpenProfileModal}
-        onOpenLogoutModal={() => setShowLogoutModal(true)}
-        onOpenDeleteModal={() => setShowDeleteModal(true)}
-        isLoading={isLoading}
-      />
+      {/* Settings buttons component */}
+      <SettingsButtons />
 
-      {/* 내 정보 수정 모달 */}
-      {showProfileModal && (
-        <ProfileModal
-          onClose={() => setShowProfileModal(false)}
-          setIsLoading={setIsLoading}
-          isLoading={isLoading}
-          setStatusMessage={setStatusMessage}
-        />
-      )}
+      {/* Profile edit modal */}
+      {showProfileModal && <ProfileModal />}
 
-      {/* 로그아웃 확인 모달 */}
+      {/* Logout confirmation modal */}
       {showLogoutModal && (
-        <LogoutModal
-          onClose={() => setShowLogoutModal(false)}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          setStatusMessage={setStatusMessage}
+        <ConfirmationModal
+          title="로그아웃"
+          message="정말로 로그아웃 하시겠습니까?"
+          isDelete={false}
         />
       )}
 
-      {/* 회원 탈퇴 확인 모달 */}
+      {/* Account deletion confirmation modal */}
       {showDeleteModal && (
-        <DeleteAccountModal
-          onClose={() => setShowDeleteModal(false)}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          setStatusMessage={setStatusMessage}
+        <ConfirmationModal
+          title="회원 탈퇴"
+          message="정말로 탈퇴하시겠습니까?"
+          warningMessage="이 작업은 되돌릴 수 없습니다."
+          isDelete={true}
         />
       )}
     </div>

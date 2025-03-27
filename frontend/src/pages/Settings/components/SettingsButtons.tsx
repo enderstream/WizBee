@@ -1,17 +1,16 @@
 import React from 'react'
-import { SettingsButtonsProps } from '@/types/Setting'
+import { useSettingsState } from '@/hooks/useSettingsState'
+import { useProfileUpdate } from '@/hooks/useProfileUpdate'
 
-const SettingsButtons: React.FC<SettingsButtonsProps> = ({
-  onOpenProfileModal,
-  onOpenLogoutModal,
-  onOpenDeleteModal,
-  isLoading,
-}) => {
+const SettingsButtons: React.FC = () => {
+  const { isLoading, setShowLogoutModal, setShowDeleteModal } = useSettingsState()
+  const { handleOpenProfileModal } = useProfileUpdate()
+
   return (
     <div className="settings-buttons">
       <button
         className="settings-button"
-        onClick={onOpenProfileModal}
+        onClick={handleOpenProfileModal}
         disabled={isLoading}
       >
         내 정보 수정
@@ -19,7 +18,7 @@ const SettingsButtons: React.FC<SettingsButtonsProps> = ({
 
       <button
         className="settings-button"
-        onClick={onOpenLogoutModal}
+        onClick={() => setShowLogoutModal(true)}
         disabled={isLoading}
       >
         로그아웃
@@ -27,7 +26,7 @@ const SettingsButtons: React.FC<SettingsButtonsProps> = ({
 
       <button
         className="settings-button delete-button"
-        onClick={onOpenDeleteModal}
+        onClick={() => setShowDeleteModal(true)}
         disabled={isLoading}
       >
         회원 탈퇴
