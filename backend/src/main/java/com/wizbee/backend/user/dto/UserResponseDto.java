@@ -17,7 +17,7 @@
 //    private String machine;
 //
 //
-//    @Builder
+//    @Builder`
 //    public UserResponseDto(String name, String birthday) {
 //        this.name = name;
 //        this.birthday = birthday;
