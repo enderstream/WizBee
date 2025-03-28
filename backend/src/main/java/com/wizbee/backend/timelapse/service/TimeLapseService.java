@@ -22,9 +22,9 @@ public class TimeLapseService {
     }
 
     @Transactional
-    public TimeLapse saveTimeLapse (TimeLapseSaveRequestDto timeLapseSaveRequestDto, int userId) {
+    public TimeLapse saveTimeLapse (TimeLapseSaveRequestDto timeLapseSaveRequestDto, String machineId) {
         // 사용자 조회
-        User user = userRepository.findById(userId);
+        User user = userRepository.findByMachine(machineId);
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }
