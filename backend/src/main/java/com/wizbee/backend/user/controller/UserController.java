@@ -50,6 +50,7 @@ public class UserController {
 
     public ResponseEntity<?> searchUser(@PathVariable("userId") int userId){
         User user = userService.findLoginUserById(userId);
+
         if(user == null){
             return ResponseEntity.notFound().build();
         } else {
