@@ -4,10 +4,12 @@ import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "poseimage")
 @Getter
+@Setter
 @NoArgsConstructor
 public class PoseImage {
     @Id

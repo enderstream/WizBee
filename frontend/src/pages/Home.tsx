@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Calendar from '@/components/Calendar'
 import { useUserStore, selectNickname } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Home.css'
@@ -42,10 +41,10 @@ const Home: React.FC = () => {
         </button>
       </div>
 
-      <div className="study-records">
+      {/* <div className="study-records">
         <h3>나의 공부 기록</h3>
         <Calendar month={2} />
-      </div>
+      </div> */}
     </div>
   )
 }

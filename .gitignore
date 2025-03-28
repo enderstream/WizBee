@@ -1,3 +1,14 @@
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+.env
+.vscode/
+.DS_Store
+*.log
+*.pt
+runs/
+
+
 # Compiled class file
 *.class
 
@@ -290,3 +301,6 @@ out/
 # directories
 dir.txt
 tree.txt
+
+# AI 모델 가중치 무시
+ai/weights/

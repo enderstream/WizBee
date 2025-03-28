@@ -1,9 +1,12 @@
 package com.wizbee.backend.user.controller;
 
+import com.wizbee.backend.jwt.JWTUtil;
+import com.wizbee.backend.user.dto.UserResponseDto;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     /**
      * 유저 정보 수정 메서드
@@ -50,6 +56,7 @@ public class UserController {
 
     public ResponseEntity<?> searchUser(@PathVariable("userId") int userId){
         User user = userService.findLoginUserById(userId);
+
         if(user == null){
             return ResponseEntity.notFound().build();
         } else {
@@ -91,6 +98,29 @@ public class UserController {
             return ResponseEntity.ok("기기 등록이 정상적으로 완료되었습니다.");
         }
 
+    }
+
+    @PutMapping("/signup")
+    public ResponseEntity<?> signup(@CookieValue("access") String token, @RequestBody UserResponseDto request){
+
+        // 1. Bearer 토큰에서 실제 JWT 값만 추출
+        String jwt = token.replace("access", "");
+
+//        System.out.println(jwt);
+
+        // 2. JWT에서 유저 이메일 또는 ID 가져오기
+        Integer id = jwtUtil.getId(jwt);
+
+        // 3. DB에서 해당 유저 찾기
+        User user = userService.findById(id);
+
+        // 4. 유저 정보 업데이트
+        user.setName(request.getName());
+        user.setBirthday(request.getBirthday());
+        user.setRole("USER");
+        userService.saveUser(user);
+
+        return null;
     }
 
 }

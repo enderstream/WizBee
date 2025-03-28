@@ -1,4 +1,4 @@
-package com.wizbee.backend.timelapse;
+package com.wizbee.backend.timelapse.Entity;
 
 import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
