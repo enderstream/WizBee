@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
@@ -15,7 +16,6 @@ public class JWTUtil {
     private SecretKey secretKey;
 
     public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
-
 
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
@@ -40,11 +40,14 @@ public class JWTUtil {
         }
     }
 
+    public String getCategory(String token) {
 
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
+    }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
     }
 
     public String getRole(String token) {
@@ -58,10 +61,11 @@ public class JWTUtil {
     }
 
 
-    public String createJwt(String username, String role, Integer id, Long expiredMs) {
+    public String createJwt(String category, String email, String role, Integer id, Long expiredMs) {
 
         return Jwts.builder()
-                .claim("username", username)
+                .claim("category", category)
+                .claim("email", email)
                 .claim("role", role)
                 .claim("id", id)
                 .issuedAt(new Date(System.currentTimeMillis()))

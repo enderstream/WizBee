@@ -27,19 +27,19 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
+        // 쿠키에서 access 토큰 찾기
         String authorization = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("access".equals(cookie.getName())) {
+                    authorization = cookie.getValue();
+                    break;
+                }
             }
         }
 
-        //Authorization 헤더 검증
+        // 토큰이 없으면 필터 통과 후 종료
         if (authorization == null) {
 
             System.out.println("token null");
@@ -62,15 +62,15 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰에서 username과 role 획득
+        // 토큰에서 사용자 정보 가져오기
         Integer id = jwtUtil.getId(token);
-        String username = jwtUtil.getUsername(token);
+        String email = jwtUtil.getEmail(token);
         String role = jwtUtil.getRole(token);
 
         //userDTO를 생성하여 값 set
         UserDTO userDTO = new UserDTO();
         userDTO.setId(id);
-        userDTO.setName(username);
+        userDTO.setEmail(email);
         userDTO.setRole(role);
 
         //UserDetails에 회원 정보 객체 담기
@@ -83,6 +83,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
 
+        // 로그인, OAuth2 경로는 필터 제외
         String requestUri = request.getRequestURI();
 
         if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
