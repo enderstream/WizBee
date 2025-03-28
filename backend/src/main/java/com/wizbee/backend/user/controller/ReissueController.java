@@ -10,12 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.concurrent.TimeUnit;
 
 @Controller
 @ResponseBody
+@RequestMapping("/api/v1/auth")
 // @RestController가 저 둘 합친거랑 똑같음
 public class ReissueController {
 
@@ -50,7 +52,7 @@ public class ReissueController {
 
         //expired check
         try {
-            System.out.println("재발급 받기 전: "+refresh);
+//            System.out.println("재발급 받기 전: "+refresh);
             
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
@@ -77,7 +79,7 @@ public class ReissueController {
         String newAccess = jwtUtil.createJwt("access", email, role, id, 3600000L);
         String newRefresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);
 
-        System.out.println("재발급된 토큰: " + newRefresh);
+//        System.out.println("재발급된 토큰: " + newRefresh);
 
         redisTemplate.delete(email);
 

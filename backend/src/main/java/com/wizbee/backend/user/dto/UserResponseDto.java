@@ -3,6 +3,8 @@ package com.wizbee.backend.user.dto;
 import jakarta.persistence.Column;
 import lombok.*;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @Builder
@@ -13,10 +15,8 @@ public class UserResponseDto {
     private Integer id;
     private String name;
     private String email;
-    private String birthday;
+    private Date birthday;
     private String role;
     private String machine;
-
-
 
 }
