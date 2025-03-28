@@ -1,17 +1,17 @@
 package com.wizbee.backend.pose.service;
 
 import com.wizbee.backend.pose.dto.PoseScoreAndImageSaveRequestDto;
+import com.wizbee.backend.pose.dto.PoseScoreResponseDto;
 import com.wizbee.backend.pose.entity.Pose;
 import com.wizbee.backend.pose.entity.PoseImage;
 import com.wizbee.backend.pose.repository.PoseImageRepository;
 import com.wizbee.backend.pose.repository.PoseRepository;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.NoSuchElementException;
 
 @Service
@@ -56,6 +56,20 @@ public class PoseService {
             poseImage.setImageUrl(url);
             poseImageRepository.save(poseImage);
         }
+    }
+
+    public PoseScoreResponseDto getPoseImage(String date, int userId) {
+
+        Date poseDate;
+        try {
+            poseDate = Date.valueOf(date);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid date format. Expected yyyy-MM-dd");
+        }
+
+        // 변환된 date와 userId를 사용해서 Repository 호출
+        return poseRepository.findPoseScore(userId, poseDate)
+                .orElseThrow(() -> new RuntimeException("No data found"));
     }
 
 }

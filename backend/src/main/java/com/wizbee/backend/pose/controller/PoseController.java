@@ -1,6 +1,7 @@
 package com.wizbee.backend.pose.controller;
 
 import com.wizbee.backend.pose.dto.PoseScoreAndImageSaveRequestDto;
+import com.wizbee.backend.pose.dto.PoseScoreResponseDto;
 import com.wizbee.backend.pose.entity.Pose;
 import com.wizbee.backend.pose.service.PoseService;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,17 @@ public class PoseController {
         try {
             poseService.savePoseStatistics(poseSaveRequestDto, machineId);
             return ResponseEntity.status(HttpStatus.CREATED).body("저장완료");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    // 자세 통계 조회
+    @GetMapping("/score/{date}/{userId}")
+    public ResponseEntity<?> getPoseScore(@PathVariable("date") String date, @PathVariable("userId") int userId) {
+        try {
+            PoseScoreResponseDto poseScoreResponseDto = poseService.getPoseImage(date, userId);
+            return ResponseEntity.ok(poseScoreResponseDto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
