@@ -19,10 +19,10 @@ public class TimeLapseController {
     // 타입 랩스 영상 목록 조회 api
 
     // 타임 랩스 영상 url db 저장
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> getTimelapseVideo(@RequestBody TimeLapseSaveRequestDto timeLapseSaveRequestDto, @PathVariable("userId") int userId) {
+    @PostMapping("/{machineId}")
+    public ResponseEntity<?> getTimelapseVideo(@RequestBody TimeLapseSaveRequestDto timeLapseSaveRequestDto, @PathVariable("machineId") String machineId) {
         try{
-            TimeLapse timeLapse = timelapseService.saveTimeLapse(timeLapseSaveRequestDto, userId);
+            TimeLapse timeLapse = timelapseService.saveTimeLapse(timeLapseSaveRequestDto, machineId);
             if (timeLapse == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("실패");
             }

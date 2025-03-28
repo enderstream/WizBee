@@ -30,9 +30,9 @@ public class PoseService {
 
     // 자세 통계 저장
     @Transactional
-    public void savePoseStatistics (PoseScoreAndImageSaveRequestDto poseStatisticsSaveRequestDto, int userId) throws Exception{
+    public void savePoseStatistics (PoseScoreAndImageSaveRequestDto poseStatisticsSaveRequestDto, String machineId) throws Exception{
         // 사용자 조회
-        User user = userRepository.findById(userId);
+        User user = userRepository.findByMachine(machineId);
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }

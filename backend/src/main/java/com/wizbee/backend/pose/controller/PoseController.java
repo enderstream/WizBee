@@ -18,10 +18,10 @@ public class PoseController {
     }
 
     // 자세 통계 저장
-    @PostMapping("/score/{userId}")
-    public ResponseEntity<?> savePose(@PathVariable("userId") int userId, @RequestBody PoseScoreAndImageSaveRequestDto poseSaveRequestDto) {
+    @PostMapping("/score/{machineId}")
+    public ResponseEntity<?> savePose(@PathVariable("machineId") String machineId, @RequestBody PoseScoreAndImageSaveRequestDto poseSaveRequestDto) {
         try {
-            poseService.savePoseStatistics(poseSaveRequestDto, userId);
+            poseService.savePoseStatistics(poseSaveRequestDto, machineId);
             return ResponseEntity.status(HttpStatus.CREATED).body("저장완료");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
