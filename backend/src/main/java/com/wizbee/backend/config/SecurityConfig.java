@@ -55,6 +55,7 @@ public class SecurityConfig {
         http
                 .formLogin((login) -> login.disable());
 
+        // logout
         http
                 .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
 
@@ -83,7 +84,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/logout").permitAll()
-                        .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("/api/v1/auth/signup").permitAll()
+                        .requestMatchers("/api/v1/auth/reissue").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
