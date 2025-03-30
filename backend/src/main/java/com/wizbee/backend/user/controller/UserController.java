@@ -120,7 +120,7 @@ public class UserController {
         user.setRole("USER");
         userService.saveUser(user);
 
-        return null;
+        return ResponseEntity.ok("회원가입이 정상적으로 완료되었습니다.");
     }
 
 }
