@@ -1,5 +1,6 @@
 package com.wizbee.backend.config;
 
+import com.wizbee.backend.oauth2.CustomLogoutFilter;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.wizbee.backend.jwt.JWTFilter;
@@ -9,12 +10,15 @@ import com.wizbee.backend.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,13 +34,16 @@ public class SecurityConfig {
     @Value("${FRONTEND_URL}")
     private String frontendUrl;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final StringRedisTemplate redisTemplate;  // Redis template 추가
+
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil, StringRedisTemplate redisTemplate) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
+        this.redisTemplate = redisTemplate;
     }
 
     @Bean
@@ -47,6 +54,10 @@ public class SecurityConfig {
 
         http
                 .formLogin((login) -> login.disable());
+
+        // logout
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
 
         //JWTFilter 추가
         http
@@ -72,6 +83,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/logout").permitAll()
+                        .requestMatchers("/api/v1/auth/signup").permitAll()
+                        .requestMatchers("/api/v1/auth/reissue").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS

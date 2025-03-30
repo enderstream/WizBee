@@ -8,11 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PoseScoreAndImageSaveRequestDto {
-    private int poseTurtleCnt;
-    private int shoulderCnt;
-    private int downCnt;
+public class PoseImageUrlsResponseDto {
+    private Integer userId;
     private Date poseDate;
-    private List<String> poseUrl;
-
+    private List<PoseUrlsDto> poseImageUrls;
 }
