@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -56,6 +57,18 @@ public class ChartService {
         }
         return result;
     }
+
+    public double avgOfUser(User user) {
+        Double result = chartRepository.avgOfUser(user);
+        return (result != null) ? result : 0.0;  // null일 경우 0.0 반환
+    }
+
+    public double avgOfUserAge(User user) {
+        Date birthday = user.getBirthday();
+        Double result = chartRepository.avgOfUserAge(birthday);
+        return (result != null) ? result : 0.0;  // null일 경우 0.0 반환
+    }
+
 
     public PeerStatisticsResponseDto getPeerStats(Integer userId) {
         Object result = chartRepository.getPeerStatistics(userId);
