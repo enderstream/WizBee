@@ -1,9 +1,6 @@
 package com.wizbee.backend.chart.controller;
 
-import com.wizbee.backend.chart.dto.ChartRequestDto;
-import com.wizbee.backend.chart.dto.ChartResponseDto;
-import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
-import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
+import com.wizbee.backend.chart.dto.*;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
@@ -94,16 +91,23 @@ public class ChartController {
 
     }
 
-//    // 메인페이지 내 평균 공부 시간 + 또래 평균 비교(상위 몇 프로인지)
-//    @GetMapping("/chart/mainpate/{userId}")
-//    public ResponseEntity<?> getCharAvgMainPage(@PathVariable("userId") int userId){
-//        User searchUser = userService.findById(userId);
-//        if(searchUser == null){
-//            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
-//        }
-//
-//
-//    }
+    // 메인페이지 내 평균 공부 시간 + 또래 평균 비교(상위 몇 프로인지)
+    @GetMapping("/chart/mainpage/{userId}")
+    public ResponseEntity<?> getCharAvgMainPage(@PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        // 유저 정보 기반 평균 공부 시간
+        double userAvg = chartService.avgOfUser(searchUser);
+        // 유저 또래 평균 공부 시간
+        double userYearAvg = chartService.avgOfUserAge(searchUser);
+
+        ChartAvgResponseDto responseDto = new ChartAvgResponseDto(userAvg, userYearAvg);
+
+        return ResponseEntity.ok(responseDto);
+    }
 
     // 메인페이지 차트 통계 정보 출력
     @GetMapping("/chart/mainpage/{date}/{userId}")

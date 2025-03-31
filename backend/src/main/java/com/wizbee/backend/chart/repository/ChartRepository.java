@@ -14,6 +14,19 @@ import java.util.List;
 @Repository
 public interface ChartRepository extends JpaRepository<Chart, Long> {
 
+    // 유저 개인의 평균 순공시간
+    @Query("SELECT AVG(c.studyTime) FROM Chart c WHERE c.user = :user")
+    Double avgOfUser(@Param("user") User user);
+    
+    // 유저 또래 평균 순공시간
+    @Query("SELECT AVG(c.studyTime) " +
+            "FROM Chart c " +
+            "JOIN c.user u " +
+            "WHERE YEAR(u.birthday) = YEAR(:birthday)")
+    Double avgOfUserAge(@Param("birthday") java.sql.Date birthday);
+
+
+
 //    @Query("SELECT c.fullTime, c.date, c.outCount, c.outTime, c.phoneCount, c.phoneTime, c.sleepCount, c.sleepTime, c.studyTime FROM Chart c WHERE c.user = :user AND c.date = :date")
 //    Object[] findByDate(@Param("user") User user, @Param("date") LocalDate date);
     @Query("SELECT c FROM Chart c WHERE c.user = :user AND c.date = :date")
