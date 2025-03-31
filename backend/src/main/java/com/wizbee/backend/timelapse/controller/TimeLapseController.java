@@ -20,7 +20,7 @@ public class TimeLapseController {
 
     // 타임 랩스 영상 url db 저장
     @PostMapping("/{machineId}")
-    public ResponseEntity<?> getTimelapseVideo(@RequestBody TimeLapseSaveRequestDto timeLapseSaveRequestDto, @PathVariable("machineId") String machineId) {
+    public ResponseEntity<?> saveTimeLapseVideo(@RequestBody TimeLapseSaveRequestDto timeLapseSaveRequestDto, @PathVariable("machineId") String machineId) {
         try{
             TimeLapse timeLapse = timelapseService.saveTimeLapse(timeLapseSaveRequestDto, machineId);
             if (timeLapse == null) {
@@ -33,4 +33,5 @@ public class TimeLapseController {
 
         }
     }
+
 }

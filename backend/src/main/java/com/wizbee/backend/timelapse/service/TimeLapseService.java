@@ -5,8 +5,8 @@ import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.repository.TimeLapseRepository;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
