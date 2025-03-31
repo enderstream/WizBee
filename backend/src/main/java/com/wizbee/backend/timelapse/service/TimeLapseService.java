@@ -21,18 +21,15 @@ public class TimeLapseService {
         this.userRepository = userRepository;
     }
 
-//    // 타임랩스 url 저장
-//    @Transactional
-//    public void saveTimeLapseURL (TimeLapseSaveRequestDto timeLapseSaveRequestDto, String machineId) {
-//        // 사용자 조회
-//        User user = userRepository.findByMachine(machineId);
-//        if (user == null) {
-//            throw new NoSuchElementException("user not found");
-//        }
-//
-//        TimeLapse timeLapse = timelapseRepository.findByUser(user.getId());
-//        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
-//    }
+    // 타임랩스 url 저장
+    @Transactional
+    public void saveTimeLapseURL (TimeLapseSaveRequestDto timeLapseSaveRequestDto, int timelapseId) {
+        // TimeLapse 객체 조회
+        TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
+                .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
+
+        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
+    }
 
     // 타입 랩스 초기 정보 저장
     @Transactional
