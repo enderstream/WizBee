@@ -9,9 +9,11 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
-
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("http://192.168.137.66",   // 라즈베리파이 IP1
+                        "http://192.168.137.126")  // 라즈베리파이 IP2
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 필요한 메서드만 허용
+                .allowCredentials(true);
     }
 }
