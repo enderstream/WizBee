@@ -4,10 +4,14 @@ import com.wizbee.backend.jwt.JWTUtil;
 import com.wizbee.backend.user.dto.UserResponseDto;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -52,17 +56,40 @@ public class UserController {
 
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/searchUser")
+    public ResponseEntity<?> searchUser(HttpServletRequest request) {
+        String token = null;
 
-    public ResponseEntity<?> searchUser(@PathVariable("userId") int userId){
+        // 쿠키에서 access 토큰 꺼내기
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("access")) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body("Access token not found in cookies");
+        }
+
+        int userId;
+        try {
+            userId = jwtUtil.getId(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body("Invalid access token");
+        }
+
         User user = userService.findLoginUserById(userId);
-
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(user);
         }
     }
+
 
     @PutMapping("/withdraw/{userId}")
     public ResponseEntity<?> withDrawUser(@PathVariable("userId") int userId){
@@ -120,7 +147,7 @@ public class UserController {
         user.setRole("USER");
         userService.saveUser(user);
 
-        return ResponseEntity.ok("회원가입이 정상적으로 완료되었습니다.");
+        return null;
     }
 
 }
