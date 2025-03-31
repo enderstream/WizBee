@@ -160,7 +160,7 @@ public class ChartController {
         }
 
         // 이번주 순공시간 통계
-        List<Object[]> weekChart = chartService.findWeekByDate(searchUser, localDate);
+        List<ChartWeekStudyTimeResponseDto> weekChart = chartService.findWeekByDate(searchUser, localDate);
 
         if(weekChart != null){
             return ResponseEntity.ok(weekChart);

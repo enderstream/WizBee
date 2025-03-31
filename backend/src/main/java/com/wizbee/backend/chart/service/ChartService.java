@@ -1,5 +1,6 @@
 package com.wizbee.backend.chart.service;
 
+import com.wizbee.backend.chart.dto.ChartWeekStudyTimeResponseDto;
 import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
 import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
 import com.wizbee.backend.chart.entity.Chart;
@@ -44,17 +45,17 @@ public class ChartService {
 //        );
     }
 
-    public List<Object[]> findWeekByDate(User user, LocalDate date){
+    public List<ChartWeekStudyTimeResponseDto> findWeekByDate(User user, LocalDate date){
 
         LocalDate endDate = date; // 오늘 날짜
         LocalDate startDate = endDate.minusDays(6); // 7일 전 날짜
 
-        List<Object[]> result = chartRepository.findWeekByDate(user, startDate, endDate);
+        List<ChartWeekStudyTimeResponseDto> result = chartRepository.findWeekByDate(user, startDate, endDate);
 
         if(result == null){
             return null;
-
         }
+
         return result;
     }
 
