@@ -1,6 +1,7 @@
 package com.wizbee.backend.timelapse.service;
 
-import com.wizbee.backend.timelapse.Entity.TimeLapse;
+import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
+import com.wizbee.backend.timelapse.entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.repository.TimeLapseRepository;
 import com.wizbee.backend.user.entity.User;
@@ -8,6 +9,7 @@ import com.wizbee.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -46,6 +48,13 @@ public class TimeLapseService {
 // 웹 소켓으로 타임랩스아이디 전송 로직(구현은 나중에)
         return savedtimeLapse;
 
+    }
+
+    // 타임 랩스 조히
+    @Transactional(readOnly = true)
+    public List<TimeLapseGetRequestDto> getTimeLapse (int userId) {
+        List<TimeLapseGetRequestDto> dtos = timelapseRepository.findAllByUserId(userId);
+        return dtos;
     }
 
 }
