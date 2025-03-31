@@ -1,7 +1,8 @@
 package com.wizbee.backend.timelapse.service;
 
+import com.wizbee.backend.timelapse.dto.TimeLapseFinishRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
-import com.wizbee.backend.timelapse.entity.TimeLapse;
+import com.wizbee.backend.timelapse.Entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.repository.TimeLapseRepository;
 import com.wizbee.backend.user.entity.User;
@@ -50,11 +51,23 @@ public class TimeLapseService {
 
     }
 
-    // 타임 랩스 조히
+    // 타임 랩스 조회
     @Transactional(readOnly = true)
     public List<TimeLapseGetRequestDto> getTimeLapse (int userId) {
         List<TimeLapseGetRequestDto> dtos = timelapseRepository.findAllByUserId(userId);
         return dtos;
+    }
+
+    // 타임 랩스 촬영 종료
+    @Transactional
+    public void finishTimeLapse (TimeLapseFinishRequestDto timeLapseFinishRequestDto, int timelapseId) {
+        // TimeLapse 객체 조회
+        TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
+                .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
+        if (timeLapseFinishRequestDto.getTitle().equals("")){
+            timeLapseFinishRequestDto.setTitle("제목없음");
+        }
+        timeLapse.setTitle(timeLapseFinishRequestDto.getTitle());
     }
 
 }
