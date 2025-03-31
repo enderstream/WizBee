@@ -1,9 +1,8 @@
-package com.wizbee.backend.timelapse.Entity;
+package com.wizbee.backend.timelapse.entity;
 
 import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.sql.Date;
 import java.time.ZoneId;
