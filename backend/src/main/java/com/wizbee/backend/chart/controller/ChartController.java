@@ -1,15 +1,13 @@
 package com.wizbee.backend.chart.controller;
 
-import com.wizbee.backend.chart.dto.ChartRequestDto;
-import com.wizbee.backend.chart.dto.ChartResponseDto;
-import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
-import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
+import com.wizbee.backend.chart.dto.*;
 import com.wizbee.backend.chart.entity.Chart;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -93,6 +91,58 @@ public class ChartController {
 
     }
 
+    // 메인페이지 내 평균 공부 시간 + 또래 평균 비교(상위 몇 프로인지)
+    @GetMapping("/chart/mainpage/{userId}")
+    public ResponseEntity<?> getCharAvgMainPage(@PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        // 유저 정보 기반 평균 공부 시간
+        double userAvg = chartService.avgOfUser(searchUser);
+        // 유저 또래 평균 공부 시간
+        double userYearAvg = chartService.avgOfUserAge(searchUser);
+
+        ChartAvgResponseDto responseDto = new ChartAvgResponseDto(userAvg, userYearAvg);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    // 메인페이지 차트 통계 정보 출력
+    @GetMapping("/chart/mainpage/{date}/{userId}")
+    public ResponseEntity<?> getChartScoreMainPage(@PathVariable("date") String date, @PathVariable("userId") int userId){
+        User searchUser = userService.findById(userId);
+        if(searchUser == null){
+            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+        }
+
+        // 날짜 변환 (String → LocalDate)
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // "yyyy-MM-dd" 형식
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
+        }
+
+        try {
+            Chart oneDayChart = chartService.findByDate(searchUser, localDate);
+            int fullStudyTime = oneDayChart.getFullTime();
+            int notStudyTime = oneDayChart.getSleepTime() + oneDayChart.getPhoneTime() + oneDayChart.getOutTime();
+
+            if(fullStudyTime == 0){
+                return ResponseEntity.badRequest().body("공부 기록이 없습니다.");
+            }
+
+            double result = (double) notStudyTime / fullStudyTime;
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+
+    }
+
 
     @GetMapping("/chart/week/{userId}")
     public ResponseEntity<?> printWeekChart(@RequestParam("date") String date, @PathVariable("userId") int userId){
@@ -110,7 +160,7 @@ public class ChartController {
         }
 
         // 이번주 순공시간 통계
-        List<Object[]> weekChart = chartService.findWeekByDate(searchUser, localDate);
+        List<ChartWeekStudyTimeResponseDto> weekChart = chartService.findWeekByDate(searchUser, localDate);
 
         if(weekChart != null){
             return ResponseEntity.ok(weekChart);

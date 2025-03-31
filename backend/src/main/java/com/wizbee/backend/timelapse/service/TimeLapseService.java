@@ -1,13 +1,15 @@
 package com.wizbee.backend.timelapse.service;
 
-import com.wizbee.backend.timelapse.Entity.TimeLapse;
+import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
+import com.wizbee.backend.timelapse.entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.repository.TimeLapseRepository;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -21,20 +23,38 @@ public class TimeLapseService {
         this.userRepository = userRepository;
     }
 
+    // 타임랩스 url 저장
     @Transactional
-    public TimeLapse saveTimeLapse (TimeLapseSaveRequestDto timeLapseSaveRequestDto, String machineId) {
+    public void saveTimeLapseURL (TimeLapseSaveRequestDto timeLapseSaveRequestDto, int timelapseId) {
+        // TimeLapse 객체 조회
+        TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
+                .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
+
+        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
+    }
+
+    // 타입 랩스 초기 정보 저장
+    @Transactional
+    public TimeLapse startTimeLapse (int userId) {
         // 사용자 조회
-        User user = userRepository.findByMachine(machineId);
+        User user = userRepository.findById(userId);
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }
 
         TimeLapse timeLapse = new TimeLapse();
-
         timeLapse.setUser(user);
-        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
+        TimeLapse savedtimeLapse = timelapseRepository.save(timeLapse);
+// 웹 소켓으로 타임랩스아이디 전송 로직(구현은 나중에)
+        return savedtimeLapse;
 
-        TimeLapse saveTimeLapse = timelapseRepository.save(timeLapse);
-        return saveTimeLapse;
     }
+
+    // 타임 랩스 조히
+    @Transactional(readOnly = true)
+    public List<TimeLapseGetRequestDto> getTimeLapse (int userId) {
+        List<TimeLapseGetRequestDto> dtos = timelapseRepository.findAllByUserId(userId);
+        return dtos;
+    }
+
 }
