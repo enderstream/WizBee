@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback } from 'react'
-import { Html5Qrcode } from 'html5-qrcode'
+// import { Html5Qrcode } from 'html5-qrcode'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/routes/routes'
 import { create } from 'zustand'
 import { useUserStore } from '@/store/userStore'
-import { ScannerConfig } from '@/types/Register'
+// import { ScannerConfig } from '@/types/Register'
 
 // QRScanner 상태 관리를 위한 Zustand 스토어
 interface QRScannerState {

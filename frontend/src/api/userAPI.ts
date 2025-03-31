@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/apiClient"
-import { OAuthCallbackResponse } from "@/types/User"
-import axios from "axios"
+// import { OAuthCallbackResponse } from "@/types/User"
+// import axios, {AxiosError} from "axios"
 
 const baseURL = import.meta.env.VITE_API_URL
 
@@ -11,20 +11,27 @@ export const userAPI = {
         googleRedirect: () => {
             window.location.href = `${baseURL}/oauth2/authorization/google`
         },
-        // 콜백 처리
-        processCallback: async (code: string): Promise<OAuthCallbackResponse> => {
-            try {
-                // OAuth 코드를 토큰으로 교환하는 엔드포인트 
-                const response = await axios.get<OAuthCallbackResponse>(
-                    `${baseURL}/api/v1/auth/oauth/callback/google`,
-                    { params: { code } }
-                )
-                return response.data
-            } catch (error) {
-                alert(`OAuth 콜백 처리 오류: ${error}`)
-                throw error
-            }
-        }
+        // processCallback: async (code: string): Promise<OAuthCallbackResponse> => {
+        //     try {
+        //         console.log("processCallback 호출됨 - 코드:", code);
+        //         // OAuth 코드를 토큰으로 교환하는 엔드포인트 
+        //         const response = await axios.get<OAuthCallbackResponse>(
+        //             `${baseURL}/api/v1/auth/oauth/code/google`,
+        //             { params: { code } }
+        //         )
+        //         console.log("API 응답 데이터:", response.data);
+        //         return response.data
+        //     } catch (error: any) {
+        //         const axiosError = error as AxiosError;
+        //         console.error("OAuth 콜백 처리 자세한 오류:", axiosError);
+        //         console.error("응답 데이터:", axiosError.response?.data);
+        //         console.error("상태 코드:", axiosError.response?.status);
+        //         alert(`OAuth 콜백 처리 오류: ${axiosError}`);
+        //         throw error;
+        //     }
+        // }
+
+        
     },
 
     // 로그아웃
@@ -49,9 +56,9 @@ export const userAPI = {
     },
 
     // 회원 정보 조회
-    userInfo: async (userId: number) => {
+    userInfo: async () => {
         try {
-            const response = await apiClient.get(`/api/v1/auth/${userId}`)
+            const response = await apiClient.get("/api/v1/auth/searchUser")
             return response.data
         } catch (error) {
             alert("유저 정보 조회 실패")

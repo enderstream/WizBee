@@ -6,18 +6,17 @@ const baseURL = import.meta.env.VITE_API_URL
 // axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: {    'Content-Type': 'application/json'  },
+  withCredentials: true,
 })
 
 // 요청 인터셉터 추가
 apiClient.interceptors.request.use(
   (config) => {
-    const token = useUserStore.getState().user.token
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // const token = useUserStore.getState().user.token
+    // if (token) {
+      // config.headers.Authorization = `Bearer ${token}`
+    // }
     return config
   },
   (error) => {
