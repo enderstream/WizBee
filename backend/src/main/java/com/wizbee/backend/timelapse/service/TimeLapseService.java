@@ -21,20 +21,34 @@ public class TimeLapseService {
         this.userRepository = userRepository;
     }
 
+//    // 타임랩스 url 저장
+//    @Transactional
+//    public void saveTimeLapseURL (TimeLapseSaveRequestDto timeLapseSaveRequestDto, String machineId) {
+//        // 사용자 조회
+//        User user = userRepository.findByMachine(machineId);
+//        if (user == null) {
+//            throw new NoSuchElementException("user not found");
+//        }
+//
+//        TimeLapse timeLapse = timelapseRepository.findByUser(user.getId());
+//        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
+//    }
+
+    // 타입 랩스 초기 정보 저장
     @Transactional
-    public TimeLapse saveTimeLapse (TimeLapseSaveRequestDto timeLapseSaveRequestDto, String machineId) {
+    public TimeLapse startTimeLapse (int userId) {
         // 사용자 조회
-        User user = userRepository.findByMachine(machineId);
+        User user = userRepository.findById(userId);
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }
 
         TimeLapse timeLapse = new TimeLapse();
-
         timeLapse.setUser(user);
-        timeLapse.setUrl(timeLapseSaveRequestDto.getTimeLapseUrl());
+        TimeLapse savedtimeLapse = timelapseRepository.save(timeLapse);
+// 웹 소켓으로 타임랩스아이디 전송 로직(구현은 나중에)
+        return savedtimeLapse;
 
-        TimeLapse saveTimeLapse = timelapseRepository.save(timeLapse);
-        return saveTimeLapse;
     }
+
 }
