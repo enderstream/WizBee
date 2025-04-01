@@ -57,7 +57,7 @@ hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 모델 로딩
-model = DetectMultiBackend(weights=r"C:\\Users\\SSAFY\\Desktop\\PJT\\best_windows.pt", device=device)
+model = DetectMultiBackend(weights=r"C:\\Users\\SSAFY\\Desktop\\PJT\\best_yolov5n.pt", device=device)
 model.model.eval()
 
 cnn_model = EyeCNN().to(device)
@@ -97,7 +97,8 @@ while True:
         pred = model(img_tensor)[0]
         pred = non_max_suppression(pred, 0.5, 0.45)[0]
 
-    eye_closed = False
+    left_eye_closed = None
+    right_eye_closed = None
     eye_detected = False
 
     if pred is not None and len(pred):
@@ -111,13 +112,31 @@ while True:
             eye_tensor = transform(eye_img).unsqueeze(0).to(device)
             output = cnn_model(eye_tensor)
             pred_label = torch.argmax(output, dim=1).item()
-            eye_closed = (pred_label == 1)
+            is_closed = (pred_label == 1)
+
+            # 중심 좌표 기준 왼쪽/오른쪽 눈 분리
+            eye_center_x = (x1 + x2) / 2
+            if eye_center_x < w / 2:
+                left_eye_closed = is_closed
+            else:
+                right_eye_closed = is_closed
+
             eye_detected = True
-            label = "Sleepy" if eye_closed else "Awake"
-            color = (0, 0, 255) if eye_closed else (0, 255, 0)
+            label = "Sleepy" if is_closed else "Awake"
+            color = (0, 0, 255) if is_closed else (0, 255, 0)
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
             cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
 
+    # 눈 감김 판단
+    if left_eye_closed is not None and right_eye_closed is not None:
+        eye_closed = left_eye_closed and right_eye_closed  # 둘 다 감겨야 졸음
+    elif left_eye_closed is not None:
+        eye_closed = left_eye_closed  # 한쪽만 감지되면 그쪽 기준
+    elif right_eye_closed is not None:
+        eye_closed = right_eye_closed
+    else:
+        eye_closed = False
+        
     # 엎드림 감지
     drowsy_pose = False
     if pose_results.pose_landmarks:
