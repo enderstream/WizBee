@@ -1,6 +1,5 @@
 export interface IUser {
     isLogin: boolean,
-    token: string,
     userId: number,
     profileImageUrl: string,
     email: string
@@ -19,7 +18,6 @@ export interface UserState {
 }
 
 export interface OAuthCallbackResponse {
-    token: string
     userId: number
     profileImageUrl: string
     email: string
@@ -30,13 +28,12 @@ export interface OAuthCallbackResponse {
 
 export const mapApiUserResponseToUser = (response: any): IUser => {
     return {
-      isLogin: true,
-      token: response.token || '',
-      userId: response.id || 0,
-      profileImageUrl: response.imageUrl || '',
-      email: response.email || '',
-      name: response.name || '',
-      birthday: response.birthday || '',
-      hasCompletedSignup: !!response.birthday || response.role === 'USER',
+        isLogin: true,
+        userId: response.id || 0,
+        profileImageUrl: response.imageUrl || '',
+        email: response.email || '',
+        name: response.name || '',
+        birthday: response.birthday || '',
+        hasCompletedSignup: !!response.birthday || response.role === 'USER',
     }
-  }
+}

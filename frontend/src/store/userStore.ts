@@ -4,7 +4,6 @@ import { IUser, UserState } from '@/types/User'
 
 const initialUserState: IUser = {
     isLogin: false,
-    token: "",
     userId: 0,
     profileImageUrl: "",
     email: "",
@@ -42,7 +41,6 @@ export const useUserStore = create<UserState>()(
 // 편의를 위한 선택자 함수들
 export const selectUser = (state: UserState) => state.user
 export const selectIsLogin = (state: UserState) => state.user.isLogin
-export const selectToken = (state: UserState) => state.user.token
 export const selectUserId = (state: UserState) => state.user.userId
 export const selectProfileImageUrl = (state: UserState) => state.user.profileImageUrl
 export const selectEmail = (state: UserState) => state.user.email

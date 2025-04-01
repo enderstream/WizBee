@@ -2,7 +2,7 @@ import { apiClient } from "@/api/apiClient"
 
 const baseURL = import.meta.env.VITE_API_URL
 
-export const userAPI = {  
+export const userAPI = {
     // 구글 로그인 리다이렉션
     login: () => {
         window.location.href = `${baseURL}/oauth2/authorization/google`
