@@ -1,12 +1,10 @@
 package com.wizbee.backend.oauth2;
 
-
 import com.wizbee.backend.jwt.JWTUtil;
 import com.wizbee.backend.user.dto.CustomOAuth2User;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +29,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JWTUtil jwtUtil;
     private final RedisTemplate<String, String> redisTemplate;
-
-    private UserService userService;
+    private final UserService userService;
 
     public CustomSuccessHandler(JWTUtil jwtUtil, RedisTemplate<String, String> redisTemplate, UserService userService) {
         this.jwtUtil = jwtUtil;
@@ -40,55 +37,54 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         this.userService = userService;
     }
 
-
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
 
-        //OAuth2User
+        // OAuth2User 정보 가져오기
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-
         String username = customUserDetails.getName();
         String email = customUserDetails.getEmail();
+        Integer id = customUserDetails.getId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        Integer id = customUserDetails.getId();
+        // 토큰 생성
+        String access = jwtUtil.createJwt("access", email, role, id, 600000L);         // 10분
+        String refresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);     // 1일
 
-        //토큰 생성
-        String access = jwtUtil.createJwt("access", email, role, id, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);
+        // Redis에 Refresh Token 저장 (Base64 인코딩, 7일 유효)
+//        String refreshToken = Base64.getEncoder().encodeToString(refresh.getBytes(StandardCharsets.UTF_8));
+        redisTemplate.opsForValue().set(email, refresh, 7, TimeUnit.DAYS);
 
-        // UTF-8로 인코딩된 refreshToken 생성
-        String refreshToken = Base64.getEncoder().encodeToString(refresh.getBytes(StandardCharsets.UTF_8));
-        // Redis에 Refresh Token 저장 (만료 시간 7일)
-        redisTemplate.opsForValue().set(email, refreshToken, 7, TimeUnit.DAYS);
+        // 쿠키 설정 (SameSite=None; Secure 포함)
+        addSameSiteCookie(response, "access", access);
+        addSameSiteCookie(response, "refresh", refresh);
 
-        response.addCookie(createCookie("access", access));
-        response.addCookie(createCookie("refresh", refresh));
-//        response.setStatus(200);
+        // sendRedirect 제거하고 JSON으로 응답만 해봐
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"message\": \"OAuth success\"}");
 
-        User loginUser = userService.findById(id);
 
-        if(loginUser.getBirthday() == null || loginUser.getRole().equals("NO_BIRTH_USER")){
-            response.sendRedirect(frontendUrl + "/signup");
-        } else {
-            response.sendRedirect(frontendUrl + "/home");
-        }
-
-//        response.sendRedirect("http://localhost:3000");
+//        // 사용자 정보 확인하여 리디렉션 분기
+//        User loginUser = userService.findById(id);
+//        if (loginUser.getBirthday() == null || loginUser.getRole().equals("NO_BIRTH_USER")) {
+//            response.sendRedirect(frontendUrl + "/signup");
+//        } else {
+//            response.sendRedirect(frontendUrl + "/home");
+//        }
     }
 
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
+    // SameSite=None 쿠키 설정을 위한 수동 헤더 추가
+    private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
+        String cookie = String.format(
+                "%s=%s; Max-Age=%d; Path=/; HttpOnly; Secure; SameSite=None",
+                name, value, 24 * 60 * 60
+        );
+        response.addHeader("Set-Cookie", cookie);
     }
 }
