@@ -5,12 +5,12 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 import Home from '@/pages/Home'
 import Welcome from '@/pages/Welcome'
 import SignUp from '@/pages/SignUp'
-import Settings from '@/pages/Settings/Settings'
+import Settings from '@/pages/Settings'
 import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
 import BlueSward from '@/pages/BlueSward'
 import NotFound from '@/pages/NotFound'
-import QRScanner from '@/pages/QRScanner/QRScanner'
+import QRScanner from '@/pages/QRScanner'
 
 // URL 상수 정의
 export const ROUTES = {

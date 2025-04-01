@@ -1,18 +1,15 @@
 package com.wizbee.backend.config;
 
 import com.wizbee.backend.oauth2.CustomLogoutFilter;
-import org.springframework.beans.factory.annotation.Value;
-
 import com.wizbee.backend.jwt.JWTFilter;
 import com.wizbee.backend.jwt.JWTUtil;
 import com.wizbee.backend.oauth2.CustomSuccessHandler;
 import com.wizbee.backend.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,24 +19,26 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
-
-import java.util.Collections;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
     @Value("${FRONTEND_URL}")
     private String frontendUrl;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final StringRedisTemplate redisTemplate;  // Redis template 추가
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final StringRedisTemplate redisTemplate;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, CustomSuccessHandler customSuccessHandler, JWTUtil jwtUtil, StringRedisTemplate redisTemplate) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, 
+                          CustomSuccessHandler customSuccessHandler, 
+                          JWTUtil jwtUtil, 
+                          StringRedisTemplate redisTemplate) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
@@ -48,91 +47,53 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
-                .csrf((csrf) -> csrf.disable());
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // 단일 CorsConfigurationSource 빈을 사용하여 CORS 설정 통합
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        http
-                .formLogin((login) -> login.disable());
+        // 로그아웃 필터
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
+        // JWT 필터 추가
+        http.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
-        // logout
-        http
-                .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
+        // OAuth2 로그인 설정
+        http.oauth2Login(oauth2 -> oauth2
+            .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
+            .successHandler(customSuccessHandler));
 
-        //JWTFilter 추가
-        http
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-
-
-        http
-                .httpBasic((basic) -> basic.disable());
-
-        //oauth2
-        http
-                .oauth2Login((oauth2) -> oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler));
-
-        // CORS 설정 추가
-        http
-
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        //경로별 인가 작업
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/",  "/oauth2/**", "/login/**").permitAll()
-                        .requestMatchers("/api/v1/auth/signup").permitAll()
-                        .requestMatchers("/api/v1/auth/reissue").permitAll()
-                        .requestMatchers("/api/v1/auth/logout").permitAll()
-                        .anyRequest().authenticated()
-                );
-
-        //세션 설정 : STATELESS
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-
-        http
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
-                        CorsConfiguration configuration = new CorsConfiguration();
-
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
-
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                        return configuration;
-                    }
-                }));
+        // URL별 인가 설정
+        http.authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/oauth2/**", "/login/**",
+                             "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout")
+            .permitAll()
+            .anyRequest().authenticated());
 
         return http.build();
     }
 
-    // CORS 설정 추가
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin(frontendUrl);
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
-        configuration.setAllowedHeaders(List.of("Content-Type","Authorization")); // 모든 헤더 허용
-        configuration.setAllowCredentials(true); // 쿠키 및 인증 정보 허용
+        // 기존의 허용 origin들을 모두 통합합니다.
+        configuration.setAllowedOrigins(Arrays.asList(
+                frontendUrl,                   // application.properties 에 설정된 프론트엔드 URL
+                "http://localhost:3000",         // 개발용 로컬 주소
+                "http://192.168.137.66",         // 라즈베리파이 IP1
+                "http://192.168.137.126"         // 라즈베리파이 IP2
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
 
-        // CORS 설정을 모든 경로에 적용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);  // 여기서 모든 경로에 적용
-
+        // 모든 경로에 적용
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }

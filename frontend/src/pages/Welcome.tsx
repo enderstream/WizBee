@@ -1,65 +1,98 @@
 // import React, { useEffect, useState } from 'react'
 // import { userAPI } from '@/api/userAPI'
 // import { useUserStore } from '@/store/userStore'
-// import { useNavigate } from 'react-router-dom'
-// import { ROUTES } from '@/routes/routes'
+// // import axios from 'axios'
 // import Carousel from '@/components/Carousel'
 // import '@/styles/Welcome.css'
 
+// // const baseURL = import.meta.env.VITE_API_URL
+
 // const Welcome: React.FC = () => {
 //   const [isLoading, setIsLoading] = useState<boolean>(false)
-//   const navigate = useNavigate()
 //   const setUser = useUserStore((state) => state.setUser)
-//   const resetUser = useUserStore((state) => state.resetUser)
 
 //   // 구글 로그인 리다이렉트
 //   const handleGoogleLogin = (): void => {
 //     userAPI.login.googleRedirect()
 //   }
 
-//   // OAuth 콜백 처리
+//   // OAuth 콜백 처리 (수정된 로직)
 //   useEffect(() => {
-//     const handleOAuthCallback = async () => {
-//       // URL에서 code 파라미터 추출
-//       const urlParams = new URLSearchParams(window.location.search)
-//       const code = urlParams.get('code')
-
-//       if (!code) return
-
-//       setIsLoading(true)
-//       try {
-//         // 코드를 백엔드로 전송하여 사용자 정보 획득
-//         const userData = await userAPI.login.processCallback(code)
-
-//         // 사용자 상태 업데이트
-//         setUser({
-//           isLogin: true,
-//           token: userData.token,
-//           userId: userData.userId,
-//           profileImageUrl: userData.profileImageUrl,
-//           email: userData.email,
-//           nickname: userData.nickname || '',
-//           birthday: userData.birthday || '',
-//           hasCompletedSignup: userData.hasCompletedSignup,
-//         })
-
-//         // 회원가입 완료 여부에 따라 다른 페이지로 리다이렉트
-//         if (userData.hasCompletedSignup) {
-//           navigate(ROUTES.HOME)
-//         } else {
-//           navigate(ROUTES.SIGNUP)
+//     // 기존의 if 문 내부 로직을 주석 처리하고, 아래와 같이 수정합니다.
+//     if (window.location.pathname === '/signup') {
+//       const fetchUserData = async () => {
+//         try {
+//           setIsLoading(true)
+          
+//           // 토큰 기반으로 userAPI를 호출하여 사용자 정보를 가져옵니다.
+//           const userInfoResponse = await userAPI.userInfo()
+          
+//           // 테스트용: 인증 토큰을 콘솔에 출력합니다.
+//           console.log("인증 토큰:", userInfoResponse.token)
+          
+//           // 사용자 상태 업데이트
+//           setUser({
+//             isLogin: true,
+//             token: userInfoResponse.token,
+//             userId: userInfoResponse.userId,  // 응답에 userId가 있다면 사용
+//             profileImageUrl: userInfoResponse.profileImageUrl,
+//             email: userInfoResponse.email,
+//             nickname: userInfoResponse.nickname || '',
+//             birthday: userInfoResponse.birthday || '',
+//             hasCompletedSignup: userInfoResponse.hasCompletedSignup,
+//           })
+//         } catch (error) {
+//           console.error("사용자 정보 조회 실패:", error)
+//         } finally {
+//           setIsLoading(false)
 //         }
-//       } catch (error) {
-//         console.error('OAuth 콜백 처리 오류:', error)
-//         resetUser()
-//         alert('로그인 처리 중 오류가 발생했습니다')
-//       } finally {
-//         setIsLoading(false)
 //       }
+//       fetchUserData()
 //     }
+//   }, [setUser])
 
-//     handleOAuthCallback()
-//   }, [navigate, setUser, resetUser])
+//   // OAuth 콜백 처리
+//   // useEffect(() => {
+//     // 페이지가 /signup인 경우 사용자 정보 가져오기
+//   //   if (window.location.pathname === '/signup') {
+//   //     const fetchUserData = async () => {
+//   //       try {
+//   //         setIsLoading(true)
+          
+//   //         // 1. 현재 로그인된 사용자의 ID 조회
+//   //         const authResponse = await axios.get(`${baseURL}/api/v1/auth/searchUser`)
+//   //         const userId = authResponse.data.userId
+          
+//   //         console.log("조회된 userId:", userId)
+          
+//   //         // 2. 사용자 상세 정보 조회
+//   //         // userAPI.userInfo는 userId 파라미터 없이 호출됩니다.
+//   //         const userInfoResponse = await userAPI.userInfo()
+          
+//   //         console.log("사용자 상세 정보:", userInfoResponse)
+          
+//   //         // 3. 사용자 상태 업데이트
+//   //         setUser({
+//   //           isLogin: true,
+//   //           token: userInfoResponse.token,
+//   //           userId: userId,
+//   //           profileImageUrl: userInfoResponse.profileImageUrl,
+//   //           email: userInfoResponse.email,
+//   //           nickname: userInfoResponse.nickname || '',
+//   //           birthday: userInfoResponse.birthday || '',
+//   //           hasCompletedSignup: userInfoResponse.hasCompletedSignup,
+//   //         })
+          
+//   //       } catch (error) {
+//   //         console.error("사용자 정보 조회 실패:", error)
+//   //       } finally {
+//   //         setIsLoading(false)
+//   //       }
+//   //     }
+      
+//   //     fetchUserData()
+//   //   }
+//   // }, [setUser])
 
 //   return (
 //     <div className="welcome-page">
@@ -83,88 +116,65 @@
 
 // export default Welcome
 
-// 테스트 모드
+
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useUserStore } from '@/store/userStore'
-import { ROUTES } from '@/routes/routes'
+// import React, { useEffect, useState } from 'react'
+import { userAPI } from '@/api/userAPI'
+// import { useUserStore } from '@/store/userStore'
 import Carousel from '@/components/Carousel'
 import '@/styles/Welcome.css'
 
-const Welcome: React.FC = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const navigate = useNavigate()
-  const setUser = useUserStore((state) => state.setUser)
-  
-  // 테스트용 - 이미 회원가입 완료 여부 토글
-  const [isSignupCompleted, setIsSignupCompleted] = useState(false)
+// const baseURL = import.meta.env.VITE_API_URL
 
-  // 테스트용 구글 로그인 (실제 리다이렉트 없이)
-  const handleGoogleLogin = async (): Promise<void> => {
-    setIsLoading(true)
+const Welcome: React.FC = () => {
+  const [isLoading] = useState<boolean>(false)
+  // const [isLoading, setIsLoading] = useState<boolean>(false)
+  // // const setUser = useUserStore((state) => state.setUser)
+
+  // 구글 로그인 리다이렉트
+  const handleGoogleLogin = (): void => {
+    userAPI.login()
+  }
+
+  // // 컴포넌트가 마운트될 때 항상 토큰을 콘솔에 출력하도록 수정
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       setIsLoading(true)
+  //       console.log("good!@")
+  //       // userAPI.userInfo 호출하여 토큰 및 사용자 정보를 가져옵니다.
+  //       // const userInfoResponse = await userAPI.userInfo()
+        
+  //       // 콘솔에 인증 토큰 출력
+  //       // console.log("인증 토큰:", userInfoResponse.token)
+        
+  //       // // 사용자 상태 업데이트 (필요한 경우)
+  //       // setUser({
+  //       //   isLogin: true,
+  //       //   token: userInfoResponse.token,
+  //       //   userId: userInfoResponse.userId, // 응답에 userId가 있다면 사용
+  //       //   profileImageUrl: userInfoResponse.profileImageUrl,
+  //       //   email: userInfoResponse.email,
+  //       //   nickname: userInfoResponse.nickname || '',
+  //       //   birthday: userInfoResponse.birthday || '',
+  //       //   hasCompletedSignup: userInfoResponse.hasCompletedSignup,
+  //       // })
+  //     } catch (error) {
+  //       console.error("사용자 정보 조회 실패:", error)
+  //     } finally {
+  //       setIsLoading(false)
+  //     }
+  //   }
     
-    try {
-      // 실제 API 호출 대신 더미 데이터로 로그인 시뮬레이션
-      // userAPI.login.googleRedirect() 대신 직접 처리
-      
-      // 잠시 로딩 효과를 위한 딜레이
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 더미 사용자 데이터
-      const dummyUserData = {
-        token: "test_token_12345",
-        userId: 1,
-        profileImageUrl: "",
-        email: "test@example.com",
-        nickname: "",
-        birthday: "",
-        hasCompletedSignup: isSignupCompleted // 토글 상태에 따라 결정
-      };
-      
-      // 사용자 상태 업데이트
-      setUser({
-        isLogin: true,
-        token: dummyUserData.token,
-        userId: dummyUserData.userId,
-        profileImageUrl: dummyUserData.profileImageUrl,
-        email: dummyUserData.email,
-        nickname: dummyUserData.nickname,
-        birthday: dummyUserData.birthday,
-        hasCompletedSignup: dummyUserData.hasCompletedSignup,
-      });
-      
-      // 회원가입 완료 여부에 따라 리다이렉트
-      if (dummyUserData.hasCompletedSignup) {
-        navigate(ROUTES.HOME);
-      } else {
-        navigate(ROUTES.SIGNUP);
-      }
-      
-    } catch (error) {
-      console.error('테스트 로그인 오류:', error);
-      alert('테스트 로그인 중 오류 발생');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   // 경로에 상관없이 항상 실행되도록 합니다.
+  //   fetchUserData()
+  // }, )
+  // }, [setUser])
 
   return (
     <div className="welcome-page">
       <h1>공부 통계를 확인해보세요!</h1>
       <Carousel />
-      
-      {/* 테스트용 회원가입 완료 상태 토글 */}
-      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-        <label>
-          <input 
-            type="checkbox" 
-            checked={isSignupCompleted} 
-            onChange={() => setIsSignupCompleted(!isSignupCompleted)}
-          />
-          {' '}테스트: 회원가입 완료 상태 ({isSignupCompleted ? '홈 화면으로' : '회원가입으로'})
-        </label>
-      </div>
-      
       <button
         className="google-login-btn"
         onClick={handleGoogleLogin}
@@ -177,10 +187,6 @@ const Welcome: React.FC = () => {
         />
         {isLoading ? '로그인 중...' : 'Continue with Google'}
       </button>
-      
-      <div style={{ marginTop: '20px', textAlign: 'center', color: '#666', fontSize: '0.8rem' }}>
-        테스트 모드: 실제 구글 로그인 대신 로컬 테스트
-      </div>
     </div>
   )
 }
