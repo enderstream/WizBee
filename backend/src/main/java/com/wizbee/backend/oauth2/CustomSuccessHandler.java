@@ -64,19 +64,22 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         addSameSiteCookie(response, "access", access);
         addSameSiteCookie(response, "refresh", refresh);
 
-        // sendRedirect 제거하고 JSON으로 응답만 해봐
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"message\": \"OAuth success\"}");
+        // // sendRedirect 제거하고 JSON으로 응답만 해봐
+        // response.setContentType("application/json");
+        // response.setCharacterEncoding("UTF-8");
+        // response.getWriter().write("{\"message\": \"OAuth success\"}");
 
 
-//        // 사용자 정보 확인하여 리디렉션 분기
-//        User loginUser = userService.findById(id);
-//        if (loginUser.getBirthday() == null || loginUser.getRole().equals("NO_BIRTH_USER")) {
-//            response.sendRedirect(frontendUrl + "/signup");
-//        } else {
-//            response.sendRedirect(frontendUrl + "/home");
-//        }
+       // 사용자 정보 확인하여 리디렉션 분기
+    //    User loginUser = userService.findById(id);
+    //    if (loginUser.getBirthday() == null || loginUser.getRole().equals("NO_BIRTH_USER")) {
+    //        response.sendRedirect(frontendUrl + "/signup");
+    //    } else {
+    //        response.sendRedirect(frontendUrl + "/home");
+    //    }
+    // 백엔드에서는 OAuth 인증 완료 후 프론트엔드의 전용 리다이렉트 페이지로 이동
+        response.sendRedirect(frontendUrl + "/oauth-redirect");
+
     }
 
     // SameSite=None 쿠키 설정을 위한 수동 헤더 추가

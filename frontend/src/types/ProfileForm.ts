@@ -1,8 +1,8 @@
 // src/types/ProfileForm.ts
 export interface ProfileFormProps {
-    nickname: string;
+    name: string;
     birthDate: Date | null;
-    setNickname: (value: string) => void;
+    setName: (value: string) => void;
     setBirthDate: (date: Date | null) => void;
     isLoading?: boolean;
 }

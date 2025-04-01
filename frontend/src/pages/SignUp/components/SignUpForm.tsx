@@ -4,10 +4,10 @@ import ProfileForm from '@/components/ProfileForm'
 import TermsAgreement from '@/pages/SignUp/components/TermsAgreement'
 
 interface SignUpFormProps {
-  nickname: string
+  name: string
   birthDate: Date | null
   agreeTerms: boolean
-  setNickname: (value: string) => void
+  setName: (value: string) => void
   setBirthDate: (date: Date | null) => void
   handleTermsChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSubmit: (e: React.FormEvent) => Promise<void>
@@ -16,10 +16,10 @@ interface SignUpFormProps {
 
 // 회원가입 폼 컴포넌트 - ProfileForm과 TermsAgreement를 조합
 const SignUpForm: React.FC<SignUpFormProps> = ({
-  nickname,
+  name,
   birthDate,
   agreeTerms,
-  setNickname,
+  setName,
   setBirthDate,
   handleTermsChange,
   handleSubmit,
@@ -28,9 +28,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       <ProfileForm
-        nickname={nickname}
+        name={name}
         birthDate={birthDate}
-        setNickname={setNickname}
+        setName={setName}
         setBirthDate={setBirthDate}
         isLoading={isLoading}
       />
