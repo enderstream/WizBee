@@ -1,15 +1,18 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from '@/App'
-import RootLayout from '@/components/RootLayout'
-import ProtectedRoute from '@/components/ProtectedRoute'
+import RootLayout from '@/components/layouts/RootLayout'
+import AuthLayout from '@/components/layouts/AuthLayout'
+import PublicLayout from '@/components/layouts/PublicLayout'
+import PublicIndex from '@/pages/PublicIndex'
 import Home from '@/pages/Home'
-import Welcome from '@/pages/Welcome'
+// import Welcome from '@/pages/Welcome'
 import SignUp from '@/pages/SignUp'
 import Settings from '@/pages/Settings'
 import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
 import NotFound from '@/pages/NotFound'
 import QRScanner from '@/pages/QRScanner'
+import OAuthRedirect from '@/pages/OAuthRedirect'
 
 // URL 상수 정의
 export const ROUTES = {
@@ -20,7 +23,6 @@ export const ROUTES = {
   SETTINGS: '/settings',
   RECORD: '/record',
   TIME_LAPSE_LIST: '/time-lapse-list',
-  BLUE_SWARD: '/blue-sward',
   QR_SCANNER: '/qr-scanner',
 }
 
@@ -33,18 +35,9 @@ const router = createBrowserRouter([
       {
         element: <RootLayout />,
         children: [
+          // 인증 필요한 라우트
           {
-            index: true,
-            element: <Welcome />, // 비로그인 상태의 초기 페이지
-          },
-          {
-            path: 'signup',
-            element: <SignUp />,
-          },
-
-          // 보호된 경로 (Protected routes)
-          {
-            element: <ProtectedRoute />,
+            element: <AuthLayout />,
             children: [
               {
                 path: 'home',
@@ -65,6 +58,28 @@ const router = createBrowserRouter([
               {
                 path: 'qr-scanner',
                 element: <QRScanner />,
+              },
+            ],
+          },
+          // 인증 필요 없는 라우트
+          {
+            element: <PublicLayout />,
+            children: [
+              {
+                index: true, // 루트 경로('/')
+                element: <PublicIndex />,
+              },
+              {
+                path: 'signup',
+                element: <SignUp />,
+              },
+              {
+                path: 'oauth-redirect',
+                element: <OAuthRedirect />,
+              },
+              {
+                path: 'login/oauth2/code/google',
+                // element: <OAuthRedirect />,
               },
             ],
           },

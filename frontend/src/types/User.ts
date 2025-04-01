@@ -14,6 +14,8 @@ export interface UserState {
     setUser: (user: IUser) => void
     updateUser: (userUpdate: Partial<IUser>) => void
     resetUser: () => void
+    hydrated: boolean
+    setHydrated: (val: boolean) => void
 }
 
 export interface OAuthCallbackResponse {
@@ -25,3 +27,16 @@ export interface OAuthCallbackResponse {
     birthday: string | null
     hasCompletedSignup: boolean
 }
+
+export const mapApiUserResponseToUser = (response: any): IUser => {
+    return {
+      isLogin: true,
+      token: response.token || '',
+      userId: response.id || 0,
+      profileImageUrl: response.imageUrl || '',
+      email: response.email || '',
+      nickname: response.name || '',  // API의 name 필드를 nickname으로 매핑
+      birthday: response.birthday || '',
+      hasCompletedSignup: !!response.birthday || response.role === 'USER',
+    }
+  }
