@@ -35,7 +35,7 @@ export const mapApiUserResponseToUser = (response: any): IUser => {
       userId: response.id || 0,
       profileImageUrl: response.imageUrl || '',
       email: response.email || '',
-      name: response.name || '',  // API의 name 필드를 name으로 매핑
+      name: response.name || '',
       birthday: response.birthday || '',
       hasCompletedSignup: !!response.birthday || response.role === 'USER',
     }
