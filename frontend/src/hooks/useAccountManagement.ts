@@ -13,8 +13,12 @@ export const useAccountManagement = create<AccountManagementState>(() => ({
         useSettingsState.setState({ isLoading: true })
 
         try {
-            const userId = useUserStore.getState().user.userId
-            await userAPI.logout(userId)
+            // const userId = useUserStore.getState().user.userId
+            await userAPI.logout()
+
+            // 로컬스토리지 및 세션스토리지 초기화
+            localStorage.clear()
+            sessionStorage.clear()
 
             // 로그아웃 성공 후 스토어 초기화
             useUserStore.getState().resetUser()
@@ -22,6 +26,9 @@ export const useAccountManagement = create<AccountManagementState>(() => ({
                 showLogoutModal: false,
                 statusMessage: '로그아웃 되었습니다.'
             })
+
+            // 홈 페이지로 리다이렉트
+            window.location.href = '/'
 
             setTimeout(() => {
                 useSettingsState.setState({ statusMessage: '' })
@@ -45,12 +52,19 @@ export const useAccountManagement = create<AccountManagementState>(() => ({
             const userId = useUserStore.getState().user.userId
             await userAPI.deleteUser(userId)
 
+            // 로컬스토리지 및 세션스토리지 초기화
+            localStorage.clear()
+            sessionStorage.clear()
+
             // 회원 탈퇴 성공 후 스토어 초기화
             useUserStore.getState().resetUser()
             useSettingsState.setState({
                 showDeleteModal: false,
                 statusMessage: '회원 탈퇴가 완료되었습니다.'
             })
+
+            // 홈 페이지로 리다이렉트
+            window.location.href = '/'
 
             setTimeout(() => {
                 useSettingsState.setState({ statusMessage: '' })

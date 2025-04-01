@@ -9,9 +9,9 @@ export const userAPI = {
     },
 
     // 로그아웃
-    logout: async (userId: number) => {
+    logout: async () => {
         try {
-            return await apiClient.post(`/api/v1/auth/logout/${userId}`)
+            return await apiClient.post(`/api/v1/auth/logout`)
         } catch (error) {
             alert("로그아웃 중 오류 발생")
             throw error
@@ -60,6 +60,16 @@ export const userAPI = {
             alert("회원탈퇴 실패")
             throw error
         }
-    }
+    },
 
+    // 토큰 재발급 -> 이게 여기있어도 되나? 따로 파일을 만들어야하나?? -> 수동 토큰 재발급용
+    refreshToken: async () => {
+        try {
+            // const response = 
+            await apiClient.post("/api/v1/auth/reissue")
+        } catch (error) {
+            alert("토큰 재발급 실패")
+            throw error
+        }
+    }
 }

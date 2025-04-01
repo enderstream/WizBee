@@ -1,12 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectName } from '@/store/userStore'
+import { useUserStore, selectName, selectProfileImageUrl } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Home.css'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
+  const profileImageUrl = useUserStore(selectProfileImageUrl)
 
   // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
@@ -22,7 +23,15 @@ const Home: React.FC = () => {
   return (
     <div className="home-page">
       <div className="home-header">
-        <div className="home-avatar"></div>
+        <div className="home-avatar">
+          {profileImageUrl && (
+            <img 
+              src = {profileImageUrl}
+              alt= "@/assets/react.svg"
+              className="profileImage"
+            />
+          )}
+        </div>
         <div className="home-greeting">
           <h2>{name || '사용자'}님!</h2>
           <p>오늘도 열공해봐요</p>
