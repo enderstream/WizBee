@@ -4,24 +4,24 @@ import { useUserStore } from '@/store/userStore'
 import { useSettingsState } from '@/hooks/useSettingsState'
 
 interface ProfileUpdateState {
-    nickname: string
+    name: string
     birthDate: Date | null
-    setNickname: (nickname: string) => void
+    setName: (name: string) => void
     setBirthDate: (date: Date | null) => void
     handleOpenProfileModal: () => void
     handleSaveProfile: (e: React.FormEvent) => Promise<void>
 }
 
 export const useProfileUpdate = create<ProfileUpdateState>((set, get) => ({
-    nickname: '',
+    name: '',
     birthDate: null,
 
-    setNickname: (nickname) => set({ nickname }),
+    setName: (name) => set({ name }),
     setBirthDate: (date) => set({ birthDate: date }),
 
     handleOpenProfileModal: () => {
         // 저장된 사용자 정보로 폼 초기화
-        const storedNickname = useUserStore.getState().user.nickname
+        const storedName = useUserStore.getState().user.name
         const storedBirthday = useUserStore.getState().user.birthday
 
         // 생년월일 문자열을 Date 객체로 변환
@@ -31,7 +31,7 @@ export const useProfileUpdate = create<ProfileUpdateState>((set, get) => ({
         }
 
         set({
-            nickname: storedNickname || '',
+            name: storedName || '',
             birthDate: parseBirthdayToDate(storedBirthday)
         })
 
@@ -48,7 +48,7 @@ export const useProfileUpdate = create<ProfileUpdateState>((set, get) => ({
 
         try {
             const userId = useUserStore.getState().user.userId
-            const { nickname, birthDate } = get()
+            const { name, birthDate } = get()
 
             // Date 객체를 YYYY-MM-DD 형식으로 변환
             const formatDateToString = (date: Date | null) => {
@@ -64,11 +64,11 @@ export const useProfileUpdate = create<ProfileUpdateState>((set, get) => ({
             const birthday = formatDateToString(birthDate)
 
             // API 호출로 서버에 업데이트
-            await userAPI.updateUser(nickname, birthday, userId)
+            await userAPI.updateUser(name, birthday, userId)
 
             // 성공 시 Zustand 스토어 업데이트
             useUserStore.getState().updateUser({
-                nickname,
+                name,
                 birthday,
             })
 

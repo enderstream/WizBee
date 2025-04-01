@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectNickname } from '@/store/userStore'
+import { useUserStore, selectName } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Record.css' 
 
 const Record: React.FC = () => {
   const navigate = useNavigate()
-  const nickname = useUserStore(selectNickname)
+  const name = useUserStore(selectName)
   
   const handleGoToHome = () => {
     navigate(ROUTES.HOME)
@@ -34,7 +34,7 @@ const Record: React.FC = () => {
 
       <div className="record-info">
         <p>타임랩스 촬영을 시작하려면 촬영 버튼을 누르세요.</p>
-        <p>현재 사용자: {nickname || '사용자'}</p>
+        <p>현재 사용자: {name || '사용자'}</p>
       </div>
     </div>
   )

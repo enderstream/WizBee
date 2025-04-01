@@ -8,7 +8,7 @@ const initialUserState: IUser = {
     userId: 0,
     profileImageUrl: "",
     email: "",
-    nickname: "",
+    name: "",
     birthday: "",
     hasCompletedSignup: false,
 }
@@ -46,6 +46,6 @@ export const selectToken = (state: UserState) => state.user.token
 export const selectUserId = (state: UserState) => state.user.userId
 export const selectProfileImageUrl = (state: UserState) => state.user.profileImageUrl
 export const selectEmail = (state: UserState) => state.user.email
-export const selectNickname = (state: UserState) => state.user.nickname
+export const selectName = (state: UserState) => state.user.name
 export const selectBirthday = (state: UserState) => state.user.birthday
 export const selectHasCompletedSignup = (state: UserState) => state.user.hasCompletedSignup

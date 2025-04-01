@@ -5,7 +5,7 @@ import { useProfileUpdate } from '@/hooks/useProfileUpdate'
 
 const ProfileModal: React.FC = () => {
   const { isLoading, setShowProfileModal } = useSettingsState()
-  const { nickname, birthDate, setNickname, setBirthDate, handleSaveProfile } =
+  const { name, birthDate, setName, setBirthDate, handleSaveProfile } =
     useProfileUpdate()
 
   return (
@@ -14,9 +14,9 @@ const ProfileModal: React.FC = () => {
         <h3>내 정보 수정</h3>
         <form onSubmit={handleSaveProfile}>
           <ProfileForm
-            nickname={nickname}
+            name={name}
             birthDate={birthDate}
-            setNickname={setNickname}
+            setName={setName}
             setBirthDate={setBirthDate}
             isLoading={isLoading}
           />
