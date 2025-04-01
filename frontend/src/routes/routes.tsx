@@ -8,7 +8,6 @@ import SignUp from '@/pages/SignUp'
 import Settings from '@/pages/Settings'
 import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
-import BlueSward from '@/pages/BlueSward'
 import NotFound from '@/pages/NotFound'
 import QRScanner from '@/pages/QRScanner'
 
@@ -62,10 +61,6 @@ const router = createBrowserRouter([
               {
                 path: 'time-lapse-list',
                 element: <TimeLapseList />,
-              },
-              {
-                path: 'blue-sward',
-                element: <BlueSward />,
               },
               {
                 path: 'qr-scanner',
