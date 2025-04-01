@@ -1,7 +1,8 @@
 package com.wizbee.backend.timelapse.controller;
 
+import com.wizbee.backend.timelapse.dto.TimeLapseFinishRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
-import com.wizbee.backend.timelapse.entity.TimeLapse;
+import com.wizbee.backend.timelapse.Entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.service.TimeLapseService;
 import org.springframework.http.HttpStatus;
@@ -55,4 +56,16 @@ public class TimeLapseController {
         }
 
     }
+
+    // 타임랩스 촬영 종료
+    @PutMapping("/finish/{timelapseId}")
+    public ResponseEntity<?> finishTimeLapse(@RequestBody TimeLapseFinishRequestDto timeLapseFinishRequestDto, @PathVariable("timelapseId") int timelapseId){
+        try {
+            timelapseService.finishTimeLapse(timeLapseFinishRequestDto, timelapseId);
+            return ResponseEntity.ok("제목 저장");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
 }

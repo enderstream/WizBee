@@ -1,6 +1,6 @@
 package com.wizbee.backend.timelapse.repository;
 
-import com.wizbee.backend.timelapse.entity.TimeLapse;
+import com.wizbee.backend.timelapse.Entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
