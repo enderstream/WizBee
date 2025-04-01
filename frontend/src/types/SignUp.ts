@@ -1,5 +1,5 @@
 export interface SignUpFormData {
-    nickname: string
+    name: string
     year: string
     month: string
     day: string

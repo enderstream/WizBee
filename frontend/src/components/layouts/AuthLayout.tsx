@@ -1,9 +1,10 @@
+// AuthLayout.tsx (인증 필요한 라우트용 레이아웃)
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useUserStore, selectIsLogin, selectHasCompletedSignup } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 
-const ProtectedRoute: React.FC = () => {
+const AuthLayout: React.FC = () => {
   const isLogin = useUserStore(selectIsLogin)
   const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
   const location = useLocation()
@@ -22,4 +23,4 @@ const ProtectedRoute: React.FC = () => {
   return <Outlet />
 }
 
-export default ProtectedRoute
+export default AuthLayout

@@ -14,7 +14,7 @@ const SignUp: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   // 상태 관리 - DatePicker 사용을 위해 변경
-  const [nickname, setNickname] = useState(user.nickname || '')
+  const [name, setName] = useState(user.name || '')
   const [birthDate, setBirthDate] = useState<Date | null>(null)
   const [agreeTerms, setAgreeTerms] = useState(false)
 
@@ -50,11 +50,11 @@ const SignUp: React.FC = () => {
       const birthday = formatDateToString(birthDate)
 
       // 추가 정보 입력 API 호출
-      await userAPI.signUp(nickname, birthday)
+      await userAPI.signUp(name, birthday)
 
       // 스토어 업데이트
       updateUser({
-        nickname,
+        name,
         birthday,
         hasCompletedSignup: true,
       })
@@ -73,10 +73,10 @@ const SignUp: React.FC = () => {
     <div className="signup-page">
       <h1 className="signup-title">SIGN UP</h1>
       <SignUpForm
-        nickname={nickname}
+        name={name}
         birthDate={birthDate}
         agreeTerms={agreeTerms}
-        setNickname={setNickname}
+        setName={setName}
         setBirthDate={setBirthDate}
         handleTermsChange={handleTermsChange}
         handleSubmit={handleSubmit}

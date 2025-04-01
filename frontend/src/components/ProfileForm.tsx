@@ -16,9 +16,9 @@ const range = (start: number, end: number, step = 1) => {
 
 // 닉네임과 생년월일만 포함하는 재사용 가능한 글로벌 컴포넌트
 const ProfileForm: React.FC<ProfileFormProps> = ({
-  nickname,
+  name,
   birthDate,
-  setNickname,
+  setName,
   setBirthDate,
   isLoading = false,
 }) => {
@@ -45,15 +45,15 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     <>
       {/* 닉네임 입력 */}
       <div className="form-group">
-        <label htmlFor="nickname">닉네임</label>
+        <label htmlFor="name">닉네임</label>
         <div className="input-container">
           <i className="user-icon"></i>
           <input
             type="text"
-            id="nickname"
-            name="nickname"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            id="name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             disabled={isLoading}
             required
           />

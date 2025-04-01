@@ -7,9 +7,9 @@ export interface ConfirmationModalProps {
 
 // ProfileForm은 외부 컴포넌트이므로 여전히 props가 필요합니다.
 export interface ProfileFormProps {
-    nickname: string
+    name: string
     birthDate: Date | null
-    setNickname: (nickname: string) => void
+    setName: (name: string) => void
     setBirthDate: (date: Date | null) => void
     isLoading: boolean
 }

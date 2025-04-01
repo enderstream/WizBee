@@ -13,7 +13,7 @@ export const useSignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState<SignUpFormData>({
-        nickname: user.nickname || '',
+        name: user.name || '',
         year: '',
         month: '',
         day: '',
@@ -64,11 +64,11 @@ export const useSignUp = () => {
             const birthday = `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`;
 
             // 추가 정보 입력 API 호출
-            await userAPI.signUp(formData.nickname, birthday);
+            await userAPI.signUp(formData.name, birthday);
 
             // 스토어 업데이트
             updateUser({
-                nickname: formData.nickname,
+                name: formData.name,
                 birthday: birthday,
                 hasCompletedSignup: true,
             });
