@@ -1,11 +1,8 @@
-package com.wizbee.backend.timelapse.Entity;
+package com.wizbee.backend.timelapse.entity;
 
 import com.wizbee.backend.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
 import java.sql.Date;
 import java.time.ZoneId;
@@ -14,8 +11,10 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "timelapse")
+@Builder
 public class TimeLapse {
 
     @Id
@@ -27,12 +26,12 @@ public class TimeLapse {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "timelapse_url", nullable = false)
+    @Column(name = "timelapse_url")
     private String url;
 
     @Column(name = "timelapes_title", nullable = false)
-    @ColumnDefault("'제목없음'")
-    private String title;
+    @Builder.Default
+    private String title = "제목없음";
 
     @Column(name = "timelapse_date", nullable = false)
     private Date date;
