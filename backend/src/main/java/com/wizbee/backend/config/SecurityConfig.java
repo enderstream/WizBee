@@ -67,10 +67,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 
         // URL별 인가 설정
         http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/oauth2/**", "/login/**",
-                             "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout")
-            .permitAll()
-            .anyRequest().authenticated());
+                .requestMatchers("/", "/oauth2/**", "/login/**",
+                        "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout",
+                        "/api/v1/study/save", "/api/v1/timelapse/**", "/api/v1/pose/score/**")
+                .permitAll()
+                .anyRequest().authenticated());
+
 
         return http.build();
     }
