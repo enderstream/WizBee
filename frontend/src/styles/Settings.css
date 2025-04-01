@@ -63,7 +63,8 @@
   gap: 10px;
 }
 
-.year-select, .month-select {
+.year-select,
+.month-select {
   padding: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -86,7 +87,7 @@
 
 /* 일요일 색상 */
 .react-datepicker__day-name:first-child,
-.react-datepicker__day:nth-child(7n+1) {
+.react-datepicker__day:nth-child(7n + 1) {
   color: #ff5252 !important;
 }
 

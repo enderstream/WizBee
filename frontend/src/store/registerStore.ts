@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { RegisterState, RegisterActions } from '@/types/Register'
+import { RegisterState, RegisterActions, RegistrationStatusType } from '@/types/Register'
 import { machineAPI } from '@/api/machineAPI'
 import { useUserStore, selectUserId } from '@/store/userStore'
 
@@ -9,17 +9,17 @@ type RegisterStore = RegisterState & RegisterActions
 const useRegisterStore = create<RegisterStore>()((set) => ({
     // 초기 상태
     isRegistering: false,
-    registrationStatus: 'idle',
+    registrationStatus: 'idle' as RegistrationStatusType,
     scanResult: '',
     error: '',
     permissionGranted: false,
 
     // 액션
-    setIsRegistering: (isRegistering) => set({ isRegistering }),
-    setRegistrationStatus: (registrationStatus) => set({ registrationStatus }),
-    setScanResult: (scanResult) => set({ scanResult }),
-    setError: (error) => set({ error }),
-    setPermissionGranted: (permissionGranted) => set({ permissionGranted }),
+    setIsRegistering: (isRegistering: boolean) => set({ isRegistering }),
+    setRegistrationStatus: (registrationStatus: RegistrationStatusType) => set({ registrationStatus }),
+    setScanResult: (scanResult: string) => set({ scanResult }),
+    setError: (error: string) => set({ error }),
+    setPermissionGranted: (permissionGranted: boolean) => set({ permissionGranted }),
 
     resetState: () => set({
         isRegistering: false,

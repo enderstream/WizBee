@@ -40,11 +40,6 @@ const Home: React.FC = () => {
           start
         </button>
       </div>
-
-      {/* <div className="study-records">
-        <h3>나의 공부 기록</h3>
-        <Calendar month={2} />
-      </div> */}
     </div>
   )
 }

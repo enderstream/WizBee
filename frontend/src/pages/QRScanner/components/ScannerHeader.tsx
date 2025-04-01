@@ -1,10 +1,12 @@
 import React from 'react'
-import { ScannerHeaderProps } from '@/types/QRScanner'
+import { useQRScanner } from '@/hooks/useQRScanner'
 
-const ScannerHeader: React.FC<ScannerHeaderProps> = ({ onBack }) => {
+const ScannerHeader: React.FC = () => {
+  const { handleBack } = useQRScanner()
+
   return (
     <div className="scanner-header">
-      <button className="back-button" onClick={onBack}>
+      <button className="back-button" onClick={handleBack}>
         ← 뒤로
       </button>
       <h2>QR 코드 스캔</h2>

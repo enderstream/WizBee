@@ -1,11 +1,13 @@
 import React from 'react'
-import { ErrorMessageProps } from '@/types/QRScanner'
+import { useQRScanner } from '@/hooks/useQRScanner'
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ error, onClear }) => {
+const ErrorMessage: React.FC = () => {
+  const { error, clearError } = useQRScanner()
+
   return (
     <div className="error-message">
       <p>{error}</p>
-      <button onClick={onClear}>확인</button>
+      <button onClick={clearError}>확인</button>
     </div>
   )
 }

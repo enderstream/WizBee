@@ -1,12 +1,14 @@
 import React from 'react'
-import { StatusMessageProps } from '@/types/Setting'
+import { useSettingsState } from '@/hooks/useSettingsState'
 
-const StatusMessage: React.FC<StatusMessageProps> = ({ message, onClose }) => {
+const StatusMessage: React.FC = () => {
+  const { statusMessage, setStatusMessage } = useSettingsState()
+  
   return (
     <div className="status-message-container">
       <div className="status-message">
-        <p>{message}</p>
-        <button onClick={onClose}>확인</button>
+        <p>{statusMessage}</p>
+        <button onClick={() => setStatusMessage('')}>확인</button>
       </div>
     </div>
   )
