@@ -17,7 +17,7 @@ CREATE TABLE `timelapse` (
     `user_id` INTEGER NOT NULL COMMENT 'user테이블 참조',
     `timelapse_url` VARCHAR(255) NOT NULL COMMENT 's3에 저장된 타임랩스 url',
     `timelapse_date` VARCHAR(255) NOT NULL DEFAULT "한국 시간" COMMENT '촬영 시작 시간',
-    `timalapse_title` VARCHAR(255) NOT NULL DEFAULT "제목없음" COMMENT '타임랩스 제목',
+    `timelapse_title` VARCHAR(255) NOT NULL DEFAULT "제목없음" COMMENT '타임랩스 제목',
     PRIMARY KEY (`timelapse_id`)
 );
 
@@ -101,7 +101,7 @@ VALUES (
         'NO_BIRTH_USER'
     );
 
--- 타임랩스 테이블 더미데이터 삽입 (user_id 16: 4개, 17: 6개)
+-- 타임랩스 테이블 더미데이터 삽입 (user_id 1과 2 사용)
 INSERT INTO
     `timelapse` (
         `user_id`,
@@ -110,62 +110,362 @@ INSERT INTO
         `timelapse_title`
     )
 VALUES (
-        16,
+        1,
         'https://s3.amazonaws.com/timelapses/user16/city_night.mp4',
         '2025-03-25 22:15:00',
         '도시의 밤'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/flower_blooming.mp4',
         '2025-03-26 14:20:00',
         '꽃 피는 과정'
     ),
     (
-        16,
+        1,
         'https://s3.amazonaws.com/timelapses/user16/traffic_rush_hour.mp4',
         '2025-03-27 17:30:00',
         '출퇴근 시간 교통'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/cooking_process.mp4',
         '2025-03-28 19:45:00',
         '요리 과정'
     ),
     (
-        16,
+        1,
         'https://s3.amazonaws.com/timelapses/user16/cloud_timelapse.mp4',
         '2025-03-29 13:10:00',
         '구름 형성 과정'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/plant_growing.mp4',
         '2025-03-30 08:15:00',
         '식물 성장 과정'
     ),
     (
-        16,
+        1,
         'https://s3.amazonaws.com/timelapses/user16/sunset_view.mp4',
         '2025-03-31 18:30:00',
         '황혼 풍경'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/market_day.mp4',
         '2025-04-01 10:20:00',
         '시장 하루'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/ocean_waves.mp4',
         '2025-04-01 15:40:00',
         '바다 파도'
     ),
     (
-        17,
+        2,
         'https://s3.amazonaws.com/timelapses/user17/stars_movement.mp4',
         '2025-04-01 23:50:00',
         '별의 움직임'
+    );
+
+-- 시연용 더미 데이터
+INSERT INTO
+    `chart` (
+        `user_id`,
+        `chart_date`,
+        `chart_fulltime`,
+        `chart_studytime`,
+        `chart_sleepcnt`,
+        `chart_sleeptime`,
+        `chart_phonecnt`,
+        `chart_phonetime`,
+        `chart_outcnt`,
+        `chart_outtime`
+    )
+VALUES (
+        1,
+        '2025-03-31',
+        500,
+        300,
+        2,
+        40,
+        3,
+        120,
+        1,
+        40
+    ), -- 99년생 또래
+    (
+        2,
+        '2025-03-31',
+        180,
+        120,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ), -- 10년생 또래
+    (
+        16,
+        '2025-04-02',
+        500,
+        360,
+        1,
+        120,
+        1,
+        20,
+        0,
+        0
+    ),
+    (
+        16,
+        '2025-04-03',
+        500,
+        180,
+        1,
+        20,
+        1,
+        210,
+        1,
+        90
+    ),
+    (
+        16,
+        '2025-04-04',
+        500,
+        270,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        16,
+        '2025-04-05',
+        700,
+        600,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        16,
+        '2025-04-06',
+        500,
+        490,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        16,
+        '2025-04-07',
+        500,
+        200,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        16,
+        '2025-04-08',
+        620,
+        350,
+        1,
+        50,
+        1,
+        100,
+        2,
+        120
+    ),
+    (
+        16,
+        '2025-04-09',
+        720,
+        480,
+        1,
+        20,
+        5,
+        200,
+        1,
+        20
+    ),
+    (
+        16,
+        '2025-04-10',
+        360,
+        165,
+        0,
+        0,
+        2,
+        135,
+        2,
+        60
+    ),
+    (
+        16,
+        '2025-04-11',
+        420,
+        320,
+        1,
+        27,
+        1,
+        10,
+        1,
+        63
+    );
+
+-- 메인페이지 발표일 포함 3일간의 자세 데이터
+INSERT INTO
+    `pose` (
+        `user_id2`,
+        `pose_turtlecnt`,
+        `pose_shouldercnt`,
+        `pose_downcnt`,
+        `pose_date`
+    )
+VALUES (16, 3, 3, 1, '2025-04-09'),
+    (16, 3, 3, 1, '2025-04-10'),
+    (16, 3, 3, 1, '2025-04-11');
+
+-- pose_id = 1에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        16,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
+    );
+
+-- pose_id = 2에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        16,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
+    );
+-- pose_id = 3에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        16,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
     );
