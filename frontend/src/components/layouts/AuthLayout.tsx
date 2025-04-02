@@ -6,6 +6,7 @@ import { ROUTES } from '@/routes/routes'
 
 const AuthLayout: React.FC = () => {
   const isLogin = useUserStore(selectIsLogin)
+  // const userRole = useUserStore(sele)
   const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
   const location = useLocation()
 

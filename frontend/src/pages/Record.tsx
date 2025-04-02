@@ -2,12 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUserStore, selectName } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
-import '@/styles/Record.css' 
+import '@/styles/Record.css'
 
 const Record: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
-  
+
   const handleGoToHome = () => {
     navigate(ROUTES.HOME)
   }

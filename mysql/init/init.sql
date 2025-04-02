@@ -8,7 +8,7 @@ CREATE TABLE `users` (
     `user_birthday` DATE NULL COMMENT '회원가입 과정에서 추가로 받을 정보',
     `user_role` VARCHAR(20) NOT NULL COMMENT '생년월일 정보를 입력했느냐 안 했느냐 구분 용도',
     `user_machine` VARCHAR(20) NULL COMMENT '유저가 사용하는 라즈베리파이 기기 고유 번호',
-    `user_imgurl` VARCHAR(255) NULL COMMENT '사용자 이미지 URL',
+    `user_imgurl` TEXT NULL COMMENT '사용자 이미지 URL',
     PRIMARY KEY (`user_id`)
 );
 
@@ -16,6 +16,8 @@ CREATE TABLE `timelapse` (
     `timelapse_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `user_id` INTEGER NOT NULL COMMENT 'user테이블 참조',
     `timelapse_url` VARCHAR(255) NOT NULL COMMENT 's3에 저장된 타임랩스 url',
+    `timelapse_date` VARCHAR(255) NOT NULL DEFAULT "한국 시간" COMMENT '촬영 시작 시간',
+    `timalapse_title` VARCHAR(255) NOT NULL DEFAULT "제목없음" COMMENT '타임랩스 제목',
     PRIMARY KEY (`timelapse_id`)
 );
 
@@ -99,18 +101,71 @@ VALUES (
         'NO_BIRTH_USER'
     );
 
+-- 타임랩스 테이블 더미데이터 삽입 (user_id 16: 4개, 17: 6개)
 INSERT INTO
-    `timelapse` (`user_id`, `timelapse_url`)
-VALUES (1, 'www.naver.com');
-
-INSERT INTO
-    `timelapse` (`user_id`, `timelapse_url`)
-VALUES (1, 'www.google.com');
-
-INSERT INTO
-    `timelapse` (`user_id`, `timelapse_url`)
-VALUES (2, 'edu.ssafy.com');
-
-INSERT INTO
-    `timelapse` (`user_id`, `timelapse_url`)
-VALUES (2, 'github.com/');
+    `timelapse` (
+        `user_id`,
+        `timelapse_url`,
+        `timelapse_date`,
+        `timelapse_title`
+    )
+VALUES (
+        16,
+        'https://s3.amazonaws.com/timelapses/user16/city_night.mp4',
+        '2025-03-25 22:15:00',
+        '도시의 밤'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/flower_blooming.mp4',
+        '2025-03-26 14:20:00',
+        '꽃 피는 과정'
+    ),
+    (
+        16,
+        'https://s3.amazonaws.com/timelapses/user16/traffic_rush_hour.mp4',
+        '2025-03-27 17:30:00',
+        '출퇴근 시간 교통'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/cooking_process.mp4',
+        '2025-03-28 19:45:00',
+        '요리 과정'
+    ),
+    (
+        16,
+        'https://s3.amazonaws.com/timelapses/user16/cloud_timelapse.mp4',
+        '2025-03-29 13:10:00',
+        '구름 형성 과정'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/plant_growing.mp4',
+        '2025-03-30 08:15:00',
+        '식물 성장 과정'
+    ),
+    (
+        16,
+        'https://s3.amazonaws.com/timelapses/user16/sunset_view.mp4',
+        '2025-03-31 18:30:00',
+        '황혼 풍경'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/market_day.mp4',
+        '2025-04-01 10:20:00',
+        '시장 하루'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/ocean_waves.mp4',
+        '2025-04-01 15:40:00',
+        '바다 파도'
+    ),
+    (
+        17,
+        'https://s3.amazonaws.com/timelapses/user17/stars_movement.mp4',
+        '2025-04-01 23:50:00',
+        '별의 움직임'
+    );

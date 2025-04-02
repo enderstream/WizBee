@@ -1,11 +1,13 @@
+// types/User.ts
 export interface IUser {
-    isLogin: boolean,
-    token: string,
-    userId: number,
-    profileImageUrl: string,
-    email: string
+    id: number,
     name: string,
+    email: string,
     birthday: string,
+    role: string,
+    machine: string,
+    imageUrl: string,
+    isLogin: boolean,
     hasCompletedSignup: boolean,
 }
 
@@ -14,29 +16,42 @@ export interface UserState {
     setUser: (user: IUser) => void
     updateUser: (userUpdate: Partial<IUser>) => void
     resetUser: () => void
-    hydrated: boolean
-    setHydrated: (val: boolean) => void
 }
 
 export interface OAuthCallbackResponse {
-    token: string
-    userId: number
-    profileImageUrl: string
+    id: number
+    name: string
     email: string
-    name: string | null
     birthday: string | null
-    hasCompletedSignup: boolean
+    role: string
+    machine: string | null
+    imageUrl: string
 }
 
-export const mapApiUserResponseToUser = (response: any): IUser => {
+// 초기 사용자 상태 정의
+export const initialUserState: IUser = {
+    id: 0,
+    name: "미확인 사용자",
+    email: "",
+    birthday: "",
+    role: "",
+    machine: "000",
+    imageUrl: "",
+    isLogin: false,
+    hasCompletedSignup: false,
+}
+
+// 백엔드로부터 유저 정보를 초기화하는 함수
+export const initializeUserInfo = (response: OAuthCallbackResponse): IUser => {
     return {
-      isLogin: true,
-      token: response.token || '',
-      userId: response.id || 0,
-      profileImageUrl: response.imageUrl || '',
-      email: response.email || '',
-      name: response.name || '',
-      birthday: response.birthday || '',
-      hasCompletedSignup: !!response.birthday || response.role === 'USER',
+        id: response.id || initialUserState.id,
+        name: response.name || initialUserState.name,
+        email: response.email || initialUserState.email,
+        birthday: response.birthday || initialUserState.birthday,
+        role: response.role,
+        machine: response.machine || initialUserState.machine,
+        imageUrl: response.imageUrl || initialUserState.imageUrl,
+        isLogin: true,
+        hasCompletedSignup: (Boolean(response.birthday) || response.role === 'USER') && response.role !== 'WITHDRAW_USER'
     }
-  }
+}

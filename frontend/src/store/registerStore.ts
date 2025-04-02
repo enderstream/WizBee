@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { RegisterState, RegisterActions, RegistrationStatusType } from '@/types/Register'
+import { RegisterState, RegisterActions, RegistrationStatusType } from '@/types/MachineRegister'
 import { machineAPI } from '@/api/machineAPI'
 import { useUserStore, selectUserId } from '@/store/userStore'
 
