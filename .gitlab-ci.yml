@@ -13,7 +13,7 @@ sonarqube-check:
   script: 
     - cd backend
     - gradle build -x test
-    - gradle sonarqube -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
+    - gradle sonar -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
   allow_failure: true
   only:
     - release
