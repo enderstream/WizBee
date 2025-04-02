@@ -29,7 +29,7 @@ public class TimeLapse {
     @Column(name = "timelapse_url")
     private String url;
 
-    @Column(name = "timelapes_title", nullable = false)
+    @Column(name = "timelapse_title", nullable = false)
     @Builder.Default
     private String title = "제목없음";
 

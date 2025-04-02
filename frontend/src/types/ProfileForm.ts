@@ -1,4 +1,3 @@
-// src/types/ProfileForm.ts
 export interface ProfileFormProps {
     name: string;
     birthDate: Date | null;

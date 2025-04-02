@@ -28,38 +28,39 @@ export const useSignUp = () => {
         }));
     };
 
-    const validateBirthday = (year: number, month: number, day: number): boolean => {
-        if (
-            isNaN(year) ||
-            year < 1900 ||
-            year > 2100 ||
-            isNaN(month) ||
-            month < 1 ||
-            month > 12 ||
-            isNaN(day) ||
-            day < 1 ||
-            day > 31
-        ) {
-            alert('올바른 생년월일을 입력해주세요.');
-            return false;
-        }
-        return true;
-    };
+    // const validateBirthday = (year: number, month: number, day: number): boolean => {
+    //     if (
+    //         isNaN(year) ||
+    //         year < 1900 ||
+    //         year > 2100 ||
+    //         isNaN(month) ||
+    //         month < 1 ||
+    //         month > 12 ||
+    //         isNaN(day) ||
+    //         day < 1 ||
+    //         day > 31
+    //     ) {
+    //         alert('올바른 생년월일을 입력해주세요.');
+    //         return false;
+    //     }
+    //     return true;
+    // };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
+            // 유효성 검사 안해도됨, date-picker 사용하는 중
             // 생년월일 유효성 검사
-            const year = parseInt(formData.year);
-            const month = parseInt(formData.month);
-            const day = parseInt(formData.day);
+            // const year = parseInt(formData.year);
+            // const month = parseInt(formData.month);
+            // const day = parseInt(formData.day);
 
-            if (!validateBirthday(year, month, day)) {
-                setIsLoading(false);
-                return;
-            }
+            // if (!validateBirthday(year, month, day)) {
+            //     setIsLoading(false);
+            //     return;
+            // }
 
             const birthday = `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`;
 
@@ -74,7 +75,7 @@ export const useSignUp = () => {
             });
 
             // 홈으로 이동
-            navigate(ROUTES.HOME);
+            navigate(ROUTES.HOME, { replace: true });
         } catch (error) {
             console.error('회원가입 오류:', error);
             alert('회원가입 중 오류가 발생했습니다');

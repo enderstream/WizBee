@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userAPI } from '@/api/userAPI'
 import { useUserStore } from '@/store/userStore'
-import { OAuthCallbackResponse, mapApiUserResponseToUser } from '@/types/User'
+import { OAuthCallbackResponse, initializeUserInfo } from '@/types/User'
+import { ROUTES } from '@/routes/routes'
 
 const OAuthRedirect: React.FC = () => {
   const navigate = useNavigate()
@@ -19,21 +20,21 @@ const OAuthRedirect: React.FC = () => {
         console.log('유저 정보:', userResponse)
 
         // API 응답을 기반으로 사용자 상태 생성 (nullable 값은 기본값 처리)
-        const user = mapApiUserResponseToUser(userResponse)
+        const user = initializeUserInfo(userResponse)
 
         // 상태 업데이트
         setUser(user)
 
         // 가입 완료 여부에 따라 최종 리다이렉션 결정
-        if (user.email && user.birthday) {
-          navigate('/home', { replace: true })
+        if (user.hasCompletedSignup) {
+          navigate(ROUTES.HOME, { replace: true })
         } else {
-          navigate('/signup', { replace: true })
+          navigate(ROUTES.SIGNUP, { replace: true })
         }
       } catch (error) {
         console.error('유저 정보 조회 실패:', error)
         // 에러 발생 시 웰컴 페이지로 이동
-        navigate('/', { replace: true })
+        navigate(ROUTES.ROOT, { replace: true })
       } finally {
         setLoading(false)
       }

@@ -47,7 +47,7 @@ export const useProfileUpdate = create<ProfileUpdateState>((set, get) => ({
         })
 
         try {
-            const userId = useUserStore.getState().user.userId
+            const userId = useUserStore.getState().user.id
             const { name, birthDate } = get()
 
             // Date 객체를 YYYY-MM-DD 형식으로 변환
