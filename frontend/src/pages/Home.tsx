@@ -1,10 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  useUserStore,
-  selectName,
-  selectProfileImageUrl,
-} from '@/store/userStore'
+import { useUserStore, selectName, selectProfileImageUrl } from '@/store/userStore'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
 import MachineRegisterModal from '@/components/MachineRegisterModal'
@@ -26,10 +22,21 @@ const Home: React.FC = () => {
     <div className="home-page">
       <div className="home-header">
         <div className="home-avatar">
-          {profileImageUrl && (
-            <img
+          {profileImageUrl ? (
+            <img 
               src={profileImageUrl}
-              alt="@/assets/react.svg"
+              alt="프로필 이미지"
+              className="profileImage"
+              onError={(e) => {
+                // 이미지 로드 실패 시 기본 이미지로 대체
+                e.currentTarget.src = '@/assets/react.svg';
+                console.log('프로필 이미지 로드 실패, 기본 이미지로 대체');
+              }}
+            />
+          ) : (
+            <img 
+              src="@/assets/react.svg"
+              alt="기본 프로필"
               className="profileImage"
             />
           )}
@@ -39,7 +46,9 @@ const Home: React.FC = () => {
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="machine-registration">
-          <button onClick={openModal}>기기등록</button>
+          <button onClick={openModal}>
+            기기등록
+          </button>
         </div>
       </div>
 
