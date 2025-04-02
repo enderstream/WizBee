@@ -36,9 +36,9 @@ public class TimeLapseService {
 
     // 타입 랩스 초기 정보 저장
     @Transactional
-    public TimeLapse startTimeLapse (int userId) {
+    public TimeLapse startTimeLapse (String machineId) {
         // 사용자 조회
-        User user = userRepository.findById(userId);
+        User user = userRepository.findByMachine(machineId);
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }
@@ -46,7 +46,7 @@ public class TimeLapseService {
         TimeLapse timeLapse = new TimeLapse();
         timeLapse.setUser(user);
         TimeLapse savedtimeLapse = timelapseRepository.save(timeLapse);
-// 웹 소켓으로 타임랩스아이디 전송 로직(구현은 나중에)
+
         return savedtimeLapse;
 
     }
