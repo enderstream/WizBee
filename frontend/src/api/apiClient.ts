@@ -44,26 +44,26 @@ import { useUserStore } from '@/store/userStore'
 const baseURL = import.meta.env.VITE_API_URL
 
 // 토큰 재발급 중인지 확인하는 플래그
-let isRefreshing = false;
+let isRefreshing = false
 // 대기 중인 요청 배열
 let failedQueue: Array<{
-  resolve: (value: unknown) => void;
-  reject: (reason?: any) => void;
-  config: any;
-}> = [];
+  resolve: (value: unknown) => void
+  reject: (reason?: any) => void
+  config: any
+}> = []
 
 // 토큰 재발급 성공 후 대기 중인 요청 처리
 const processQueue = (error: AxiosError | null) => {
   failedQueue.forEach(request => {
     if (error) {
-      request.reject(error);
+      request.reject(error)
     } else {
-      request.resolve(apiClient(request.config));
+      request.resolve(apiClient(request.config))
     }
-  });
-  
-  failedQueue = [];
-};
+  })
+
+  failedQueue = []
+}
 
 // axios 인스턴스 생성
 const apiClient: AxiosInstance = axios.create({
@@ -72,64 +72,64 @@ const apiClient: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true, // 쿠키 자동 전송을 위해 필요
-});
+})
 
 // 요청 인터셉터 추가
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    return config;
+    return config
   },
   (error: AxiosError): Promise<AxiosError> => {
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 // 응답 인터셉터 추가
 apiClient.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => response,
   async (error: AxiosError): Promise<any> => {
-    const originalConfig = error.config;
-    
+    const originalConfig = error.config
+
     // 요청 설정이 없는 경우 또는 재발급 요청인 경우 처리하지 않음
-    if (!originalConfig || 
-        !originalConfig.url || 
-        originalConfig.url === '/api/v1/auth/reissue') {
-      return Promise.reject(error);
+    if (!originalConfig ||
+      !originalConfig.url ||
+      originalConfig.url === '/api/v1/auth/reissue') {
+      return Promise.reject(error)
     }
-    
+
     // 401 오류 처리
     if (error.response?.status === 401) {
       // 이미 재시도한 요청인 경우 처리하지 않음
       if ((originalConfig as any)._retry) {
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
-      
+
       // 재시도 플래그 설정
-      (originalConfig as any)._retry = true;
-      
+      (originalConfig as any)._retry = true
+
       if (!isRefreshing) {
-        isRefreshing = true;
-        
+        isRefreshing = true
+
         try {
           // 토큰 재발급 요청
-          await apiClient.post('/api/v1/auth/reissue');
-          
+          await apiClient.post('/api/v1/auth/reissue')
+
           // 토큰 재발급 성공 - 대기 중인 요청들 처리
-          isRefreshing = false;
-          processQueue(null);
-          
+          isRefreshing = false
+          processQueue(null)
+
           // 원래 요청 재시도
-          return apiClient(originalConfig);
+          return apiClient(originalConfig)
         } catch (refreshError) {
           // 토큰 재발급 실패
-          isRefreshing = false;
-          processQueue(refreshError as AxiosError);
-          
+          isRefreshing = false
+          processQueue(refreshError as AxiosError)
+
           // 로그아웃 처리
-          useUserStore.getState().resetUser();
-          window.location.href = '/';
-          
-          return Promise.reject(refreshError);
+          useUserStore.getState().resetUser()
+          window.location.href = '/'
+
+          return Promise.reject(refreshError)
         }
       } else {
         // 이미 토큰 재발급 중인 경우, 대기열에 추가
@@ -138,14 +138,14 @@ apiClient.interceptors.response.use(
             resolve,
             reject,
             config: originalConfig,
-          });
-        });
+          })
+        })
       }
     }
-    
-    // 다른 오류는 그대로 전달
-    return Promise.reject(error);
-  }
-);
 
-export { apiClient };
+    // 다른 오류는 그대로 전달
+    return Promise.reject(error)
+  }
+)
+
+export { apiClient }

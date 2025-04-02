@@ -3,21 +3,21 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import { UserState, initialUserState } from '@/types/User'
 
 export const useUserStore = create<UserState>()(
-    persist(
-      (set) => ({
-        user: initialUserState,
-        setUser: (user) => set({ user }),
-        updateUser: (userUpdate) => set((state) => ({ 
-          user: { ...state.user, ...userUpdate } 
-        })),
-        resetUser: () => set({ user: initialUserState }),
-      }),
-      {
-        name: 'userPersist',
-        storage: createJSONStorage(() => sessionStorage),
-      }
-    )
+  persist(
+    (set) => ({
+      user: initialUserState,
+      setUser: (user) => set({ user }),
+      updateUser: (userUpdate) => set((state) => ({
+        user: { ...state.user, ...userUpdate }
+      })),
+      resetUser: () => set({ user: initialUserState }),
+    }),
+    {
+      name: 'userPersist',
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
+)
 
 // 편의를 위한 선택자 함수들
 export const selectUser = (state: UserState) => state.user

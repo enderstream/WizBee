@@ -1,0 +1,76 @@
+# sonarqube-check:
+#   tags:
+#     - sonarqube
+#   image: gradle:8.12.1-jdk17
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#     GIT_DEPTH: "0"
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#       - .gradle
+#   script: 
+#     - gradle build -x test
+#     - gradle sonar -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
+#   allow_failure: true
+#   only:
+#     - release
+
+
+
+stages:
+  - backend-analysis
+  - frontend-analysis
+
+variables:
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+  GIT_DEPTH: "0"
+
+backend-sonarqube:
+  stage: backend-analysis
+  tags:
+    - sonarqube
+  image: gradle:8.12.1-jdk17
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+      - .gradle
+  script: 
+    - cd backend
+    - gradle build -x test
+    - gradle sonar 
+        -Dsonar.projectKey=Wizbee_key 
+        -Dsonar.qualitygate.wait=true
+        -Dsonar.host.url=$SONAR_HOST_URL
+        -Dsonar.login=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - release
+
+frontend-sonarqube:
+  stage: frontend-analysis
+  tags:
+    - sonarqube
+  image: node:18
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+      - node_modules
+  script:
+    - cd frontend
+    - npm install
+    - npm install -g sonarqube-scanner
+    - sonar-scanner 
+        -Dsonar.projectKey=Wizbee_key 
+        -Dsonar.sources=./src 
+        -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.test.tsx 
+        -Dsonar.typescript.lcov.reportPaths=./coverage/lcov.info 
+        -Dsonar.qualitygate.wait=true
+        -Dsonar.host.url=$SONAR_HOST_URL
+        -Dsonar.login=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - release
