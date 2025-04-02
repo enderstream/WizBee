@@ -40,7 +40,11 @@ backend-sonarqube:
   script: 
     - cd backend
     - gradle build -x test
-    - gradle sonar -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
+    - gradle sonar 
+        -Dsonar.projectKey=Wizbee_key 
+        -Dsonar.qualitygate.wait=true
+        -Dsonar.host.url=$SONAR_HOST_URL
+        -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
   only:
     - release
@@ -65,6 +69,8 @@ frontend-sonarqube:
         -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.test.tsx 
         -Dsonar.typescript.lcov.reportPaths=./coverage/lcov.info 
         -Dsonar.qualitygate.wait=true
+        -Dsonar.host.url=$SONAR_HOST_URL
+        -Dsonar.login=$SONAR_TOKEN
   allow_failure: true
   only:
     - release
