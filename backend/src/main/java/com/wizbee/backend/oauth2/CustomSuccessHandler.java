@@ -53,7 +53,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String role = auth.getAuthority();
 
         // 토큰 생성
-        String access = jwtUtil.createJwt("access", email, role, id, 600000L);         // 10분
+        String access = jwtUtil.createJwt("access", email, role, id, 86400000L);         // 10분
         String refresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);     // 1일
 
         // Redis에 Refresh Token 저장 (Base64 인코딩, 7일 유효)
