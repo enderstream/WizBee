@@ -304,9 +304,3 @@ tree.txt
 
 # AI 모델 가중치 무시
 ai/weights/
-
-
-# gitlab 파이프라인 관련
-.scannerwork/
-.sonar/
-sonar-project.properties
