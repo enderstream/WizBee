@@ -5,6 +5,7 @@ import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
 import MachineRegisterModal from '@/components/MachineRegisterModal'
 import '@/styles/Home.css'
+import 
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -15,7 +16,8 @@ const Home: React.FC = () => {
   // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
     console.log('타임랩스 세션 시작')
-    navigate(ROUTES.RECORD)
+    // navigate(ROUTES.RECORD)
+
   }
 
   return (
@@ -24,7 +26,7 @@ const Home: React.FC = () => {
         <div className="home-avatar">
           {profileImageUrl ? (
             <img 
-              src={profileImageUrl}
+              // src={profileImageUrl}
               alt="프로필 이미지"
               className="profileImage"
               onError={(e) => {
