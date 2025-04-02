@@ -9,7 +9,9 @@ CREATE TABLE `users` (
     `user_role` VARCHAR(20) NOT NULL COMMENT '생년월일 정보를 입력했느냐 안 했느냐 구분 용도',
     `user_machine` VARCHAR(20) NULL COMMENT '유저가 사용하는 라즈베리파이 기기 고유 번호',
     `user_imgurl` TEXT NULL COMMENT '사용자 이미지 URL',
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `UK_user_email` (`user_email`),
+    UNIQUE KEY `UK_user_machine` (`user_machine`)
 );
 
 CREATE TABLE `timelapse` (
@@ -168,4 +170,304 @@ VALUES (
         'https://s3.amazonaws.com/timelapses/user17/stars_movement.mp4',
         '2025-04-01 23:50:00',
         '별의 움직임'
+    );
+
+-- 시연용 더미 데이터
+INSERT INTO
+    `chart` (
+        `user_id`,
+        `chart_date`,
+        `chart_fulltime`,
+        `chart_studytime`,
+        `chart_sleepcnt`,
+        `chart_sleeptime`,
+        `chart_phonecnt`,
+        `chart_phonetime`,
+        `chart_outcnt`,
+        `chart_outtime`
+    )
+VALUES (
+        1,
+        '2025-03-31',
+        500,
+        300,
+        2,
+        40,
+        3,
+        120,
+        1,
+        40
+    ), -- 99년생 또래
+    (
+        2,
+        '2025-03-31',
+        180,
+        120,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ), -- 10년생 또래
+    (
+        2,
+        '2025-04-02',
+        500,
+        360,
+        1,
+        120,
+        1,
+        20,
+        0,
+        0
+    ),
+    (
+        2,
+        '2025-04-03',
+        500,
+        180,
+        1,
+        20,
+        1,
+        210,
+        1,
+        90
+    ),
+    (
+        2,
+        '2025-04-04',
+        500,
+        270,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        2,
+        '2025-04-05',
+        700,
+        600,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        2,
+        '2025-04-06',
+        500,
+        490,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        2,
+        '2025-04-07',
+        500,
+        200,
+        1,
+        20,
+        1,
+        10,
+        1,
+        30
+    ),
+    (
+        2,
+        '2025-04-08',
+        620,
+        350,
+        1,
+        50,
+        1,
+        100,
+        2,
+        120
+    ),
+    (
+        2,
+        '2025-04-09',
+        720,
+        480,
+        1,
+        20,
+        5,
+        200,
+        1,
+        20
+    ),
+    (
+        2,
+        '2025-04-10',
+        360,
+        165,
+        0,
+        0,
+        2,
+        135,
+        2,
+        60
+    ),
+    (
+        2,
+        '2025-04-11',
+        420,
+        320,
+        1,
+        27,
+        1,
+        10,
+        1,
+        63
+    );
+
+-- 메인페이지 발표일 포함 3일간의 자세 데이터
+INSERT INTO
+    `pose` (
+        `user_id2`,
+        `pose_turtlecnt`,
+        `pose_shouldercnt`,
+        `pose_downcnt`,
+        `pose_date`
+    )
+VALUES (2, 3, 3, 1, '2025-04-09'),
+    (2, 3, 3, 1, '2025-04-10'),
+    (2, 3, 3, 1, '2025-04-11');
+
+-- pose_id = 1에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        2,
+        1,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
+    );
+
+-- pose_id = 2에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        2,
+        2,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
+    );
+-- pose_id = 3에 대한 7개 이미지
+INSERT INTO
+    `poseimage` (
+        `user_id`,
+        `pose_id`,
+        `poseimage_url`
+    )
+VALUES (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
+    ),
+    (
+        2,
+        3,
+        'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
     );

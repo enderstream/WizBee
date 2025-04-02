@@ -1,13 +1,43 @@
 import { apiClient } from "@/api/apiClient"
 
 export const timeLapseAPI = {
+    // 타임랩스 영상 목록 조회
     timeLapseList: async (userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/timelapse/${userId}`)
-            return response.data
+            return { data: response.data, status: response.status }
         } catch (error) {
-            alert("타임랩스 목록을 가져오기 실패")
+            alert("타임랩스 목록 가져오기 실패")
             throw error
         }
-    }
+    },
+
+    // 타임랩스 촬영 시작 -> 얘 API 좀 고쳐야할 같은데?? 유저 아이디 있는게 낫지 않나? -> 없어도 되는걸로!
+    startRecordTimeLapse: async (machineId: number) => {
+        try {
+            const response = await apiClient.post(`/api/v1/timelapse/${machineId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+    asdf: async (userId: number) => {
+        try {
+            const response = await apiClient.get(`/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+    asdf: async (userId: number) => {
+        try {
+            const response = await apiClient.get(`/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
 }

@@ -1,9 +1,9 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const NotFound: React.FC = () => {
   console.log(`404 NOT FOUND`)
-  
+
   return (
     <div className="not-found-container">
       <h1>404</h1>

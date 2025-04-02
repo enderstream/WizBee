@@ -21,11 +21,7 @@ const RootLayout: React.FC = () => {
   if (loading) return <LoadingScreen />
 
   // 특정 라우트에서는 BottomNavBar를 숨기는 로직
-  const hideNavBarRoutes = [
-    ROUTES.WELCOME,
-    ROUTES.SIGNUP,
-    ROUTES.QR_SCANNER,
-  ]
+  const hideNavBarRoutes = [ROUTES.WELCOME, ROUTES.SIGNUP, ROUTES.QR_SCANNER]
 
   // 정확한 경로 매칭 대신 경로가 포함되는지 확인
   const shouldShowNavBar = !hideNavBarRoutes.some(

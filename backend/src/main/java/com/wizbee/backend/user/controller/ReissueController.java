@@ -76,7 +76,7 @@ public class ReissueController {
 
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", email, role, id, 3600000L);
+        String newAccess = jwtUtil.createJwt("access", email, role, id, 86400000L);
         String newRefresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);
 
 //        System.out.println("재발급된 토큰: " + newRefresh);
