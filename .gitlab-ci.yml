@@ -1,19 +1,58 @@
-sonarqube-check:
-  tags:
-    - sonarqube
+# sonarqube-check:
+#   tags:
+#     - sonarqube
+#   image: gradle:8.12.1-jdk17
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+#     GIT_DEPTH: "0"
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#       - .gradle
+#   script: 
+#     - gradle build -x test
+#     - gradle sonar -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
+#   allow_failure: true
+#   only:
+#     - release
+
+
+
+stages:
+  - backend-analysis
+  - frontend-analysis
+
+backend-sonarqube:
+  stage: backend-analysis
   image: gradle:8.12.1-jdk17
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-    GIT_DEPTH: "0"
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-      - .gradle
   script: 
     - cd backend
     - gradle build -x test
     - gradle sonar -Dsonar.projectKey=Wizbee_key -Dsonar.qualitygate.wait=true
   allow_failure: true
   only:
-    - release
+    changes:
+      - backend/**/*
+
+frontend-sonarqube:
+  stage: frontend-analysis
+  image: node:22  # Dockerfile과 동일한 Node.js 버전 사용
+  script:
+    - cd frontend
+    - npm cache clean --force
+    - npm install
+    - npm install -g sonarqube-scanner
+    - npm run build  # 빌드 수행
+    # 코드 커버리지 보고서 생성 (선택적)
+    - npm run test:coverage
+    - sonar-scanner \
+        -Dsonar.projectKey=Wizbee \
+        -Dsonar.sources=./src \
+        -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.test.tsx \
+        -Dsonar.typescript.lcov.reportPaths=./coverage/lcov.info \
+        -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    changes:
+      - frontend/**/*
