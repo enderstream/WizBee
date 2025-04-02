@@ -38,7 +38,6 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.corundumstudio.socketio:netty-socketio:2.0.9'
-    implementation 'com.corundumstudio.socketio:netty-socketio:2.0.9'
 
     // jjwt 의존성 추가
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
