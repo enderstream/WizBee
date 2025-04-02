@@ -1,25 +1,29 @@
-import React from 'react' 
-import { Navigate } from 'react-router-dom' 
-import { useUserStore, selectIsLogin, selectHasCompletedSignup } from '@/store/userStore' 
-import Welcome from '@/pages/Welcome' 
-import { ROUTES } from '@/routes/routes' 
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+import {
+  useUserStore,
+  selectIsLogin,
+  selectHasCompletedSignup,
+} from '@/store/userStore'
+import Welcome from '@/pages/Welcome'
+import { ROUTES } from '@/routes/routes'
 
 const PublicIndex: React.FC = () => {
-  const isLogin = useUserStore(selectIsLogin) 
-    const hasCompletedSignup = useUserStore(selectHasCompletedSignup) 
-  
+  const isLogin = useUserStore(selectIsLogin)
+  const hasCompletedSignup = useUserStore(selectHasCompletedSignup)
+
   // 로그인되어 있고 가입이 완료된 사용자는 홈으로 리다이렉트
   if (isLogin && hasCompletedSignup) {
-    return <Navigate to={ROUTES.HOME} replace /> 
+    return <Navigate to={ROUTES.HOME} replace />
   }
-  
+
   // 로그인되어 있지만 가입이 완료되지 않은 사용자는 가입 페이지로
   if (isLogin && !hasCompletedSignup) {
-    return <Navigate to={ROUTES.SIGNUP} replace /> 
+    return <Navigate to={ROUTES.SIGNUP} replace />
   }
 
   // 로그인되지 않은 사용자에게는 Welcome 페이지 표시
-  return <Welcome /> 
-} 
-  
-export default PublicIndex 
+  return <Welcome />
+}
+
+export default PublicIndex

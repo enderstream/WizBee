@@ -1,7 +1,5 @@
 import React from 'react'
 import { useSettingsState } from '@/hooks/useSettingsState'
-// import { useProfileUpdate } from '@/hooks/useProfileUpdate'
-// import { useAccountManagement } from '@/hooks/useAccountManagement'
 import StatusMessage from '@/pages/Settings/components/StatusMessage'
 import SettingsButtons from '@/pages/Settings/components/SettingsButtons'
 import ProfileModal from '@/pages/Settings/components/ProfileModal'
@@ -10,13 +8,8 @@ import '@/styles/Settings.css'
 
 const Settings: React.FC = () => {
   // Settings state management
-  const { 
-    showProfileModal, 
-    showLogoutModal, 
-    showDeleteModal, 
-    statusMessage,
-  } = useSettingsState()
-  
+  const { showProfileModal, showLogoutModal, showDeleteModal, statusMessage } =
+    useSettingsState()
 
   return (
     <div className="settings-page">

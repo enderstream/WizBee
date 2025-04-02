@@ -1,8 +1,11 @@
-
 // IndexRoute.tsx (새로 생성)
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { useUserStore, selectIsLogin, selectHasCompletedSignup } from '@/store/userStore'
+import {
+  useUserStore,
+  selectIsLogin,
+  selectHasCompletedSignup,
+} from '@/store/userStore'
 import Welcome from '@/pages/Welcome'
 import { ROUTES } from '@/routes/routes'
 

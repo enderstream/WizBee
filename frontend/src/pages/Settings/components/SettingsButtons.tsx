@@ -3,7 +3,8 @@ import { useSettingsState } from '@/hooks/useSettingsState'
 import { useProfileUpdate } from '@/hooks/useProfileUpdate'
 
 const SettingsButtons: React.FC = () => {
-  const { isLoading, setShowLogoutModal, setShowDeleteModal } = useSettingsState()
+  const { isLoading, setShowLogoutModal, setShowDeleteModal } =
+    useSettingsState()
   const { handleOpenProfileModal } = useProfileUpdate()
 
   return (

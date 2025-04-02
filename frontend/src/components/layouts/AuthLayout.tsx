@@ -1,7 +1,11 @@
 // AuthLayout.tsx (인증 필요한 라우트용 레이아웃)
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useUserStore, selectIsLogin, selectHasCompletedSignup } from '@/store/userStore'
+import {
+  useUserStore,
+  selectIsLogin,
+  selectHasCompletedSignup,
+} from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 
 const AuthLayout: React.FC = () => {
