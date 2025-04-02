@@ -5,18 +5,7 @@ export const statisticAPI = {
     todayDistractionData: async (userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/study/chart/today/${userId}`)
-            return response.data
-        } catch (error) {
-            alert("정보 조회 실패")
-            throw error
-        }
-    },
-
-    // 또래 평균 통계 정보 조회
-    peerAverage: async (userId: number) => {
-        try {
-            const response = await apiClient.get(`/api/v1/study/chart/avg/${userId}`)
-            return response.data
+            return { data: response.data, status: response.status }
         } catch (error) {
             alert("정보 조회 실패")
             throw error
@@ -27,18 +16,7 @@ export const statisticAPI = {
     weeklyFocusedData: async (userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/study/chart/week/${userId}`)
-            return response.data
-        } catch (error) {
-            alert("정보 조회 실패")
-            throw error
-        }
-    },
-
-    // 잔디밭 정보 조회
-    thisYearBlueSward: async (year: number, userId: number) => {
-        try {
-            const response = await apiClient.get(`/api/v1/study/${year}/${userId}`)
-            return response.data
+            return { data: response.data, status: response.status }
         } catch (error) {
             alert("정보 조회 실패")
             throw error
@@ -49,10 +27,32 @@ export const statisticAPI = {
     userFormulatedData: async (userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/study/chart/${userId}`)
-            return response.data
+            return { data: response.data, status: response.status }
         } catch (error) {
             alert("정보 조회 실패")
             throw error
         }
-    }
+    },
+
+    // 메인페이지 : 평균 공부 시간 정보 조회
+    mainPageAvgStudy: async (userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/chart/mainpage/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+
+    // 메인페이지: 집중력 통계정보 출력
+    mainPageContentration: async (date: number, userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/study/chart/mainpage/${date}/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
 }

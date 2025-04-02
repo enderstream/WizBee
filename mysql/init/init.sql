@@ -9,7 +9,9 @@ CREATE TABLE `users` (
     `user_role` VARCHAR(20) NOT NULL COMMENT '생년월일 정보를 입력했느냐 안 했느냐 구분 용도',
     `user_machine` VARCHAR(20) NULL COMMENT '유저가 사용하는 라즈베리파이 기기 고유 번호',
     `user_imgurl` TEXT NULL COMMENT '사용자 이미지 URL',
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `UK_user_email` (`user_email`),
+    UNIQUE KEY `UK_user_machine` (`user_machine`)
 );
 
 CREATE TABLE `timelapse` (
@@ -209,7 +211,7 @@ VALUES (
         30
     ), -- 10년생 또래
     (
-        16,
+        2,
         '2025-04-02',
         500,
         360,
@@ -221,7 +223,7 @@ VALUES (
         0
     ),
     (
-        16,
+        2,
         '2025-04-03',
         500,
         180,
@@ -233,7 +235,7 @@ VALUES (
         90
     ),
     (
-        16,
+        2,
         '2025-04-04',
         500,
         270,
@@ -245,7 +247,7 @@ VALUES (
         30
     ),
     (
-        16,
+        2,
         '2025-04-05',
         700,
         600,
@@ -257,7 +259,7 @@ VALUES (
         30
     ),
     (
-        16,
+        2,
         '2025-04-06',
         500,
         490,
@@ -269,7 +271,7 @@ VALUES (
         30
     ),
     (
-        16,
+        2,
         '2025-04-07',
         500,
         200,
@@ -281,7 +283,7 @@ VALUES (
         30
     ),
     (
-        16,
+        2,
         '2025-04-08',
         620,
         350,
@@ -293,7 +295,7 @@ VALUES (
         120
     ),
     (
-        16,
+        2,
         '2025-04-09',
         720,
         480,
@@ -305,7 +307,7 @@ VALUES (
         20
     ),
     (
-        16,
+        2,
         '2025-04-10',
         360,
         165,
@@ -317,7 +319,7 @@ VALUES (
         60
     ),
     (
-        16,
+        2,
         '2025-04-11',
         420,
         320,
@@ -338,9 +340,9 @@ INSERT INTO
         `pose_downcnt`,
         `pose_date`
     )
-VALUES (16, 3, 3, 1, '2025-04-09'),
-    (16, 3, 3, 1, '2025-04-10'),
-    (16, 3, 3, 1, '2025-04-11');
+VALUES (2, 3, 3, 1, '2025-04-09'),
+    (2, 3, 3, 1, '2025-04-10'),
+    (2, 3, 3, 1, '2025-04-11');
 
 -- pose_id = 1에 대한 7개 이미지
 INSERT INTO
@@ -350,37 +352,37 @@ INSERT INTO
         `poseimage_url`
     )
 VALUES (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
     ),
     (
-        16,
+        2,
         1,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
     );
@@ -393,37 +395,37 @@ INSERT INTO
         `poseimage_url`
     )
 VALUES (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
     ),
     (
-        16,
+        2,
         2,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
     );
@@ -435,37 +437,37 @@ INSERT INTO
         `poseimage_url`
     )
 VALUES (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'
     ),
     (
-        16,
+        2,
         3,
         'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'
     );
