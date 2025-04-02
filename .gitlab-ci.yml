@@ -64,7 +64,7 @@ frontend-sonarqube:
     - npm install
     - npm install -g sonarqube-scanner
     - sonar-scanner 
-        -Dsonar.projectKey=Wizbee 
+        -Dsonar.projectKey=Wizbee_key 
         -Dsonar.sources=./src 
         -Dsonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.test.tsx 
         -Dsonar.typescript.lcov.reportPaths=./coverage/lcov.info 
