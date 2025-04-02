@@ -3,21 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import { useUserStore, selectName, selectProfileImageUrl } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Home.css'
+import QRScannerModal from '@/components/QRScannerModal'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
   const profileImageUrl = useUserStore(selectProfileImageUrl)
+  
 
   // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
     console.log('타임랩스 세션 시작')
     navigate(ROUTES.RECORD)
-  }
-
-  const handleQRScanner = () => {
-    console.log('QR 스캐너 시작')
-    navigate(ROUTES.QR_SCANNER)
   }
 
   return (
@@ -26,8 +23,8 @@ const Home: React.FC = () => {
         <div className="home-avatar">
           {profileImageUrl && (
             <img 
-              src = {profileImageUrl}
-              alt= "@/assets/react.svg"
+              src={profileImageUrl}
+              alt="@/assets/react.svg"
               className="profileImage"
             />
           )}
@@ -49,6 +46,8 @@ const Home: React.FC = () => {
           start
         </button>
       </div>
+
+
     </div>
   )
 }

@@ -49,7 +49,7 @@ export const useAccountManagement = create<AccountManagementState>(() => ({
         useSettingsState.setState({ isLoading: true })
 
         try {
-            const userId = useUserStore.getState().user.userId
+            const userId = useUserStore.getState().user.id
             await userAPI.deleteUser(userId)
 
             // 로컬스토리지 및 세션스토리지 초기화

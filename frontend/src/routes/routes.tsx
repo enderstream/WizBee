@@ -5,19 +5,17 @@ import AuthLayout from '@/components/layouts/AuthLayout'
 import PublicLayout from '@/components/layouts/PublicLayout'
 import PublicIndex from '@/pages/PublicIndex'
 import Home from '@/pages/Home'
-// import Welcome from '@/pages/Welcome'
 import SignUp from '@/pages/SignUp'
 import Settings from '@/pages/Settings'
 import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
 import NotFound from '@/pages/NotFound'
-import QRScanner from '@/pages/QRScanner'
 import OAuthRedirect from '@/pages/OAuthRedirect'
 
 // URL 상수 정의
 export const ROUTES = {
   ROOT: '/',
-  WELCOME: '/', // index route
+  WELCOME: '/',
   SIGNUP: '/signup',
   HOME: '/home',
   SETTINGS: '/settings',
@@ -55,10 +53,6 @@ const router = createBrowserRouter([
                 path: 'time-lapse-list',
                 element: <TimeLapseList />,
               },
-              {
-                path: 'qr-scanner',
-                element: <QRScanner />,
-              },
             ],
           },
           // 인증 필요 없는 라우트
@@ -79,7 +73,6 @@ const router = createBrowserRouter([
               },
               {
                 path: 'login/oauth2/code/google',
-                // element: <OAuthRedirect />,
               },
             ],
           },
