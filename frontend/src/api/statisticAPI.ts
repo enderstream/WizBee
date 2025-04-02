@@ -55,4 +55,26 @@ export const statisticAPI = {
             throw error
         }
     },
+
+    // 자세 통계
+    poseData: async (date: string, userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/pose/score/${date}/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+
+    // 잘못된 자세 이미지 모음
+    wrongPoseImages: async (date: string, userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/pose/image/${date}/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
 }
