@@ -54,15 +54,18 @@ export const useMachineRegister = () => {
             setError(null)
 
             const response = await machineAPI.registerMachine(userId, serialNumber)
+            console.log(response.status)
+            console.log(response.data)
 
-            if (response.success) {
+
+            if (response.status == 200) {
                 setSuccess(true)
                 // 성공 후 3초 뒤 모달 닫기
                 setTimeout(() => {
                     closeModal()
                 }, 3000)
             } else {
-                setError(response.message || '기기 등록에 실패했습니다.')
+                alert(response.data)
             }
         } catch (err) {
             setError('서버와의 통신 중 오류가 발생했습니다.')
