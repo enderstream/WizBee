@@ -13,7 +13,6 @@ export const useAccountManagement = create<AccountManagementState>(() => ({
         useSettingsState.setState({ isLoading: true })
 
         try {
-            // const userId = useUserStore.getState().user.userId
             await userAPI.logout()
 
             // 로컬스토리지 및 세션스토리지 초기화

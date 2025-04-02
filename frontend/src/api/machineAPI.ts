@@ -1,5 +1,4 @@
 import { apiClient } from "@/api/apiClient"
-// import { useUserStore, } from "@/store/userStore"
 
 export const machineAPI = {
     // 임베디드 기기 등록
@@ -7,7 +6,6 @@ export const machineAPI = {
         try {
             const response = await apiClient.put(`/api/v1/auth/machine/${userId}`,
                 { machineId: machineId },
-                // { headers: { Authorization: `Bearer ${selectToken(useUserStore.getState())}` } }
             )
             return response.data
         } catch (error) {

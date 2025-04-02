@@ -1,14 +1,20 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectName, selectProfileImageUrl } from '@/store/userStore'
+import {
+  useUserStore,
+  selectName,
+  selectProfileImageUrl,
+} from '@/store/userStore'
+import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
+import MachineRegisterModal from '@/components/MachineRegisterModal'
 import '@/styles/Home.css'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
   const profileImageUrl = useUserStore(selectProfileImageUrl)
-  
+  const { openModal } = useMachineRegister()
 
   // 촬영 페이지로 이동
   const handleStartTimeLapse = () => {
@@ -16,16 +22,12 @@ const Home: React.FC = () => {
     navigate(ROUTES.RECORD)
   }
 
-  const registerMachine = () => {
-    console.log("기기등록 버튼 클릭")
-  }
-
   return (
     <div className="home-page">
       <div className="home-header">
         <div className="home-avatar">
           {profileImageUrl && (
-            <img 
+            <img
               src={profileImageUrl}
               alt="@/assets/react.svg"
               className="profileImage"
@@ -37,9 +39,7 @@ const Home: React.FC = () => {
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="machine-registration">
-          <button onClick={registerMachine}>
-            QR
-          </button>
+          <button onClick={openModal}>기기등록</button>
         </div>
       </div>
 
@@ -50,7 +50,8 @@ const Home: React.FC = () => {
         </button>
       </div>
 
-
+      {/* 기기 등록 모달 */}
+      <MachineRegisterModal />
     </div>
   )
 }
