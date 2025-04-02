@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useUserStore, selectName, selectProfileImageUrl } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Home.css'
-import QRScannerModal from '@/components/QRScannerModal'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -15,6 +14,10 @@ const Home: React.FC = () => {
   const handleStartTimeLapse = () => {
     console.log('타임랩스 세션 시작')
     navigate(ROUTES.RECORD)
+  }
+
+  const registerMachine = () => {
+    console.log("기기등록 버튼 클릭")
   }
 
   return (
@@ -33,8 +36,8 @@ const Home: React.FC = () => {
           <h2>{name || '사용자'}님!</h2>
           <p>오늘도 열공해봐요</p>
         </div>
-        <div className="qr-code">
-          <button className="QR-button" onClick={handleQRScanner}>
+        <div className="machine-registration">
+          <button onClick={registerMachine}>
             QR
           </button>
         </div>
