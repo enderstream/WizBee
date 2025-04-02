@@ -1,4 +1,6 @@
 sonarqube-check:
+  tags:
+    - sonarqube
   image: 
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
