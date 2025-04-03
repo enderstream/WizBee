@@ -26,14 +26,15 @@ export const useTimeLapse = () => {
     setError(null)
 
     try {
-      const response: TimeLapseVideo[] = await timeLapseAPI.timeLapseList(userId)
-      console.log('타임랩스 목록 응답:', response)
+      const response = await timeLapseAPI.timeLapseList(userId)
+      const timeLapseVideos: TimeLapseVideo[] = response.data
+      console.log('타임랩스 목록 응답:', timeLapseVideos)
 
-      setTimelapseVideos(response)
+      setTimelapseVideos(timeLapseVideos)
       setPagination({
-        totalPages: Math.ceil(response.length / 10), // 페이지당 10개 항목 가정
+        totalPages: Math.ceil(timeLapseVideos.length / 10), // 페이지당 10개 항목 가정
         currentPage: page,
-        totalVideos: response.length
+        totalVideos: timeLapseVideos.length
       })
     } catch (err) {
       console.error('타임랩스 목록 조회 실패:', err)
