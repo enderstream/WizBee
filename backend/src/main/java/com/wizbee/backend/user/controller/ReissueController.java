@@ -76,15 +76,14 @@ public class ReissueController {
 
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", email, role, id, 86400000L);
-        String newRefresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);
-
-//        System.out.println("재발급된 토큰: " + newRefresh);
+        long tenDaysMs = 864000000L;
+        String newAccess = jwtUtil.createJwt("access", email, role, id, tenDaysMs);
+        String newRefresh = jwtUtil.createJwt("refresh", email, role, id, tenDaysMs);
 
         redisTemplate.delete(email);
 
         // Redis 업데이트
-        redisTemplate.opsForValue().set(email, newRefresh, 7, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(email, newRefresh, 10, TimeUnit.DAYS);
 
         //response
         response.addCookie(createCookie("access", newAccess));
@@ -96,7 +95,7 @@ public class ReissueController {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
+        cookie.setMaxAge(864000);
         //cookie.setSecure(true);
         //cookie.setPath("/");
         cookie.setHttpOnly(true);

@@ -52,31 +52,21 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        // 토큰 생성
-        String access = jwtUtil.createJwt("access", email, role, id, 86400000L);         // 10분
-        String refresh = jwtUtil.createJwt("refresh", email, role, id, 86400000L);     // 1일
+        // 토큰 생성(유효기간 10일)
+        long tenDaysMs = 864000000L;
+        String access = jwtUtil.createJwt("access", email, role, id, tenDaysMs);
+        String refresh = jwtUtil.createJwt("refresh", email, role, id, tenDaysMs);
+
+        redisTemplate.opsForValue().set(email, refresh, 10, TimeUnit.DAYS); // Redis 저장도 10일로 변경
 
         // Redis에 Refresh Token 저장 (Base64 인코딩, 7일 유효)
 //        String refreshToken = Base64.getEncoder().encodeToString(refresh.getBytes(StandardCharsets.UTF_8));
-        redisTemplate.opsForValue().set(email, refresh, 7, TimeUnit.DAYS);
+//        redisTemplate.opsForValue().set(email, refresh, 7, TimeUnit.DAYS);
 
         // 쿠키 설정 (SameSite=None; Secure 포함)
         addSameSiteCookie(response, "access", access);
         addSameSiteCookie(response, "refresh", refresh);
 
-        // // sendRedirect 제거하고 JSON으로 응답만 해봐
-        // response.setContentType("application/json");
-        // response.setCharacterEncoding("UTF-8");
-        // response.getWriter().write("{\"message\": \"OAuth success\"}");
-
-
-       // 사용자 정보 확인하여 리디렉션 분기
-    //    User loginUser = userService.findById(id);
-    //    if (loginUser.getBirthday() == null || loginUser.getRole().equals("NO_BIRTH_USER")) {
-    //        response.sendRedirect(frontendUrl + "/signup");
-    //    } else {
-    //        response.sendRedirect(frontendUrl + "/home");
-    //    }
     // 백엔드에서는 OAuth 인증 완료 후 프론트엔드의 전용 리다이렉트 페이지로 이동
         response.sendRedirect(frontendUrl + "/oauth-redirect");
 
@@ -86,7 +76,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
         String cookie = String.format(
                 "%s=%s; Max-Age=%d; Path=/; HttpOnly; Secure; SameSite=None",
-                name, value, 24 * 60 * 60
+                name, value, 864000
         );
         response.addHeader("Set-Cookie", cookie);
     }
