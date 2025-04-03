@@ -1,4 +1,4 @@
-.timelapse-container {
+/* .timelapse-container {
   max-width: 64rem;
   margin: 0 auto;
   padding: 1rem;
@@ -25,7 +25,6 @@
   color: #ef4444;
 }
 
-/* 모달 스타일 */
 .video-modal {
   position: fixed;
   inset: 0;
@@ -87,4 +86,258 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin-bottom: 0.5rem;
+} */
+
+
+/* TimeLapseList.css */
+
+.timelapse-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.timelapse-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+}
+
+.timelapse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.timelapse-item {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.timelapse-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #f0f0f0;
+}
+
+.timelapse-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.timelapse-info {
+  padding: 15px;
+}
+
+.timelapse-item-title {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.timelapse-date {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 모달 스타일 */
+.video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.video-modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.video-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.video-modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.video-modal-close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.video-modal-close-button:hover {
+  background-color: #f0f0f0;
+}
+
+.video-modal-body {
+  padding: 0;
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-date {
+  padding: 10px 20px;
+  margin: 0;
+  text-align: right;
+  color: #666;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+/* ReactPlayer 썸네일 재정의 */
+.react-player__preview {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.react-player__shadow {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.react-player__play-icon {
+  border-width: 12px 0 12px 18px !important;
+  border-color: transparent transparent transparent white !important;
+}
+
+/* 커스텀 재생 아이콘 */
+.play-icon {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.play-icon:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 0 12px 18px;
+  border-color: transparent transparent transparent white;
+  margin-left: 4px;
+}
+
+/* 로딩 및 에러 상태 */
+.timelapse-loading, .timelapse-error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.timelapse-error {
+  color: #e74c3c;
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 5px;
+}
+
+.pagination-button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination-button.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .timelapse-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .video-modal-content {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .timelapse-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .timelapse-title {
+    font-size: 24px;
+  }
 }
