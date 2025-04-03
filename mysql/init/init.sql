@@ -18,7 +18,7 @@ CREATE TABLE `users` (
 CREATE TABLE `timelapse` (
     `timelapse_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `user_id` INTEGER NOT NULL COMMENT 'user테이블 참조',
-    `timelapse_url` VARCHAR(255) NOT NULL COMMENT 's3에 저장된 타임랩스 url',
+    `timelapse_url` VARCHAR(255) NULL COMMENT 's3에 저장된 타임랩스 url',
     `timelapse_date` VARCHAR(255) NOT NULL DEFAULT "한국 시간" COMMENT '촬영 시작 시간',
     `timelapse_title` VARCHAR(255) NOT NULL DEFAULT "제목없음" COMMENT '타임랩스 제목',
     PRIMARY KEY (`timelapse_id`)
