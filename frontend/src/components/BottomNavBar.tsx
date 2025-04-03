@@ -24,15 +24,15 @@ const BottomNavBar: React.FC = () => {
         className={`nav-item ${isActive(ROUTES.TIME_LAPSE_LIST)}`}
       >
         <div className="nav-icon video-icon"></div>
-        <span>타임랩스</span>
+        <span>타임랩스 목록</span>
       </Link>
 
       <Link
-        to={ROUTES.STATISTIC_INDICATORS}
-        className={`nav-item ${isActive(ROUTES.STATISTIC_INDICATORS)}`}
+        to={ROUTES.STATISTIC_INFO}
+        className={`nav-item ${isActive(ROUTES.STATISTIC_INFO)}`}
       >
         <div className="nav-icon calendar-icon"></div>
-        <span>통계</span>
+        <span>통계 지표</span>
       </Link>
 
       <Link to={ROUTES.SETTINGS} className={`nav-item ${isActive(ROUTES.SETTINGS)}`}>

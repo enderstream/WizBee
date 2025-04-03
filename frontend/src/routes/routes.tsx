@@ -11,7 +11,7 @@ import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
 import NotFound from '@/pages/NotFound'
 import OAuthRedirect from '@/pages/OAuthRedirect'
-import StatisticIndicators from '@/pages/statisticIndicators'
+import StatisticInfo from '@/pages/StatisticInfo'
 
 // URL 상수 정의
 export const ROUTES = {
@@ -23,7 +23,7 @@ export const ROUTES = {
   RECORD: '/record',
   TIME_LAPSE_LIST: '/time-lapse-list',
   QR_SCANNER: '/qr-scanner',
-  STATISTIC_INDICATORS: '/statistic-indicators',
+  STATISTIC_INFO: '/statistic-info',
 }
 
 const router = createBrowserRouter([
@@ -56,8 +56,8 @@ const router = createBrowserRouter([
                 element: <TimeLapseList />,
               },
               {
-                path: ROUTES.STATISTIC_INDICATORS,
-                element: <StatisticIndicators/>
+                path: ROUTES.STATISTIC_INFO,
+                element: <StatisticInfo/>
               },
             ],
           },
