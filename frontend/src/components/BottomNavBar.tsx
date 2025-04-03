@@ -28,7 +28,7 @@ const BottomNavBar: React.FC = () => {
 
       <Link to="/home" className={`nav-item ${isActive('/home')}`}>
         <div className="nav-icon calendar-icon"></div>
-        <span>잔디밭</span>
+        <span>통계</span>
       </Link>
 
       <Link to="/settings" className={`nav-item ${isActive('/settings')}`}>

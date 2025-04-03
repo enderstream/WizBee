@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface PoseRepository extends JpaRepository<Pose, Integer> {
-    @Query("SELECT new com.wizbee.backend.pose.dto.PoseScoreResponseDto(p.user.id, p.date, SUM(p.tutleCnt), SUM(p.shoulderCnt), SUM(p.downCnt)) " +
+    @Query("SELECT new com.wizbee.backend.pose.dto.PoseScoreResponseDto(p.user.id, p.date, SUM(p.turtleCnt), SUM(p.shoulderCnt), SUM(p.downCnt)) " +
             "FROM Pose p " +
             "WHERE p.user.id = :userId " +
             "AND p.date = :poseDate " +

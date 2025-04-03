@@ -45,7 +45,7 @@ public class PoseService {
         // DTO -> Entity
         Pose pose = new Pose();
         pose.setUser(user);
-        pose.setTutleCnt(poseScoreAndImageSaveRequestDto.getPoseTurtleCnt());
+        pose.setTurtleCnt(poseScoreAndImageSaveRequestDto.getPoseTurtleCnt());
         pose.setShoulderCnt(poseScoreAndImageSaveRequestDto.getShoulderCnt());
         pose.setDownCnt(poseScoreAndImageSaveRequestDto.getDownCnt());
         pose.setDate(poseScoreAndImageSaveRequestDto.getPoseDate());

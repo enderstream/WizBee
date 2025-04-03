@@ -2,9 +2,9 @@ import { apiClient } from "@/api/apiClient"
 
 export const statisticAPI = {
     // 오늘의 딴짓 통계 정보 조회
-    todayDistractionData: async (userId: number) => {
+    todayDistractionData: async (date: string, userId: number) => {
         try {
-            const response = await apiClient.get(`/api/v1/study/chart/today/${userId}`)
+            const response = await apiClient.get(`/api/v1/study/chart/today/${userId}?date=${date}`)
             return { data: response.data, status: response.status }
         } catch (error) {
             alert("정보 조회 실패")
@@ -13,9 +13,9 @@ export const statisticAPI = {
     },
 
     // 주간 순공시간 통계 정보 조회
-    weeklyFocusedData: async (userId: number) => {
+    weeklyFocusedData: async (date: string, userId: number) => {
         try {
-            const response = await apiClient.get(`/api/v1/study/chart/week/${userId}`)
+            const response = await apiClient.get(`/api/v1/study/chart/week/${userId}?date=${date}`)
             return { data: response.data, status: response.status }
         } catch (error) {
             alert("정보 조회 실패")
@@ -37,7 +37,7 @@ export const statisticAPI = {
     // 메인페이지 : 평균 공부 시간 정보 조회
     mainPageAvgStudy: async (userId: number) => {
         try {
-            const response = await apiClient.get(`/api/v1/chart/mainpage/${userId}`)
+            const response = await apiClient.get(`/api/v1/study/chart/mainpage/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
             alert("")
@@ -68,7 +68,7 @@ export const statisticAPI = {
     },
 
     // 잘못된 자세 이미지 모음
-    wrongPoseImages: async (date : string, userId: number) => {
+    wrongPoseImages: async (date: string, userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/pose/image/${date}/${userId}`)
             return { data: response.data, status: response.status }

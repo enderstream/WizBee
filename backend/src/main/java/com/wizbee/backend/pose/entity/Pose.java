@@ -24,8 +24,8 @@ public class Pose {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "pose_tutlecnt", nullable = false)
-    private Integer tutleCnt = 0;
+    @Column(name = "pose_turtlecnt", nullable = false)
+    private Integer turtleCnt = 0;
 
     @Column(name = "pose_shouldercnt", nullable = false)
     private Integer shoulderCnt = 0;

@@ -46,14 +46,17 @@ const Home: React.FC = () => {
     // navigate(ROUTES.RECORD)
 
     // api 테스트 중
+    const today = new Date()
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    
 
-    // 오늘의 딴짓 통계 정보 조회 : CORS 에러
-    // const response = await statisticAPI.todayDistractionData(userId)   
+    // 오늘의 딴짓 통계 정보 조회 : 통과
+    // const response = await statisticAPI.todayDistractionData(formattedDate,userId)   
     // console.log(response.status)
     // console.log(response.data)
 
-    // 주간 순공시간 통계 정보 조회 : CORS 에러
-    // const response = await statisticAPI.weeklyFocusedData(userId)   
+    // 주간 순공시간 통계 정보 조회 : 통과
+    // const response = await statisticAPI.weeklyFocusedData("2025-04-03",userId)   
     // console.log(response.status)
     // console.log(response.data)
 
@@ -62,8 +65,9 @@ const Home: React.FC = () => {
     // console.log(response.status)
     // console.log(response.data)
 
-    // 메인페이지 : 평균 공부 시간 정보 조회 : CORS 에러
-    // const response = await statisticAPI.mainPageAvgStudy(userId)
+    // 메인페이지 : 평균 공부 시간 정보 조회 : 통과
+    // const response = await statisticAPI.mainPageAvgStudy(1)
+    // // const response = await statisticAPI.mainPageAvgStudy(userId)
     // console.log(response.status)
     // console.log(response.data)
 
@@ -102,8 +106,6 @@ const Home: React.FC = () => {
     // const response = await statisticAPI.wrongPoseImages("2025-04-09", 2)
     // console.log(response.status)
     // console.log(response.data)
-    
-
   }
 
   return (
@@ -112,7 +114,7 @@ const Home: React.FC = () => {
         <div className="home-avatar">
           {profileImageUrl ? (
             <img
-              src={reactLogo}
+              src={reactLogo} // 이자리 우리 로고로 하자 그냥;;
               alt="프로필 이미지"
               className="profileImage"
             />
