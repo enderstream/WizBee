@@ -13,4 +13,10 @@ import java.sql.Date;
 public class ChartWeekStudyTimeResponseDto {
     private int studyTime;
     private Date date;
+
+    public ChartWeekStudyTimeResponseDto(Long studyTime, Date date) {
+        this.studyTime = studyTime != null ? studyTime.intValue() : 0;
+        this.date = date;
+    }
+
 }
