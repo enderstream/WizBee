@@ -29,3 +29,4 @@ export const selectName = (state: UserState) => state.user.name
 export const selectBirthday = (state: UserState) => state.user.birthday
 export const selectHasCompletedSignup = (state: UserState) => state.user.hasCompletedSignup
 export const selectUserRole = (state: UserState) => state.user.role
+export const selectMachineId = (state: UserState) => state.user.machine

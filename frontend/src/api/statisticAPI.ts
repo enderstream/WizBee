@@ -23,11 +23,11 @@ export const statisticAPI = {
         }
     },
 
-    // 유저의 지표화된 통계 정보 조회
+    // 로그인 한 유저의 지표화된 통계 정보 조회
     userFormulatedData: async (userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/study/chart/${userId}`)
-            return { data: response.data, status: response.status }
+            return { data: response.data, status: response.data }
         } catch (error) {
             alert("정보 조회 실패")
             throw error
@@ -46,9 +46,31 @@ export const statisticAPI = {
     },
 
     // 메인페이지: 집중력 통계정보 출력
-    mainPageContentration: async (date: number, userId: number) => {
+    mainPageContentration: async (date: string, userId: number) => {
         try {
             const response = await apiClient.get(`/api/v1/study/chart/mainpage/${date}/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+
+    // 자세 통계
+    poseData: async (date: string, userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/pose/score/${date}/${userId}`)
+            return { data: response.data, status: response.status }
+        } catch (error) {
+            alert("")
+            throw error
+        }
+    },
+
+    // 잘못된 자세 이미지 모음
+    wrongPoseImages: async (date : string, userId: number) => {
+        try {
+            const response = await apiClient.get(`/api/v1/pose/image/${date}/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
             alert("")

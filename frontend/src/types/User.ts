@@ -44,13 +44,13 @@ export const initialUserState: IUser = {
 // 백엔드로부터 유저 정보를 초기화하는 함수
 export const initializeUserInfo = (response: OAuthCallbackResponse): IUser => {
     return {
-        id: response.id || initialUserState.id,
-        name: response.name || initialUserState.name,
-        email: response.email || initialUserState.email,
+        id: response.id,
+        name: response.name,
+        email: response.email,
         birthday: response.birthday || initialUserState.birthday,
         role: response.role,
         machine: response.machine || initialUserState.machine,
-        imageUrl: response.imageUrl || initialUserState.imageUrl,
+        imageUrl: response.imageUrl,
         isLogin: true,
         hasCompletedSignup: (Boolean(response.birthday) || response.role === 'USER') && response.role !== 'WITHDRAW_USER'
     }
