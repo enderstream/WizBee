@@ -3,6 +3,7 @@ import { useTimeLapse } from '@/hooks/useTimeLapse'
 import { TimeLapseVideo } from '@/types/TimeLapse'
 import TimeLapseVideos from '@/pages/TimeLapseList/components/TimeLapseVideos'
 import TimeLapsePagination from '@/pages/TimeLapseList/components/TimeLapsePagination'
+import ReactPlayer from 'react-player'
 import '@/styles/TimeLapseList.css'
 
 const TimeLapseList = () => {
@@ -41,7 +42,11 @@ const TimeLapseList = () => {
     <div className="timelapse-container">
       <h1 className="timelapse-title">타임랩스 모음</h1>
 
-      {selectedVideo && (
+      <ReactPlayer url={"https://www.youtube.com/shorts/p0pGZqC-wUU"}/> 
+      <ReactPlayer url={"https://www.youtube.com/shorts/mgdCHjJjR4M"}/> 
+      <ReactPlayer url={"https://www.youtube.com/shorts/agDCUsgudzw"}/> 
+
+      {/* {selectedVideo && (
         <div className="video-modal">
           <div className="video-modal-content">
             <div className="video-modal-header">
@@ -79,7 +84,7 @@ const TimeLapseList = () => {
           totalPages={pagination.totalPages}
           onPageChange={handlePageChange}
         />
-      )}
+      )} */}
     </div>
   )
 }
