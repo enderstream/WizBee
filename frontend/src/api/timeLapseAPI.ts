@@ -12,31 +12,25 @@ export const timeLapseAPI = {
         }
     },
 
+    // 얘 고쳐야하는듯;;
     // 타임랩스 촬영 시작 -> 얘 API 좀 고쳐야할 같은데?? 유저 아이디 있는게 낫지 않나? -> 없어도 되는걸로!
-    startRecordTimeLapse: async (machineId: number) => {
+    startRecordingTimeLapse: async (machineId: string) => { // 자료형 string? number?
         try {
             const response = await apiClient.post(`/api/v1/timelapse/${machineId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
+            alert("타임랩스 촬영 시작 실패")
             throw error
         }
     },
-    asdf: async (userId: number) => {
+
+    // 타임랩스 촬영 종료
+    finishRecordingTimeLapse: async (timelapseId: number, title: string) => {
         try {
-            const response = await apiClient.get(`/${userId}`)
+            const response = await apiClient.put(`/api/v1/timelapse/finish/${timelapseId}`, { title })
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
-            throw error
-        }
-    },
-    asdf: async (userId: number) => {
-        try {
-            const response = await apiClient.get(`/${userId}`)
-            return { data: response.data, status: response.status }
-        } catch (error) {
-            alert("")
+            alert("타임랩스 촬영 종료 실패")
             throw error
         }
     },
