@@ -1,9 +1,15 @@
 import React, { useEffect, useId } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectName, selectProfileImageUrl, selectUserId, selectMachineId } from '@/store/userStore'
+import {
+  useUserStore,
+  selectName,
+  selectProfileImageUrl,
+  selectUserId,
+  selectMachineId,
+} from '@/store/userStore'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
-import MachineRegisterModal from '@/components/MachineRegisterModal'
+import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
 import '@/styles/Home.css'
 import { statisticAPI } from '@/api/statisticAPI'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
@@ -17,7 +23,7 @@ const Home: React.FC = () => {
   const name = useUserStore(selectName)
   const profileImageUrl = useUserStore(selectProfileImageUrl)
   const { openModal } = useMachineRegister()
-  const setUser = useUserStore(state => state.setUser)
+  const setUser = useUserStore((state) => state.setUser)
   const userId = useUserStore(selectUserId)
   const machineId = useUserStore(selectMachineId)
 
@@ -43,69 +49,12 @@ const Home: React.FC = () => {
   // 촬영 페이지로 이동
   const handleStartTimeLapse = async () => {
     console.log('타임랩스 세션 시작')
-    // navigate(ROUTES.RECORD)
 
-    // api 테스트 중
-    const today = new Date()
-    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    
+    navigate(ROUTES.RECORD)
 
-    // 오늘의 딴짓 통계 정보 조회 : 통과
-    // const response = await statisticAPI.todayDistractionData(formattedDate,userId)   
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 주간 순공시간 통계 정보 조회 : 통과
-    // const response = await statisticAPI.weeklyFocusedData("2025-04-03",userId)   
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 로그인 한 유저의 지표화된 통계 정보 조회 : 통과
-    // const response = await statisticAPI.userFormulatedData(userId)
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 메인페이지 : 평균 공부 시간 정보 조회 : 통과
-    // const response = await statisticAPI.mainPageAvgStudy(1)
-    // // const response = await statisticAPI.mainPageAvgStudy(userId)
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 메인페이지: 집중력 통계정보 출력 : 통과
-    // const response = await statisticAPI.mainPageContentration("2025-03-31", userId)
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 타임랩스 페이지: 타임랩스 리스트 출력 : 통과
-    // const response = await timeLapseAPI.timeLapseList(userId)
-    // console.log(response.status)
-    // console.log(response.data)
-
-
-    // 999 : machineId, 1: userId, 명세서에는 machineId???
-    // 그리고 명세서를 따라간 프론트는 axios에러
-    // 혹시나 싶어서 userId로 해봤더니 프론트도 잘 됨???
-    // 타임랩스 촬영 시작
-    // console.log(machineId)
-    // console.log(userId)
-    // const response = await timeLapseAPI.startRecordingTimeLapse("1")
-    // console.log(response.status)
-    // console.log(response.data)
-
-    // 타임랩스 촬영 종료 : 통과
-    // const response = await timeLapseAPI.finishRecordingTimeLapse(16, "asdf")
-    // console.log(response.status)
-    // console.log(response.data)
-    
-    // 자세 통계 : 필드명 잘못 설정한듯???
-    const response = await statisticAPI.poseData("2025-04-09", 2)
-    console.log(response.status)
-    console.log(response.data)
-    
-    // 잘못된 자세 이미지 모음 : 통과
-    // const response = await statisticAPI.wrongPoseImages("2025-04-09", 2)
-    // console.log(response.status)
-    // console.log(response.data)
+    // 오늘 불러오기
+    // const today = new Date()
+    // const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   }
 
   return (
@@ -131,9 +80,7 @@ const Home: React.FC = () => {
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="machine-registration">
-          <button onClick={openModal}>
-            기기등록
-          </button>
+          <button onClick={openModal}>기기등록</button>
         </div>
       </div>
 
@@ -142,6 +89,21 @@ const Home: React.FC = () => {
         <button className="start-button" onClick={handleStartTimeLapse}>
           start
         </button>
+      </div>
+
+      <div className="timelapse-container">
+        <h3>평균 순공시간 </h3>
+        <br />
+        <h3>5시간 32분</h3>
+      </div>
+
+      <div className="timelapse-container indicator-container">
+        <div className="timelapse-container">
+          <h3>오늘의 공부 집중도</h3>
+        </div>
+        <div className="timelapse-container">
+          <h3>오늘의 자세 점수</h3>
+        </div>
       </div>
 
       {/* 기기 등록 모달 */}
