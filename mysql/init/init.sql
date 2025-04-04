@@ -41,7 +41,7 @@ CREATE TABLE `chart` (
 
 CREATE TABLE `pose` (
     `pose_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `user_id2` INTEGER NOT NULL COMMENT 'user_id FK',
+    `user_id` INTEGER NOT NULL COMMENT 'user_id FK',
     `pose_turtlecnt` INTEGER NULL DEFAULT 0 COMMENT '거북목 된 횟수',
     `pose_shouldercnt` INTEGER NULL DEFAULT 0 COMMENT '어깨 틀어짐 횟수',
     `pose_downcnt` INTEGER NULL DEFAULT 0 COMMENT '엎드림 횟수',
@@ -65,7 +65,7 @@ ALTER TABLE `chart`
 ADD CONSTRAINT `FK_users_TO_chart_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `pose`
-ADD CONSTRAINT `FK_users_TO_pose_1` FOREIGN KEY (`user_id2`) REFERENCES `users` (`user_id`);
+ADD CONSTRAINT `FK_users_TO_pose_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `poseimage`
 ADD CONSTRAINT `FK_users_TO_poseimage_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
@@ -112,7 +112,7 @@ INSERT INTO `chart` (`user_id`, `chart_date`, `chart_fulltime`, `chart_studytime
 (2, '2025-04-11', 420, 320, 1, 27, 1, 10, 1, 63);
 
 -- 자세 데이터 삽입
-INSERT INTO `pose` (`user_id2`, `pose_turtlecnt`, `pose_shouldercnt`, `pose_downcnt`, `pose_date`) VALUES 
+INSERT INTO `pose` (`user_id`, `pose_turtlecnt`, `pose_shouldercnt`, `pose_downcnt`, `pose_date`) VALUES 
 (2, 3, 3, 1, '2025-04-09'),
 (2, 3, 3, 1, '2025-04-10'),
 (2, 3, 3, 1, '2025-04-11');

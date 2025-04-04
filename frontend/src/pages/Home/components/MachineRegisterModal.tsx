@@ -1,6 +1,7 @@
 import React from 'react'
 import '@/styles/MachineRegisterModal.css'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
+import { selectMachineId, useUserStore } from '@/store/userStore'
 
 const MachineRegisterModal: React.FC = () => {
   const {
@@ -14,13 +15,15 @@ const MachineRegisterModal: React.FC = () => {
     handleSubmit,
   } = useMachineRegister()
 
+  const machineId = useUserStore(selectMachineId)
+
   if (!isRegistering) return null
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h3>기기 등록</h3>
+          <h3>현재 등록된 기기: {machineId === "000" ? "등록된 기기가 없습니다":`${machineId}번 기기`}</h3>
           <button
             className="close-button"
             onClick={closeModal}
@@ -35,11 +38,14 @@ const MachineRegisterModal: React.FC = () => {
             <div className="input-group">
               <label htmlFor="serialNumber">기기 일련번호</label>
               <input
-                type="text"
+                type="tel"
                 id="serialNumber"
                 value={serialNumber}
                 onChange={handleSerialNumberChange}
-                placeholder="기기 일련번호를 입력해주세요"
+                placeholder="2자리 숫자를 입력해주세요"
+                pattern="[0-9]*"
+                inputMode="numeric"
+                maxLength={2}
                 disabled={isSubmitting || success}
               />
             </div>
@@ -48,7 +54,7 @@ const MachineRegisterModal: React.FC = () => {
 
             {success && (
               <div className="success-message">
-                기기 등록이 완료되었습니다. 잠시 후 창이 닫힙니다.
+                기기 등록이 완료되었습니다. 확인 후 창을 닫아주세요.
               </div>
             )}
 

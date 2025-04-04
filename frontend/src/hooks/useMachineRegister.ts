@@ -35,10 +35,23 @@ export const useMachineRegister = () => {
     }
 
     const handleSerialNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSerialNumber(e.target.value)
-        // 변경 시 이전 에러 메시지나 성공 상태 초기화
-        setError(null)
-        setSuccess(false)
+        const newValue = e.target.value
+        
+        // 숫자만 입력할 수 있도록 필터링
+        if (newValue !== '' && !/^\d*$/.test(newValue)) {
+            return // 숫자가 아닌 문자는 입력되지 않도록 함
+        }
+        
+        setSerialNumber(newValue)
+        
+        // 입력값이 있을 때만 유효성 검사 수행 (실시간 피드백)
+        if (newValue && !/^\d{2}$/.test(newValue)) {
+            setError('시리얼 번호는 2자리 숫자여야 합니다.')
+        } else {
+            // 변경 시 이전 에러 메시지나 성공 상태 초기화
+            setError(null)
+            setSuccess(false)
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +59,12 @@ export const useMachineRegister = () => {
 
         if (!serialNumber.trim()) {
             setError('기기 일련번호를 입력해주세요.')
+            return
+        }
+
+        // 제출 시 최종 유효성 검사
+        if (!/^\d{2}$/.test(serialNumber)) {
+            setError('시리얼 번호는 2자리 숫자여야 합니다.')
             return
         }
 
@@ -60,10 +79,6 @@ export const useMachineRegister = () => {
 
             if (response.status == 200) {
                 setSuccess(true)
-                // 성공 후 3초 뒤 모달 닫기
-                setTimeout(() => {
-                    closeModal()
-                }, 3000)
             } else {
                 alert(response.data)
             }
