@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectName } from '@/store/userStore'
+// import { useUserStore, selectName } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import '@/styles/Record.css'
 
@@ -8,7 +8,7 @@ const baseURL = import.meta.env.VITE_API_URL
 
 const Record: React.FC = () => {
   const navigate = useNavigate()
-  const name = useUserStore(selectName)
+  // const name = useUserStore(selectName)
   const [isRecording, setIsRecording] = useState(false)
   
   // Spring 서버의 스트리밍 엔드포인트 URL

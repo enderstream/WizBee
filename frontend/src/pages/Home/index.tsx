@@ -1,22 +1,22 @@
-import React, { useEffect, useId } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   useUserStore,
   selectName,
   selectProfileImageUrl,
-  selectUserId,
-  selectMachineId,
+  // selectUserId,
+  // selectMachineId,
 } from '@/store/userStore'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
 import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
 import '@/styles/Home.css'
-import { statisticAPI } from '@/api/statisticAPI'
-import { timeLapseAPI } from '@/api/timeLapseAPI'
+// import { statisticAPI } from '@/api/statisticAPI'
+// import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { userAPI } from '@/api/userAPI'
 import { initializeUserInfo } from '@/types/User'
 import reactLogo from '@/assets/react.svg'
-import { stringify } from 'querystring'
+// import { stringify } from 'querystring'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -24,8 +24,8 @@ const Home: React.FC = () => {
   const profileImageUrl = useUserStore(selectProfileImageUrl)
   const { openModal } = useMachineRegister()
   const setUser = useUserStore((state) => state.setUser)
-  const userId = useUserStore(selectUserId)
-  const machineId = useUserStore(selectMachineId)
+  // const userId = useUserStore(selectUserId)
+  // const machineId = useUserStore(selectMachineId)
 
   // 컴포넌트 마운트 시 사용자 정보 가져오기
   useEffect(() => {

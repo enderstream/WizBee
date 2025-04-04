@@ -51,7 +51,7 @@ const LineGraph: React.FC = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function(context:any) {
             return `${context.raw} 시간`;
           }
         }

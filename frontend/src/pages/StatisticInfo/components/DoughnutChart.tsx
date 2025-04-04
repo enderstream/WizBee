@@ -27,7 +27,7 @@ const DoughnutChart: React.FC = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function(context:any) {
             const value = context.raw;
             return value >= 1 
               ? `${value} 시간` 
