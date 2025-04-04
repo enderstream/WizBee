@@ -1,8 +1,6 @@
 package com.wizbee.backend.timelapse.controller;
 
-import com.corundumstudio.socketio.SocketIOServer;
-import com.wizbee.backend.socket.RoomManager;
-import com.wizbee.backend.socket.service.SocketService;
+
 import com.wizbee.backend.timelapse.dto.TimeLapseFinishRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
 import com.wizbee.backend.timelapse.Entity.TimeLapse;
@@ -21,13 +19,10 @@ import java.util.List;
 @RequestMapping("/api/v1/timelapse")
 public class TimeLapseController {
     private final TimeLapseService timelapseService;
-    private final SocketService socketService;
     private final UserService userService;
     public TimeLapseController(TimeLapseService timelapseService,
-                               SocketService socketService,
                                UserService userService) {
         this.timelapseService = timelapseService;
-        this.socketService = socketService;
         this.userService = userService;
     }
 
@@ -52,18 +47,18 @@ public class TimeLapseController {
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body("Error: " + e.getMessage());
-
         }
     }
 
     // 타임랩스 촬영 시작(db에 기본적인 내용을 담은 entity 생성)
+    // 라파에 촬영 시작 알리기
     @PostMapping("/{machineId}")
     public ResponseEntity<?> startTimeLapse(@PathVariable("machineId") String machineId) {
 
 
         try {
             TimeLapse timeLapse = timelapseService.startTimeLapse(machineId);
-            socketService.timeLapseStart(machineId,timeLapse.getId());
+            // 촬영시작 API 라파에 호출
             return ResponseEntity.status(HttpStatus.CREATED).body(timeLapse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
@@ -72,6 +67,7 @@ public class TimeLapseController {
     }
 
     // 타임랩스 촬영 종료
+    // 라파에 촬영 종료 알리기
     @PutMapping("/finish/{timelapseId}")
     public ResponseEntity<?> finishTimeLapse(@RequestBody TimeLapseFinishRequestDto timeLapseFinishRequestDto,
                                              @PathVariable("timelapseId") int timelapseId,
@@ -80,12 +76,15 @@ public class TimeLapseController {
             String currentUserEmail = principal.getName();
             User user = userService.findByEmail(currentUserEmail);
             String machineId = user.getMachine();
+            // 타임 랩스 촬영 종료 API 라파에 호출
             timelapseService.finishTimeLapse(timeLapseFinishRequestDto, timelapseId);
-            socketService.timeLapseEnd(machineId);
             return ResponseEntity.ok("제목 저장");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+    // react에서 비디오 스트림 보내기 요청 받는 API
+    // 라파에 비디오 스트림 보내 달라고 요청 받는 aPI
 
 }
