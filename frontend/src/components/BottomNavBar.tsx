@@ -24,7 +24,7 @@ const BottomNavBar: React.FC = () => {
         className={`nav-item ${isActive(ROUTES.TIME_LAPSE_LIST)}`}
       >
         <div className="nav-icon video-icon"></div>
-        <span>타임랩스 목록</span>
+        <span>타임랩스</span>
       </Link>
 
       <Link
