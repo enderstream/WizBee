@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig((env) => {
   const isDevMode = env.mode === 'development'
 
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     css: {
       devSourcemap: isDevMode,
     },
