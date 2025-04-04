@@ -2,12 +2,18 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
+import svgr from 'vite-plugin-svgr'
 
 export default defineConfig((env) => {
   const isDevMode = env.mode === 'development'
 
   return {
-    plugins: [react(), tailwindcss()],
+    // plugins: [react(), tailwindcss(), svgr()],
+    plugins: [
+      svgr({ svgrOptions: { icon: true } }),
+      react(),
+      tailwindcss(),
+    ],
     css: {
       devSourcemap: isDevMode,
     },

@@ -59,13 +59,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-page">
-
-
-  <div className="text-red-500">
-    이 텍스트는 빨간색이어야 합니다.
-  </div>
-
-
       <div className="home-header">
         <div className="home-avatar">
           {profileImageUrl ? (
