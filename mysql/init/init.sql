@@ -85,20 +85,20 @@ INSERT INTO `users` (`user_name`, `user_email`, `user_birthday`, `user_role`, `u
 
 -- 타임랩스 테이블 더미데이터 삽입
 INSERT INTO `timelapse` (`user_id`, `timelapse_url`, `timelapse_date`, `timelapse_title`) VALUES 
-(1, 'https://www.youtube.com/shorts/p0pGZqC-wUU', '2025-03-25 22:15:00', '도시의 밤'),
-(1, 'https://www.youtube.com/shorts/agDCUsgudzw', '2025-03-26 14:20:00', '꽃 피는 과정'),
-(1, 'https://www.youtube.com/shorts/mgdCHjJjR4M', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
-(1, 'https://s3.amazonaws.com/timelapses/user17/cooking_process.mp4', '2025-03-28 19:45:00', '요리 과정'),
-(1, 'https://s3.amazonaws.com/timelapses/user16/cloud_timelapse.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
-(1, 'https://s3.amazonaws.com/timelapses/user17/plant_growing.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
-(1, 'https://s3.amazonaws.com/timelapses/user16/sunset_view.mp4', '2025-03-31 18:30:00', '황혼 풍경'),
-(2, 'https://www.youtube.com/shorts/p0pGZqC-wUU', '2025-03-25 22:15:00', '도시의 밤'),
-(2, 'https://www.youtube.com/shorts/agDCUsgudzw', '2025-03-26 14:20:00', '꽃 피는 과정'),
-(2, 'https://www.youtube.com/shorts/mgdCHjJjR4M', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
-(2, 'https://s3.amazonaws.com/timelapses/user17/cooking_process.mp4', '2025-03-28 19:45:00', '요리 과정'),
-(2, 'https://s3.amazonaws.com/timelapses/user16/cloud_timelapse.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
-(2, 'https://s3.amazonaws.com/timelapses/user17/plant_growing.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
-(2, 'https://s3.amazonaws.com/timelapses/user16/sunset_view.mp4', '2025-03-31 18:30:00', '황혼 풍경');
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-25 22:15:00', '도시의 밤'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-26 14:20:00', '꽃 피는 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-28 19:45:00', '요리 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-31 18:30:00', '황혼 풍경'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-25 22:15:00', '도시의 밤'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-26 14:20:00', '꽃 피는 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-28 19:45:00', '요리 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-31 18:30:00', '황혼 풍경');
 
 -- 차트 데이터 삽입
 INSERT INTO `chart` (`user_id`, `chart_date`, `chart_fulltime`, `chart_studytime`, `chart_sleepcnt`, `chart_sleeptime`, `chart_phonecnt`, `chart_phonetime`, `chart_outcnt`, `chart_outtime`) VALUES 

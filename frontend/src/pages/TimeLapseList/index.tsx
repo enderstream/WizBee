@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { selectUserId, useUserStore } from '@/store/userStore'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { useQuery } from '@tanstack/react-query'
@@ -21,7 +21,7 @@ const TimeLapseList = () => {
   console.log(timelapseVideos?.data)
 
   const [isWindow, setIsWindow] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying] = useState<boolean>(false);
   
   // 페이지네이션 관련 상태 추가
   const [currentPage, setCurrentPage] = useState(1)
@@ -31,9 +31,9 @@ const TimeLapseList = () => {
     setIsWindow(true);
   }, []);
 
-  const handleBtn = (): void => {
-    setIsPlaying(!isPlaying);
-  };
+  // const handleBtn = (): void => {
+  //   setIsPlaying(!isPlaying);
+  // };
 
   // 페이지네이션 로직
   const indexOfLastItem = currentPage * itemsPerPage
