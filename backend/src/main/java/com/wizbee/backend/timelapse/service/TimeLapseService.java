@@ -7,21 +7,31 @@ import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.repository.TimeLapseRepository;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.repository.UserRepository;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Slf4j
 public class TimeLapseService {
 
     private final TimeLapseRepository timelapseRepository;
     private final UserRepository userRepository;
+    private final RaspberryApiService raspberryApiService;
 
-    public TimeLapseService(TimeLapseRepository timelapseRepository, UserRepository userRepository) {
+
+
+    public TimeLapseService(TimeLapseRepository timelapseRepository,
+                            UserRepository userRepository,
+                            RaspberryApiService raspberryApiService) {
         this.timelapseRepository = timelapseRepository;
         this.userRepository = userRepository;
+        this.raspberryApiService = raspberryApiService;
     }
 
     // 타임랩스 url 저장
@@ -46,6 +56,11 @@ public class TimeLapseService {
         TimeLapse timeLapse = new TimeLapse();
         timeLapse.setUser(user);
         TimeLapse savedtimeLapse = timelapseRepository.save(timeLapse);
+        raspberryApiService.sendStartTimeLapseRequest(savedtimeLapse.getId())
+                .subscribe(
+                        response -> log.info("라즈베리파이 서버 응답: {}", response),
+                        error -> log.error("라즈베리파이 서버 요청 에러", error)
+                );
 
         return savedtimeLapse;
 
@@ -69,5 +84,4 @@ public class TimeLapseService {
         }
         timeLapse.setTitle(timeLapseFinishRequestDto.getTitle());
     }
-
 }
