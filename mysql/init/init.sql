@@ -81,7 +81,7 @@ INSERT INTO `users` (`user_name`, `user_email`, `user_role`) VALUES
 
 -- 추가 정보가 있는 사용자 삽입
 INSERT INTO `users` (`user_name`, `user_email`, `user_birthday`, `user_role`, `user_machine`, `user_imgurl`) VALUES 
-('김싸피', 'wizbee@example.com', '2011-11-11', 'USER', 'RASPI-2023-001', 'example.png');
+('김싸피', 'wizbee@example.com', '2011-11-11', 'USER', '03', 'example.png');
 
 -- 타임랩스 테이블 더미데이터 삽입
 INSERT INTO `timelapse` (`user_id`, `timelapse_url`, `timelapse_date`, `timelapse_title`) VALUES 
