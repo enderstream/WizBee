@@ -127,4 +127,20 @@ public class TimeLapseService {
         log.info("비디오 스트림 요청 처리 시작");
         return raspberryApiService.getVideoStream();
     }
+
+
+    // 타임랩스 삭제 요청
+    @Transactional
+    public void deleteTimeLapse(int timelapseId, String currentUserEmail) {
+        TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
+                .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
+
+        // 사용자 검증 과정
+        if (timeLapse.getUser().getEmail().equals(currentUserEmail)) {
+            throw new RuntimeException("Unauthorizer delete attempt");
+        }
+
+        // 사용자 검증 통과
+        timelapseRepository.delete(timeLapse);
+    }
 }

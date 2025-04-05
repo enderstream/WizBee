@@ -91,4 +91,22 @@ public class TimeLapseController {
         return timelapseService.getVideoStream();
     }
 
+    /*
+    삭제요청
+    1. 사용자가 맞는지 확인한다.
+    2. 맞으면 삭제 진행 아니면 에러 반환
+     */
+    @DeleteMapping("/{timelapseId}")
+    public ResponseEntity<?> deleteTimeLapse(@PathVariable("timelapseId") int timelapseId, Principal principal) {
+        String currentUserEmail = principal.getName();
+        try {
+            timelapseService.deleteTimeLapse(timelapseId, currentUserEmail);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제 성공");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+
+    }
+
+
 }
