@@ -108,5 +108,25 @@ public class TimeLapseController {
 
     }
 
+    /*
+    타임랩스 제목 수정 요청
+    1. 사용자가 맞는지 확인한다.
+    2. 맞으면 수정 진행 아니면 에러 반환
+     */
+    @PutMapping("/update-title/{timelapseId}")
+    public ResponseEntity<?> updateTimeLapseTitle(@PathVariable("timelapseId") int timelapseId,
+                                                  @RequestBody TimeLapseFinishRequestDto dto,
+                                                  Principal principal) {
+
+        String currentUserEmail = principal.getName();
+        try{
+            timelapseService.updateTimeLapseTitle(timelapseId, currentUserEmail, dto);
+            return ResponseEntity.ok("제목 수정 성공");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: "  + e.getMessage());
+        }
+    }
+
+
 
 }
