@@ -143,4 +143,18 @@ public class TimeLapseService {
         // 사용자 검증 통과
         timelapseRepository.delete(timeLapse);
     }
+
+    // 타임랩스 제목 수정 요청
+    @Transactional
+    public void updateTimeLapseTitle(int timelapseId, String currentUserEmail, TimeLapseFinishRequestDto dto) {
+        TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
+                .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
+
+        // 사용자 검증 과정
+        if (timeLapse.getUser().getEmail().equals(currentUserEmail)) {
+            throw new RuntimeException("Unauthorizer delete attempt");
+        }
+        timeLapse.setTitle(dto.getTitle());
+
+    }
 }
