@@ -26,7 +26,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        String path = request.getRequestURI();
+        // 만약 비디오 스트림 엔드포인트라면 토큰 검사를 건너뜁니다.
+        if (path.startsWith("/api/v1/timelapse/videostream")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // 쿠키에서 access 토큰 찾기
         String authorization = null;
         Cookie[] cookies = request.getCookies();
