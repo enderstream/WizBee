@@ -1,5 +1,4 @@
 import React from 'react'
-import '@/styles/Pagination.css'
 
 interface PaginationProps {
   currentPage: number
@@ -34,7 +33,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         key="first" 
         onClick={() => onPageChange(1)}
         disabled={currentPage === 1}
-        className="pagination-btn mx-2 px-4 py-2 bg-transparent border-none cursor-pointer text-base text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mx-1 px-4 py-2 bg-transparent border-none cursor-pointer text-base focus:outline-none text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         &lt;&lt;
       </button>
@@ -46,7 +45,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         key="prev" 
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="pagination-btn mx-2 px-4 py-2 bg-transparent border-none cursor-pointer text-base text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mx-1 px-4 py-2 bg-transparent border-none cursor-pointer text-base focus:outline-none text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         &lt;
       </button>
@@ -58,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         <button
           key={i}
           onClick={() => onPageChange(i)}
-          className={`pagination-btn mx-2 px-4 py-2 bg-transparent border-none cursor-pointer text-base rounded-md text-blue-500 ${
+          className={`mx-1 px-4 py-2 bg-transparent border-none cursor-pointer text-base focus:outline-none rounded-md text-blue-500 ${
             currentPage === i ? 'bg-blue-500 text-white' : ''
           }`}
         >
@@ -73,7 +72,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         key="next" 
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="pagination-btn mx-2 px-4 py-2 bg-transparent border-none cursor-pointer text-base text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mx-1 px-4 py-2 bg-transparent border-none cursor-pointer text-base focus:outline-none text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         &gt;
       </button>
@@ -85,7 +84,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         key="last" 
         onClick={() => onPageChange(totalPages)}
         disabled={currentPage === totalPages}
-        className="pagination-btn mx-2 px-4 py-2 bg-transparent border-none cursor-pointer text-base text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mx-1 px-4 py-2 bg-transparent border-none cursor-pointer text-base focus:outline-none text-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         &gt;&gt;
       </button>
