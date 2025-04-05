@@ -69,7 +69,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/oauth2/**", "/login/**",
                         "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout",
-                        "/api/v1/study/save", "/api/v1/timelapse/**", "/api/v1/pose/score/**")
+                        "/api/v1/study/save", "/api/v1/timelapse/**", "/api/v1/pose/score/**",
+                        "/api/v1/timelapse/videostream")
                 .permitAll()
                 .anyRequest().authenticated());
 
@@ -84,8 +85,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         configuration.setAllowedOrigins(Arrays.asList(
                 frontendUrl,                   // application.properties 에 설정된 프론트엔드 URL
                 "http://localhost:3000",         // 개발용 로컬 주소
-                "http://localhost:18080",         // 개발용 로컬 주소
-                "http://localhost:15173",         // 개발용 로컬 주소
+                "http://localhost:8080",         // 개발용 로컬 주소
+                "http://localhost:5173",         // 개발용 로컬 주소
                 "http://192.168.137.66",         // 라즈베리파이 IP1
                 "http://192.168.137.126"         // 라즈베리파이 IP2
         ));
