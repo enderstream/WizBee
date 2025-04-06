@@ -1,5 +1,5 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
+import React from "react"
+import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from "chart.js"
 
 // ChartJS 컴포넌트 등록
 ChartJS.register(
@@ -20,12 +20,12 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 const LineGraph: React.FC = () => {
-  const dates = ["3월 22일", "3월 23일", "3월 24일", "3월 25일", "3월 26일", "3월 27일", "3월 28일"];
-  const values = [5.5, 7.2, 4.8, 8.1, 3.5, 6.2, 2.4]; // 순공 시간 (시간 단위)
-  
+  const dates = ["3월 22일", "3월 23일", "3월 24일", "3월 25일", "3월 26일", "3월 27일", "3월 28일"]
+  const values = [5.5, 7.2, 4.8, 8.1, 3.5, 6.2, 2.4] // 순공 시간 (시간 단위)
+
   const data = {
     labels: dates,
     datasets: [
@@ -40,7 +40,7 @@ const LineGraph: React.FC = () => {
         tension: 0.3,
       },
     ],
-  };
+  }
 
   const options = {
     responsive: true,
@@ -51,8 +51,8 @@ const LineGraph: React.FC = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context:any) {
-            return `${context.raw} 시간`;
+          label: function (context: any) {
+            return `${context.raw} 시간`
           }
         }
       }
@@ -88,17 +88,25 @@ const LineGraph: React.FC = () => {
         },
       },
     },
-  };
+  }
 
   return (
-    <div className="flex flex-col items-center my-6 px-4">
-      <h2 className="text-2xl text-blue-400 mb-4">일주일 순공시간 변화량</h2>
-      
-      <div className="w-full max-w-md h-48">
+    <div className="flex flex-col px-4 pt-2">
+      {/* 스타일링된 헤더 */}
+      <header className="pt-2 pb-3 mb-2 border-b border-blue-200">
+        <div className="flex items-center">
+          <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
+          <h1 className="text-xl font-bold text-gray-800">
+            일주일 순공시간 변화량
+          </h1>
+        </div>
+      </header>
+
+      <div className="w-full h-36">
         <Line data={data} options={options} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LineGraph;
+export default LineGraph

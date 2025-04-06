@@ -20,85 +20,85 @@ const TimeLapseList = () => {
     enabled: !!userId,
   })
 
-  const [isWindow, setIsWindow] = useState<boolean>(false);
-  const [isPlaying] = useState<boolean>(false);
+  const [isWindow, setIsWindow] = useState<boolean>(false)
+  const [isPlaying] = useState<boolean>(false)
 
   // 페이지네이션 관련 상태
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(7); // 기본값
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(7) // 기본값
 
   // 컨테이너 높이를 측정하기 위한 ref
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // 비디오 아이템 하나의 높이 (정확한 값)
-  const videoItemHeight = 84; // 비디오 높이
-  const videoMarginBottom = 16; // 비디오 아이템 하단 마진
-  const totalVideoItemHeight = videoItemHeight + videoMarginBottom; // 비디오 아이템 전체 높이(마진 포함)
+  const videoItemHeight = 84 // 비디오 높이
+  const videoMarginBottom = 16 // 비디오 아이템 하단 마진
+  const totalVideoItemHeight = videoItemHeight + videoMarginBottom // 비디오 아이템 전체 높이(마진 포함)
 
   // 하단 영역 높이 (하단바 + 페이지네이션)
-  const bottomNavHeight = 56; // 하단바 높이
-  const paginationHeight = 48; // 페이지네이션 높이
+  const bottomNavHeight = 56 // 하단바 높이
+  const paginationHeight = 48 // 페이지네이션 높이
   
   // 새 헤더 높이 계산 (헤더 + 마진)
-  const headerHeight = 56; // h1(28px) + 패딩(16px 위 + 12px 아래)
+  const headerHeight = 56 // h1(28px) + 패딩(16px 위 + 12px 아래)
 
   useEffect(() => {
-    setIsWindow(true);
+    setIsWindow(true)
 
     // 모바일 전용 뷰포트 설정
     document.querySelector('meta[name="viewport"]')?.setAttribute(
       'content',
       'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-    );
+    )
 
     // 화면 크기에 따라 한 페이지에 표시할 아이템 수 계산
     const calculateItemsPerPage = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current) return
 
-      const availableHeight = window.innerHeight - bottomNavHeight - paginationHeight - headerHeight - 30;
+      const availableHeight = window.innerHeight - bottomNavHeight - paginationHeight - headerHeight - 30
 
       // 화면에 표시할 수 있는 최대 아이템 수 계산
-      let maxItems = Math.floor(availableHeight / totalVideoItemHeight);
+      let maxItems = Math.floor(availableHeight / totalVideoItemHeight)
 
       // 최소 1개 이상, 최대 전체 개수로 제한
-      maxItems = Math.max(1, maxItems);
+      maxItems = Math.max(1, maxItems)
 
       // 전체 아이템 개수가 계산된 maxItems보다 작으면 전체 아이템 개수로 설정
-      const totalItems = timelapseVideos?.data?.length || 0;
-      setItemsPerPage(totalItems <= maxItems ? totalItems : maxItems);
-    };
+      const totalItems = timelapseVideos?.data?.length || 0
+      setItemsPerPage(totalItems <= maxItems ? totalItems : maxItems)
+    }
 
     // 초기 계산
-    calculateItemsPerPage();
+    calculateItemsPerPage()
 
     // 화면 크기 변경 시 재계산
     const handleResize = () => {
-      calculateItemsPerPage();
-    };
+      calculateItemsPerPage()
+    }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [timelapseVideos?.data?.length]);
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [timelapseVideos?.data?.length])
 
   // 현재 페이지 아이템 계산
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = timelapseVideos?.data ? timelapseVideos.data.slice(indexOfFirstItem, indexOfLastItem) : [];
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = timelapseVideos?.data ? timelapseVideos.data.slice(indexOfFirstItem, indexOfLastItem) : []
 
   // 총 페이지 수 계산
-  const totalPages = Math.ceil((timelapseVideos?.data?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil((timelapseVideos?.data?.length || 0) / itemsPerPage)
 
   // 페이지네이션이 필요한지 확인 (모든 아이템이 한 페이지에 표시되는 경우)
-  const needsPagination = (timelapseVideos?.data?.length || 0) > itemsPerPage;
+  const needsPagination = (timelapseVideos?.data?.length || 0) > itemsPerPage
 
   // 페이지 변경 핸들러
   const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    setCurrentPage(pageNumber)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen">
@@ -156,7 +156,7 @@ const TimeLapseList = () => {
         )}
       </div>
     </div>
-  );
+  )
 }
 
 export default TimeLapseList
