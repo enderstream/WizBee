@@ -123,10 +123,10 @@ public class TimeLapseService {
 
 
     // 비디오 스트림
-    public Flux<DataBuffer> getVideoStream() {
-        log.info("비디오 스트림 요청 처리 시작");
-        return raspberryApiService.getVideoStream();
-    }
+//    public Flux<DataBuffer> getVideoStream() {
+//        log.info("비디오 스트림 요청 처리 시작");
+//        return raspberryApiService.getVideoStream();
+//    }
 
 
     // 타임랩스 삭제 요청
