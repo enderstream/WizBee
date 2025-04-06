@@ -1,67 +1,49 @@
 // UpdateProfile.tsx
-import React, { useState } from 'react'
+import React from 'react'
+import { useSettings } from '@/hooks/useSettings'
 
-interface UpdateProfileProps {
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
-  setStatusMessage: (message: string) => void;
-}
-
-const UpdateProfile: React.FC<UpdateProfileProps> = ({ isLoading, setIsLoading, setStatusMessage }) => {
-  const [showModal, setShowModal] = useState(false)
-  const [name, setName] = useState('')
-  const [birthDate, setBirthDate] = useState('')
-
-  // 모달 열기
-  const handleOpenModal = () => {
-    // 여기서 현재 유저 정보를 가져와서 상태를 설정할 수 있음
-    // 예: API 호출 또는 스토어에서 로드
-    setName('현재 사용자 이름') // 실제 구현에서는 현재 값을 가져오세요
-    setBirthDate('2000-01-01') // 실제 구현에서는 현재 값을 가져오세요
-    setShowModal(true)
-  }
-
-  // 정보 저장 처리
-  const handleSaveProfile = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    try {
-      setIsLoading(true)
-      // 여기에 정보 저장 로직 구현
-      // 예: API 호출로 서버에 업데이트
-      console.log('저장 중...', { name, birthDate })
-      
-      // 성공 시 모달 닫기
-      setShowModal(false)
-      
-      // 상태 메시지 설정
-      setStatusMessage('정보가 성공적으로 수정되었습니다.')
-    } catch (error) {
-      console.error('프로필 업데이트 오류:', error)
-      // 오류 메시지 설정
-      setStatusMessage('정보 수정 중 오류가 발생했습니다.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+const UpdateProfile: React.FC = () => {
+  const {
+    isLoading,
+    showProfileModal,
+    name,
+    birthDate,
+    setName,
+    setBirthDate,
+    handleOpenProfileModal,
+    handleSaveProfile,
+    setShowProfileModal
+  } = useSettings()
 
   return (
     <>
       {/* 내 정보 수정 버튼 */}
       <button
         className="w-full py-4 px-4 bg-blue-100 hover:bg-blue-200 active:bg-blue-300 text-blue-800 rounded-xl font-medium transition-colors touch-manipulation disabled:opacity-70 disabled:cursor-not-allowed"
-        onClick={handleOpenModal}
+        onClick={handleOpenProfileModal}
         disabled={isLoading}
       >
         내 정보 수정
       </button>
 
       {/* 내 정보 수정 모달 */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-xl">
-            <div className="p-6">
-              <h3 className="text-xl font-bold mb-6 text-center">내 정보 수정</h3>
+      {showProfileModal && (
+        <div className="fixed inset-0 backdrop-blur-[2px] bg-black/20 flex items-center justify-center z-50 px-4">
+          <div className="bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden">
+            {/* 모달 헤더 */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold">내 정보 수정</h3>
+              <button
+                className="text-2xl text-gray-500 hover:text-gray-800 transition-colors"
+                onClick={() => setShowProfileModal(false)}
+                disabled={isLoading}
+                aria-label="닫기"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="p-5">
               <form onSubmit={handleSaveProfile}>
                 <div className="mb-6">
                   <label className="block text-gray-700 font-medium mb-2">
@@ -71,7 +53,7 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ isLoading, setIsLoading, 
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                     placeholder="닉네임을 입력해주세요"
                     disabled={isLoading}
                   />
@@ -83,25 +65,29 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ isLoading, setIsLoading, 
                   </label>
                   <input
                     type="date"
-                    value={birthDate}
-                    onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+                    value={birthDate ? birthDate.toISOString().substring(0, 10) : ''}
+                    onChange={(e) => setBirthDate(e.target.value ? new Date(e.target.value) : null)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-center"
                     disabled={isLoading}
                   />
                 </div>
 
-                <div className="flex gap-3 mt-8">
+                <div className="flex justify-end space-x-3 mt-5">
                   <button
                     type="button"
-                    className="flex-1 py-4 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-800 rounded-xl font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
+                    onClick={() => setShowProfileModal(false)}
                     disabled={isLoading}
                   >
                     취소
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-4 px-4 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-xl font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                    className={`px-4 py-2 rounded-md font-medium text-white ${
+                      isLoading 
+                        ? 'bg-blue-300 cursor-not-allowed'
+                        : 'bg-blue-500 hover:bg-blue-600 transition-colors'
+                    }`}
                     disabled={isLoading}
                   >
                     {isLoading ? '저장 중...' : '저장'}
