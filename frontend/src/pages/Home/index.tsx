@@ -10,12 +10,14 @@ import {
 import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
 import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
+import StartRecord from '@/pages/Home/components/StartRecord'
 import '@/styles/Home.css'
 // import { statisticAPI } from '@/api/statisticAPI'
 // import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { userAPI } from '@/api/userAPI'
 import { initializeUserInfo } from '@/types/User'
 import reactLogo from '@/assets/react.svg'
+import RegisterIcon from '@/assets/icons/Register.svg?react'
 // import { stringify } from 'querystring'
 
 const Home: React.FC = () => {
@@ -80,16 +82,17 @@ const Home: React.FC = () => {
           <p>오늘도 열공해봐요</p>
         </div>
         <div className="machine-registration">
-          <button onClick={openModal}>기기등록</button>
+          <button
+            onClick={openModal}
+            className="bg-blue-500 active:bg-blue-700 rounded-lg p-2 transition-colors touch-manipulation"
+          >
+            <RegisterIcon width={24} height={24} />
+          </button>
         </div>
       </div>
 
-      <div className="timelapse-container">
-        <h3>타임랩스</h3>
-        <button className="start-button" onClick={handleStartTimeLapse}>
-          start
-        </button>
-      </div>
+      {/* 분리된 타임랩스 컴포넌트 사용 */}
+      <StartRecord onStartClick={handleStartTimeLapse} />
 
       <div className="timelapse-container">
         <h3>평균 순공시간 </h3>
