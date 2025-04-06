@@ -3,6 +3,7 @@ package com.wizbee.backend.timelapse.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -50,23 +51,24 @@ public class RaspberryApiService {
     react -> spring으로 비디오 스트림 요청을 보내면
     spring -> 라파에 비디오 스트림 요청을 보내고 데이터 받아오기
      */
-    public Flux<DataBuffer> getVideoStream() {
-        return webClient.get()
-                .uri("/api/v1/videostream")
-                .retrieve()
-                .onStatus((HttpStatusCode status) -> status.isError(), clientResponse -> {
-                    // 에러 응답이 있으면 에러로 변환
-                    return clientResponse.bodyToMono(String.class)
-                            .flatMap(errorMessage ->
-                                    Mono.error(new RuntimeException("Stream request failed: " + errorMessage))
-                            );
-
-                })
-                .bodyToFlux(DataBuffer.class)
-                .doOnSubscribe(sub -> log.info("비디오스트림 요청 시작"))
+//    public Flux<DataBuffer> getVideoStream() {
+//        return webClient.get()
+//                .uri("/api/v1/videostream")
+//                .header(HttpHeaders.ACCEPT, "multipart/x-mixed-replace; boundary=frame")
+//                .retrieve()
+//                .onStatus((HttpStatusCode status) -> status.isError(), clientResponse -> {
+//                    // 에러 응답이 있으면 에러로 변환
+//                    return clientResponse.bodyToMono(String.class)
+//                            .flatMap(errorMessage ->
+//                                    Mono.error(new RuntimeException("Stream request failed: " + errorMessage))
+//                            );
+//
+//                })
+//                .bodyToFlux(DataBuffer.class)
+//                .doOnSubscribe(sub -> log.info("비디오스트림 요청 시작"))
 //                .doOnNext(dataBuffer -> log.info("전달된 데이터 청크 크기: {}", dataBuffer.readableByteCount()))
-                .doOnError(error -> log.error("비디오 스트림 요청 에러", error));
-    }
+//                .doOnError(error -> log.error("비디오 스트림 요청 에러", error));
+//    }
 
 
     /*
