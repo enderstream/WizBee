@@ -38,9 +38,6 @@ const TimeLapseList = () => {
   // 하단 영역 높이 (하단바 + 페이지네이션)
   const bottomNavHeight = 56; // 하단바 높이
   const paginationHeight = 48; // 페이지네이션 높이
-  
-  // 새 헤더 높이 계산 (헤더 + 마진)
-  const headerHeight = 56; // h1(28px) + 패딩(16px 위 + 12px 아래)
 
   useEffect(() => {
     setIsWindow(true);
@@ -55,6 +52,7 @@ const TimeLapseList = () => {
     const calculateItemsPerPage = () => {
       if (!containerRef.current) return;
 
+      const headerHeight = 40; // 헤더 영역 높이 (헤더 + 마진)
       const availableHeight = window.innerHeight - bottomNavHeight - paginationHeight - headerHeight - 30;
 
       // 화면에 표시할 수 있는 최대 아이템 수 계산
@@ -114,18 +112,9 @@ const TimeLapseList = () => {
 
   return (
     <div className="bg-white h-full" ref={containerRef}>
-      <div className="px-4 pb-4">
-        {/* 스타일링된 헤더 */}
-        <header className="pt-4 pb-3 mb-3 border-b border-blue-200">
-          <div className="flex items-center">
-            <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
-            <h1 className="text-xl font-bold text-gray-800">
-              타임랩스 목록
-            </h1>
-            <div className="ml-auto bg-blue-100 text-blue-600 text-xs font-medium rounded-full px-2 py-1">
-              {timelapseVideos?.data?.length || 0}개
-            </div>
-          </div>
+      <div className="px-4 pt-4 pb-4">
+        <header className="mb-3">
+          <h1 className="text-xl font-bold text-gray-800">타임랩스 목록</h1>
         </header>
 
         {isWindow && timelapseVideos?.data && timelapseVideos.data.length > 0 ? (

@@ -145,7 +145,6 @@ const Video: React.FC<VideoProps> = ({ video }) => {
               >
                 <path d="M8 5v14l11-7z" />
               </svg>
-              재생
             </div>
             <div className="video-details-wrapper">
               <h3 className="video-title">{video.timelapseTitle}</h3>

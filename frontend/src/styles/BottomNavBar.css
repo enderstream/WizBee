@@ -10,15 +10,7 @@
 
 /* 네비게이션 링크 스타일 */
 .nav-link {
-  text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* 포커스 시 아웃라인 및 밑줄 제거 */
-.nav-link:focus,
-.nav-link:focus-visible {
-  outline: none;
-  text-decoration: none;
 }
 
 /* 아이콘 및 텍스트 색상 전환 애니메이션 */
@@ -30,9 +22,4 @@
 /* 클릭 효과 */
 a:active {
   opacity: 0.7;
-}
-
-/* 인디케이터 바 애니메이션 - 기존 transition-all duration-150 클래스를 활용하므로 중복 제거 */
-.absolute.bottom-0.h-1.bg-blue-500 {
-  transition: left 150ms ease-in-out;
 }
