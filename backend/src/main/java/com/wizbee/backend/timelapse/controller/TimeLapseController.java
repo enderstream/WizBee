@@ -3,17 +3,16 @@ package com.wizbee.backend.timelapse.controller;
 
 import com.wizbee.backend.timelapse.dto.TimeLapseFinishRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
-import com.wizbee.backend.timelapse.Entity.TimeLapse;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
 import com.wizbee.backend.timelapse.service.TimeLapseService;
-import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,7 +33,7 @@ public class TimeLapseController {
     }
 
     // 타입 랩스 영상 목록 조회 api
-    @GetMapping("/test/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getTimeLapse(@PathVariable("userId") int userId) {
         try {
             List<TimeLapseGetRequestDto> result = timelapseService.getTimeLapse(userId);
@@ -82,14 +81,26 @@ public class TimeLapseController {
 
     // react에서 비디오 스트림 보내기 요청 받는 API
     // 라파에 비디오 스트림 보내 달라고 요청 받는 aPI
-    @GetMapping(value = "/videostream",produces = "multipart/x-mixed-replace; boundary=frame")
-    public Flux<DataBuffer> streamVideo(HttpServletRequest request) {
-//        System.out.println("dddddd");
-//        System.out.println(timelapseService.getVideoStream());
-        String acceptHeader = request.getHeader("Accept");
-        log.info("Video stream request received. Accept header: {}", acceptHeader);
-        return timelapseService.getVideoStream();
-    }
+//    @GetMapping(value = "/videostream", produces = "multipart/x-mixed-replace; boundary=frame")
+//    public Mono<Void> streamVideoFlush(ServerHttpResponse response) {
+//        // 1. 응답 헤더에 Content-Type 설정
+//        response.getHeaders().setContentType(
+//                MediaType.parseMediaType("multipart/x-mixed-replace; boundary=frame")
+//        );
+//
+//        // 2. timelapseService로부터 FastAPI 서버에서 받은 비디오 스트림(Flux<DataBuffer>)을 가져옴
+//        Flux<DataBuffer> videoStream = timelapseService.getVideoStream();
+//
+//        // 3. writeAndFlushWith()를 사용해 각 데이터 청크를 개별 Flux로 감싸서 flush를 강제함
+//        //    각 데이터 청크가 전송될 때마다 내부적으로 flush가 호출되어, 버퍼링 없이 클라이언트로 전달됨
+//        return response.writeAndFlushWith(
+//                videoStream.map(dataBuffer -> {
+//                    // 각 DataBuffer를 Flux.just()로 래핑
+//                    // -> 즉, 하나의 데이터 청크마다 별도의 Publisher를 생성하여 flush를 보장
+//                    return Flux.just(dataBuffer);
+//                })
+//        );
+//    }
 
     /*
     삭제요청
