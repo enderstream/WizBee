@@ -1,45 +1,54 @@
-import React from 'react'
-import { useSettingsState } from '@/hooks/useSettingsState'
-import StatusMessage from '@/pages/Settings/components/StatusMessage'
-import SettingsButtons from '@/pages/Settings/components/SettingsButtons'
-import ProfileModal from '@/pages/Settings/components/ProfileModal'
-import ConfirmationModal from '@/pages/Settings/components/ConfirmationModal'
-import '@/styles/Settings.css'
+// Settings.tsx
+import React, { useState } from 'react'
+import UpdateProfile from '@/pages/Settings/components/UpdateProfile'
+import LogOut from '@/pages/Settings/components/LogOut'
+import DeleteUser from '@/pages/Settings/components/DeleteUser'
 
 const Settings: React.FC = () => {
-  // Settings state management
-  const { showProfileModal, showLogoutModal, showDeleteModal, statusMessage } =
-    useSettingsState()
+  const [statusMessage, setStatusMessage] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (
-    <div className="settings-page">
-      {/* Status message component */}
-      {statusMessage && <StatusMessage />}
-
-      {/* Settings buttons component */}
-      <SettingsButtons />
-
-      {/* Profile edit modal */}
-      {showProfileModal && <ProfileModal />}
-
-      {/* Logout confirmation modal */}
-      {showLogoutModal && (
-        <ConfirmationModal
-          title="로그아웃"
-          message="정말로 로그아웃 하시겠습니까?"
-          isDelete={false}
-        />
+    <div className="flex flex-col items-center w-full max-w-md mx-auto p-5 h-full relative">
+      {/* Status message */}
+      {statusMessage && (
+        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-white rounded-xl shadow-lg p-4 min-w-[300px] max-w-[90%] text-center animate-fade-in">
+          <div className="mb-3">
+            <p className="text-base font-medium mb-4">{statusMessage}</p>
+            <button 
+              onClick={() => setStatusMessage('')}
+              className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-5 py-2 text-sm font-medium transition-colors"
+            >
+              확인
+            </button>
+          </div>
+        </div>
       )}
 
-      {/* Account deletion confirmation modal */}
-      {showDeleteModal && (
-        <ConfirmationModal
-          title="회원 탈퇴"
-          message="정말로 탈퇴하시겠습니까?"
-          warningMessage="이 작업은 되돌릴 수 없습니다."
-          isDelete={true}
+      <h2 className="text-xl font-bold mb-8 text-center">설정</h2>
+      
+      <div className="flex flex-col w-full gap-4">
+        {/* 내 정보 수정 섹션 */}
+        <UpdateProfile 
+          isLoading={isLoading} 
+          setIsLoading={setIsLoading} 
+          setStatusMessage={setStatusMessage} 
         />
-      )}
+        
+        {/* 로그아웃 섹션 */}
+        <LogOut 
+          isLoading={isLoading} 
+          setIsLoading={setIsLoading} 
+          setStatusMessage={setStatusMessage} 
+        />
+        
+        {/* 회원 탈퇴 섹션 */}
+        <DeleteUser 
+          isLoading={isLoading} 
+          setIsLoading={setIsLoading} 
+          setStatusMessage={setStatusMessage} 
+        />
+      </div>
     </div>
   )
 }
