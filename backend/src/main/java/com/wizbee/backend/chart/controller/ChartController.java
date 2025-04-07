@@ -1,10 +1,6 @@
 package com.wizbee.backend.chart.controller;
 
-import com.wizbee.backend.chart.dto.ChartRequestDto;
-import com.wizbee.backend.chart.dto.ChartResponseDto;
-import com.wizbee.backend.chart.dto.PeerStatisticsResponseDto;
-import com.wizbee.backend.chart.dto.UserStatisticsResponseDto;
-import com.wizbee.backend.chart.entity.Chart;
+import com.wizbee.backend.chart.dto.*;
 import com.wizbee.backend.chart.service.ChartService;
 import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
@@ -13,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -27,120 +22,101 @@ public class ChartController {
     private UserService userService;
 
     /**
-     * 라즈베리파이에서 전송받은 통계 정보를 DB에 저장
-     * 라즈베리파이에서 넘겨받은 고유 번호로 유저 정보 조회 후
-     * 그 유저 정보 기반으로 통계 정보 객체 생성
-     * 생성된 통계 정보 객체를 DB에 저장
-     *
-     * @param chartRequestDto
-     * @return
+     * 라즈베리파이로부터 통계 데이터를 받아 처리하고 저장한다.
+     * @param chartRequestDto 라즈베리파이 통계 DTO
+     * @return 저장 성공/실패 메시지
      */
     @PostMapping("/save")
     public ResponseEntity<?> saveChart(@RequestBody ChartRequestDto chartRequestDto) {
-        // 1. 유저 찾기 (라즈베리파이 ID를 통해)
         User user = userService.findByMachine(chartRequestDto.getRassId());
-        if (user == null) {
-            return ResponseEntity.badRequest().body("유효하지 않은 라즈베리파이 ID입니다.");
-        }
-
-        // 2. Chart 객체 생성 및 데이터 설정
-        Chart chart = new Chart();
-        chart.setUser(user);
-        chart.setDate(java.sql.Date.valueOf(chartRequestDto.getDate()));
-        chart.setFullTime(chartRequestDto.getFullTime());
-        chart.setPhoneTime(chartRequestDto.getPhoneTime());
-        chart.setPhoneCount(chartRequestDto.getPhoneCount());
-        chart.setSleepTime(chartRequestDto.getSleepTime());
-        chart.setSleepCount(chartRequestDto.getSleepCount());
-        chart.setOutTime(chartRequestDto.getOutTime());
-        chart.setOutCount(chartRequestDto.getOutCount());
-
-        // 3. 순공부 시간 계산
-        chart.setStudyTime(chart.getFullTime() - (chart.getOutTime() + chart.getPhoneTime() + chart.getSleepTime()));
-
-        // 4. DB 저장
-        Chart savedChart = chartService.saveChart(chart);
-        if (savedChart != null) {
-            return ResponseEntity.ok("통계 등록에 성공했습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("저장 실패.");
-        }
+        return chartService.processChartRequest(chartRequestDto, user);
     }
 
+    /**
+     * 특정 유저의 오늘 날짜 통계를 조회한다.
+     * @param date yyyy-MM-dd 형식의 날짜 문자열
+     * @param userId 유저 ID
+     * @return 통계 데이터 또는 오류 메시지
+     */
     @GetMapping("/chart/today/{userId}")
     public ResponseEntity<?> printTodayChart(@RequestParam String date, @PathVariable("userId") int userId){
-        User searchUser = userService.findById(userId);
-        if(searchUser == null){
-            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
-        }
+        User user = userService.findById(userId);
+        if(user == null) return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
 
-        // 날짜 변환 (String → LocalDate)
-        LocalDate localDate;
-        try {
-            localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // "yyyy-MM-dd" 형식
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
-        }
+        LocalDate localDate = chartService.parseDate(date);
+        if(localDate == null) return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
 
-        // 오늘의 딴짓 통계
-        Chart oneDayChart = chartService.findByDate(searchUser, localDate);
-
-        if(oneDayChart != null){
-            return ResponseEntity.ok(oneDayChart);
-        } else {
-            return ResponseEntity.badRequest().body("해당 날짜에 통계 정보가 없습니다.");
-        }
-
+        ChartAggregateDto oneDayChart = chartService.findByDate(user, localDate);
+        return (oneDayChart != null) ? ResponseEntity.ok(oneDayChart) : ResponseEntity.badRequest().body("해당 날짜에 통계 정보가 없습니다.");
     }
 
+    /**
+     * 유저의 개인 평균과 또래 평균 공부 시간을 조회한다.
+     * @param userId 유저 ID
+     * @return 평균 통계 DTO
+     */
+    @GetMapping("/chart/mainpage/{userId}")
+    public ResponseEntity<?> getCharAvgMainPage(@PathVariable("userId") int userId){
+        User user = userService.findById(userId);
+        if(user == null) return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
 
+        double userAvg = chartService.avgOfUser(user);
+        double userYearAvg = chartService.avgOfUserAge(user);
+        return ResponseEntity.ok(new ChartAvgResponseDto(userAvg, userYearAvg));
+    }
+
+    /**
+     * 유저의 하루 통계에 기반한 딴짓 비율 계산 결과를 반환한다.
+     * @param date yyyy-MM-dd 형식의 날짜 문자열
+     * @param userId 유저 ID
+     * @return 비공부 시간 비율 또는 에러 메시지
+     */
+    @GetMapping("/chart/mainpage/{date}/{userId}")
+    public ResponseEntity<?> getChartScoreMainPage(@PathVariable("date") String date, @PathVariable("userId") int userId){
+        User user = userService.findById(userId);
+        if(user == null) return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
+
+        LocalDate localDate = chartService.parseDate(date);
+        if(localDate == null) return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
+
+        return chartService.getChartScore(user, localDate);
+    }
+
+    /**
+     * 유저의 최근 1주일간 순공 시간 통계를 조회한다.
+     * @param date 기준 날짜 문자열
+     * @param userId 유저 ID
+     * @return 날짜별 순공 시간 목록
+     */
     @GetMapping("/chart/week/{userId}")
     public ResponseEntity<?> printWeekChart(@RequestParam("date") String date, @PathVariable("userId") int userId){
-        User searchUser = userService.findById(userId);
-        if(searchUser == null){
-            return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
-        }
+        User user = userService.findById(userId);
+        if(user == null) return ResponseEntity.badRequest().body("등록된 유저가 없습니다.");
 
-        // 날짜 변환 (String → LocalDate)
-        LocalDate localDate;
-        try {
-            localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // "yyyy-MM-dd" 형식
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
-        }
+        LocalDate localDate = chartService.parseDate(date);
+        if(localDate == null) return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
 
-        // 이번주 순공시간 통계
-        List<Object[]> weekChart = chartService.findWeekByDate(searchUser, localDate);
-
-        if(weekChart != null){
-            return ResponseEntity.ok(weekChart);
-        } else {
-            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
-        }
-
+        List<ChartWeekStudyTimeResponseDto> weekChart = chartService.findWeekByDate(user, localDate);
+        return (weekChart != null) ? ResponseEntity.ok(weekChart) : ResponseEntity.badRequest().body("잘못된 요청입니다.");
     }
 
+    /**
+     * 유저와 또래의 통계 평균 데이터를 조회한다.
+     * @param userId 유저 ID
+     * @return PeerStatisticsResponseDto
+     */
     @GetMapping("/chart/avg/{userId}")
     public ResponseEntity<?> peerstatistics(@PathVariable("userId") int userId) {
-        try {
-            PeerStatisticsResponseDto peerStatisticsResponseDto = chartService.getPeerStats(userId);
-            return ResponseEntity.ok(peerStatisticsResponseDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error:" + e.getMessage());
-        }
+        return ResponseEntity.ok(chartService.getPeerStats(userId));
     }
 
-//     로그인한 유저 통계 정보 조회
+    /**
+     * 유저 개인의 통계 평균 데이터를 조회한다.
+     * @param userId 유저 ID
+     * @return UserStatisticsResponseDto
+     */
     @GetMapping("/chart/{userId}")
     public ResponseEntity<?> userStatistics(@PathVariable("userId") int userId) {
-        try {
-            UserStatisticsResponseDto userStatisticsResponseDto = chartService.getUserStats(userId);
-            return ResponseEntity.ok(userStatisticsResponseDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error:" + e.getMessage());
-        }
+        return ResponseEntity.ok(chartService.getUserStats(userId));
     }
-
-
-
 }
