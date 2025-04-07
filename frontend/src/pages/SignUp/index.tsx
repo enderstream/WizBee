@@ -37,7 +37,6 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    console.log('GOOD')
 
     try {
       // 생년월일 유효성 검사
