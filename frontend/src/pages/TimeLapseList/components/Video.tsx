@@ -4,6 +4,7 @@ import { TimeLapseVideo } from '@/types/TimeLapse'
 import DeleteIcon from '@/assets/icons/Delete.svg?react'
 import EditIcon from '@/assets/icons/Edit.svg?react'
 import PlayIcon from '@/assets/icons/Play.svg?react'
+import { timeLapseAPI } from '@/api/timeLapseAPI'
 
 interface VideoProps {
   video: TimeLapseVideo
@@ -67,13 +68,22 @@ const Video: React.FC<VideoProps> = ({ video }) => {
     }
   }
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     console.log('수정 버튼 클릭!', video.timelapseTitle)
+    console.log(video)
+    const response = await timeLapseAPI.editTimeLapseTitle(video.timelapseId, "MY_TIME")
+    // const response = await timeLapseAPI.editTimeLapseTitle(video.timelapseId, video.timelapseTitle)
+    console.log(response.data)
+    console.log(response.status)
     resetSlide()
   }
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     console.log('삭제 버튼 클릭!', video.timelapseTitle)
+    console.log(video)
+    const response = await timeLapseAPI.deleteTimeLapse(video.timelapseId)
+    console.log(response.data)
+    console.log(response.status)
     resetSlide()
   }
 
@@ -136,8 +146,8 @@ const Video: React.FC<VideoProps> = ({ video }) => {
           onTouchEnd={handleTouchEnd}
         >
           <div className="flex items-center flex-1">
-            <div 
-              className="flex items-center text-blue-500 font-medium mr-4 border-r border-r-slate-200 pr-4 cursor-pointer" 
+            <div
+              className="flex items-center text-blue-500 font-medium mr-4 border-r border-r-slate-200 pr-4 cursor-pointer"
               onClick={handlePlayButtonClick}
             >
               <PlayIcon className="mr-1 w-7 h-7" />

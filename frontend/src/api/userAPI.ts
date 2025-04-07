@@ -14,7 +14,7 @@ export const userAPI = {
             const response = await apiClient.post(`/api/v1/auth/logout`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("로그아웃 중 오류 발생")
+            alert("로그아웃 실패")
             throw error
         }
     },
@@ -25,7 +25,7 @@ export const userAPI = {
             const response = await apiClient.put(`/api/v1/auth/signup`, { name, birthday })
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("회원가입 중 오류 발생")
+            alert("회원가입 실패")
             throw error
         }
     },
@@ -47,7 +47,7 @@ export const userAPI = {
             const response = await apiClient.put(`/api/v1/auth/${userId}`, { name, birthday })
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("유저 정보 업데이트 실패")
+            alert("유저 정보 수정 실패")
             throw error
         }
     },
@@ -58,7 +58,7 @@ export const userAPI = {
             const response = await apiClient.put(`/api/v1/auth/withdraw/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("회원탈퇴 실패")
+            alert("회원 탈퇴 실패")
             throw error
         }
     },

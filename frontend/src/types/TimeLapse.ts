@@ -1,5 +1,5 @@
 export interface TimeLapseVideo {
-    timelapseId: number
+    timelapseId: string
     userId: number
     timelapseUrl: string
     timelapseTitle: string

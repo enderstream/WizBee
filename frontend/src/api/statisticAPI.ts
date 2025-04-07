@@ -7,7 +7,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/study/chart/today/${userId}?date=${date}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("정보 조회 실패")
+            alert("오늘의 딴짓 통계 정보 조회 실패")
             throw error
         }
     },
@@ -18,7 +18,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/study/chart/week/${userId}?date=${date}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("정보 조회 실패")
+            alert("주간 순공시간 통계 정보 조회 실패")
             throw error
         }
     },
@@ -29,7 +29,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/study/chart/${userId}`)
             return { data: response.data, status: response.data }
         } catch (error) {
-            alert("정보 조회 실패")
+            alert("지표화된 유저 통계 정보 조회 실패")
             throw error
         }
     },
@@ -40,7 +40,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/study/chart/mainpage/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
+            alert("평균 공부 시간 정보 조회 실패")
             throw error
         }
     },
@@ -51,7 +51,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/study/chart/mainpage/${date}/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
+            alert("집중력 통계 정보 조회 실패")
             throw error
         }
     },
@@ -62,7 +62,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/pose/score/${date}/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
+            alert("자세 통계 정보 조회 실패")
             throw error
         }
     },
@@ -73,7 +73,7 @@ export const statisticAPI = {
             const response = await apiClient.get(`/api/v1/pose/image/${date}/${userId}`)
             return { data: response.data, status: response.status }
         } catch (error) {
-            alert("")
+            alert("잘못된 자세 이미지 목록 조회 실패")
             throw error
         }
     },

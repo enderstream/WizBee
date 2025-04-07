@@ -40,7 +40,7 @@ const MachineRegisterModal: React.FC = () => {
             현재 등록된 기기: {displayMachineId === "000" ? "등록된 기기가 없습니다" : `${displayMachineId}번 기기`}
           </h3>
           <button
-            className="text-2xl text-gray-500 hover:text-gray-800 transition-colors"
+            className="text-2xl text-gray-500 active:text-gray-800 transition-colors"
             onClick={closeModal}
             disabled={isSubmitting}
             aria-label="닫기"
@@ -77,7 +77,7 @@ const MachineRegisterModal: React.FC = () => {
             <div className="flex justify-end space-x-3 mt-5">
               <button
                 type="button"
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
+                className="px-4 py-2 bg-gray-100 active:bg-gray-200 rounded-md font-medium transition-colors"
                 onClick={closeModal}
                 disabled={isSubmitting}
               >
@@ -88,7 +88,7 @@ const MachineRegisterModal: React.FC = () => {
                 className={`px-4 py-2 rounded-md font-medium text-white ${
                   isSubmitting || success || !serialNumber.trim()
                     ? 'bg-blue-300 cursor-not-allowed'
-                    : 'bg-blue-500 hover:bg-blue-600 transition-colors'
+                    : 'bg-blue-500 active:bg-blue-600 transition-colors'
                 }`}
                 disabled={isSubmitting || success || !serialNumber.trim()}
               >
