@@ -5,7 +5,7 @@ import {
   selectName,
   selectProfileImageUrl,
   // selectUserId,
-  // selectMachineId,
+  selectMachineId,
 } from '@/store/userStore'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
@@ -14,8 +14,9 @@ import StartRecord from '@/pages/Home/components/StartRecord'
 // import { statisticAPI } from '@/api/statisticAPI'
 // import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { userAPI } from '@/api/userAPI'
+import { machineAPI } from '@/api/machineAPI'
 import { initializeUserInfo } from '@/types/User'
-import reactLogo from '@/assets/react.svg'
+import reactLogo from '@/assets/react.svg?react'
 import RegisterIcon from '@/assets/icons/Register.svg?react'
 // import { stringify } from 'querystring'
 
@@ -51,7 +52,11 @@ const Home: React.FC = () => {
   const handleStartTimeLapse = async () => {
     console.log('타임랩스 세션 시작')
     navigate(ROUTES.RECORD)
-    
+    const machineId = useUserStore(selectMachineId)
+    const response = await machineAPI.requestStream(machineId)
+    console.log(response.status)
+    console.log(response.data)
+        
     // 오늘 불러오기
     // const today = new Date()
     // const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
