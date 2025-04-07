@@ -1,6 +1,7 @@
-// DeleteUser.tsx
 import React from 'react'
 import { useSettings } from '@/hooks/useSettings'
+import DeleteUserIcon from '@/assets/icons/DeleteUser.svg?react'
+import ArrowRightIcon from '@/assets/icons/ArrowRight.svg?react'
 
 const DeleteUser: React.FC = () => {
   const {
@@ -19,42 +20,10 @@ const DeleteUser: React.FC = () => {
         disabled={isLoading}
       >
         <div className="flex items-center">
-          <svg
-            className="w-5 h-5 text-red-500 mr-3"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 11h3m0 0h3m-3 0V8m0 3v3"
-            />
-          </svg>
+          <DeleteUserIcon width={24} height={24} className="fill-white mr-3" />
           <span className="text-red-500">회원 탈퇴</span>
         </div>
-        <svg
-          className="w-5 h-5 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <ArrowRightIcon width={24} height={24} />
       </button>
 
       {/* 회원 탈퇴 확인 모달 */}

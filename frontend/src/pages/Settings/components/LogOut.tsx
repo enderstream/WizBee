@@ -1,6 +1,7 @@
-// LogOut.tsx
 import React from 'react'
 import { useSettings } from '@/hooks/useSettings'
+import LogOutIcon from '@/assets/icons/LogOut.svg?react'
+import ArrowRightIcon from '@/assets/icons/ArrowRight.svg?react'
 
 const LogOut: React.FC = () => {
   const { isLoading, showLogoutModal, setShowLogoutModal, handleLogout } =
@@ -15,36 +16,10 @@ const LogOut: React.FC = () => {
         disabled={isLoading}
       >
         <div className="flex items-center">
-          <svg
-            className="w-5 h-5 text-gray-500 mr-3"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
+          <LogOutIcon width={24} height={24} className="mr-3" />
           <span>로그아웃</span>
         </div>
-        <svg
-          className="w-5 h-5 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <ArrowRightIcon width={24} height={24} />
       </button>
 
       {/* 로그아웃 확인 모달 */}

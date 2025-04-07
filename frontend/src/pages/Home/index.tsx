@@ -16,7 +16,7 @@ import StartRecord from '@/pages/Home/components/StartRecord'
 import { userAPI } from '@/api/userAPI'
 import { machineAPI } from '@/api/machineAPI'
 import { initializeUserInfo } from '@/types/User'
-import reactLogo from '@/assets/react.svg'
+import WizBeeLogo from '@/assets/logos/wizbee.svg?react'
 import RegisterIcon from '@/assets/icons/Register.svg?react'
 
 const Home: React.FC = () => {
@@ -54,10 +54,6 @@ const Home: React.FC = () => {
     const response = await machineAPI.requestStream(machineId)
     console.log(response.status)
     console.log(response.data)
-        
-    // 오늘 불러오기
-    // const today = new Date()
-    // const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   }
 
   return (
@@ -65,27 +61,17 @@ const Home: React.FC = () => {
       {/* 프로필 섹션 */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden mr-4 flex-shrink-0">
-            {profileImageUrl ? (
-              <img
-                src={reactLogo}
-                alt="프로필 이미지"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <img
-                src={reactLogo}
-                alt="기본 프로필"
-                className="w-full h-full object-cover"
-              />
-            )}
+          <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden mr-3 flex-shrink-0">
+
+            <WizBeeLogo className="w-full h-full object-cover" />
+
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-800">{name || '사용자'}님!</h2>
             <p className="text-gray-500">오늘도 열공해봐요</p>
           </div>
         </div>
-        
+
         <button
           onClick={openModal}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 active:bg-blue-700 text-white rounded-xl transition-colors touch-manipulation"
@@ -113,7 +99,7 @@ const Home: React.FC = () => {
             <p className="text-lg font-bold text-gray-800">85%</p>
           </div>
         </div>
-        
+
         <div className="bg-blue-50 rounded-2xl p-6 text-center">
           <h3 className="text-gray-700 text-sm mb-3">오늘의 자세 점수</h3>
           <div className="h-16 flex items-center justify-center">
