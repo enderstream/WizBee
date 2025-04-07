@@ -15,7 +15,7 @@ export const machineAPI = {
   // 백엔드에 스트리밍 요청
   requestStream: async (machineId: string) => {
     try {
-      const response = await apiClient.get(`/api/v1/stream/${machineId}`)
+      const response = await apiClient.get(`/api/v1/timelapse/stream/${machineId}`)
       return { data: response.data, status: response.status }
     } catch (error) {
       alert('스트리밍 url 획득 실패')

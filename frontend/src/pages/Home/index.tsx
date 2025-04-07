@@ -25,6 +25,7 @@ const Home: React.FC = () => {
   const profileImageUrl = useUserStore(selectProfileImageUrl)
   const { openModal } = useMachineRegister()
   const setUser = useUserStore((state) => state.setUser)
+  const machineId = useUserStore(selectMachineId)
   // const userId = useUserStore(selectUserId)
 
   // 컴포넌트 마운트 시 사용자 정보 가져오기
@@ -50,7 +51,6 @@ const Home: React.FC = () => {
   const handleStartTimeLapse = async () => {
     console.log('타임랩스 세션 시작')
     navigate(ROUTES.RECORD)
-    const machineId = useUserStore(selectMachineId)
     const response = await machineAPI.requestStream(machineId)
     console.log(response.status)
     console.log(response.data)
