@@ -1,11 +1,16 @@
 package com.wizbee.backend.timelapse.controller;
 
 
+import com.wizbee.backend.jwt.JWTUtil;
 import com.wizbee.backend.timelapse.dto.TimeLapseFinishRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseGetRequestDto;
 import com.wizbee.backend.timelapse.dto.TimeLapseSaveRequestDto;
+import com.wizbee.backend.timelapse.service.RaspberryApiService;
 import com.wizbee.backend.timelapse.service.TimeLapseService;
+import com.wizbee.backend.user.entity.User;
 import com.wizbee.backend.user.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
@@ -25,11 +30,17 @@ import java.util.List;
 @Slf4j
 public class TimeLapseController {
     private final TimeLapseService timelapseService;
+    private final RaspberryApiService raspberryApiService;
     private final UserService userService;
+    private final JWTUtil jwtUtil;
     public TimeLapseController(TimeLapseService timelapseService,
-                               UserService userService) {
+                               UserService userService,
+                               RaspberryApiService raspberryApiService,
+                               JWTUtil jwtUtil) {
         this.timelapseService = timelapseService;
         this.userService = userService;
+        this.raspberryApiService = raspberryApiService;
+        this.jwtUtil = jwtUtil;
     }
 
     // 타입 랩스 영상 목록 조회 api
@@ -79,28 +90,47 @@ public class TimeLapseController {
                 );
     }
 
-    // react에서 비디오 스트림 보내기 요청 받는 API
-    // 라파에 비디오 스트림 보내 달라고 요청 받는 aPI
-//    @GetMapping(value = "/videostream", produces = "multipart/x-mixed-replace; boundary=frame")
-//    public Mono<Void> streamVideoFlush(ServerHttpResponse response) {
-//        // 1. 응답 헤더에 Content-Type 설정
-//        response.getHeaders().setContentType(
-//                MediaType.parseMediaType("multipart/x-mixed-replace; boundary=frame")
-//        );
-//
-//        // 2. timelapseService로부터 FastAPI 서버에서 받은 비디오 스트림(Flux<DataBuffer>)을 가져옴
-//        Flux<DataBuffer> videoStream = timelapseService.getVideoStream();
-//
-//        // 3. writeAndFlushWith()를 사용해 각 데이터 청크를 개별 Flux로 감싸서 flush를 강제함
-//        //    각 데이터 청크가 전송될 때마다 내부적으로 flush가 호출되어, 버퍼링 없이 클라이언트로 전달됨
-//        return response.writeAndFlushWith(
-//                videoStream.map(dataBuffer -> {
-//                    // 각 DataBuffer를 Flux.just()로 래핑
-//                    // -> 즉, 하나의 데이터 청크마다 별도의 Publisher를 생성하여 flush를 보장
-//                    return Flux.just(dataBuffer);
-//                })
-//        );
-//    }
+    /*
+    1. 비디오 스트림 요청
+    2. 비디오 스트림 url 전달
+     */
+    @GetMapping("/stream/{machineId}")
+    public Mono<ResponseEntity<String>> getStreamUrl(@PathVariable("machineId") String machineId,
+                                                     HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            for(Cookie cookie : cookies) {
+                if("access".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if ( token == null ) {
+            return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token not found in cookies"));
+
+        }
+
+        int userId = jwtUtil.getId(token);
+
+        User currentUser = userService.findById(userId);
+
+        // 만약 현재 사용자의 machineId가 다르면
+        if(!machineId.equals(currentUser.getMachine())) {
+            return Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized: machineId mismatch"));
+        }
+
+        return raspberryApiService.getStreamUrl()
+                .map(url -> ResponseEntity.ok(url))
+                .onErrorResume(error ->
+                        Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error: " + error.getMessage()))
+                );
+
+    }
+
 
     /*
     삭제요청
@@ -110,6 +140,7 @@ public class TimeLapseController {
     @DeleteMapping("/{timelapseId}")
     public ResponseEntity<?> deleteTimeLapse(@PathVariable("timelapseId") int timelapseId, Principal principal) {
         String currentUserEmail = principal.getName();
+        System.out.println(currentUserEmail);
         try {
             timelapseService.deleteTimeLapse(timelapseId, currentUserEmail);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제 성공");
@@ -130,6 +161,7 @@ public class TimeLapseController {
                                                   Principal principal) {
 
         String currentUserEmail = principal.getName();
+        System.out.println(currentUserEmail);
         try{
             timelapseService.updateTimeLapseTitle(timelapseId, currentUserEmail, dto);
             return ResponseEntity.ok("제목 수정 성공");
