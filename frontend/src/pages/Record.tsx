@@ -12,7 +12,6 @@ const Record: React.FC = () => {
   const machineId = useUserStore(selectMachineId)
   const [isRecording, setIsRecording] = useState(false)
   const [timeLapseId, setTimeLapseId] = useState("0") 
-  const [streamURL, setStreamURL] = useState("")
 
   const handleGoToHome = () => {
     navigate(ROUTES.HOME)
@@ -26,8 +25,6 @@ const Record: React.FC = () => {
     console.log(response.data)
     console.log(response.status)
     setTimeLapseId(response.data.id)
-    setStreamURL(response.data.url)
-    console.log(streamURL)
   }
 
   const handleStopRecording = async () => {

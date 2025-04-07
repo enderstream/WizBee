@@ -9,9 +9,13 @@
     }
   ],
   "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["DOM", "ES2015"],
     "types": [
       "vite-plugin-svgr/client"
-    ]
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
     "src",
