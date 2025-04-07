@@ -12,18 +12,56 @@ const UpdateProfile: React.FC = () => {
     setBirthDate,
     handleOpenProfileModal,
     handleSaveProfile,
-    setShowProfileModal
+    setShowProfileModal,
   } = useSettings()
 
   return (
     <>
       {/* 내 정보 수정 버튼 */}
-      <button
+      {/* <button
         className="w-full py-4 px-4 bg-blue-100 hover:bg-blue-200 active:bg-blue-300 text-blue-800 rounded-xl font-medium transition-colors touch-manipulation disabled:opacity-70 disabled:cursor-not-allowed"
         onClick={handleOpenProfileModal}
         disabled={isLoading}
       >
         내 정보 수정
+      </button> */}
+
+      <button
+        className="flex items-center justify-between py-4 px-4 cursor-pointer w-full text-left disabled:opacity-70 disabled:cursor-not-allowed"
+        onClick={handleOpenProfileModal}
+        disabled={isLoading}
+      >
+        <div className="flex items-center">
+          <svg
+            className="w-5 h-5 text-blue-500 mr-3"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+          <span>내 정보 수정</span>
+        </div>
+        <svg
+          className="w-5 h-5 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
       </button>
 
       {/* 내 정보 수정 모달 */}
@@ -65,8 +103,14 @@ const UpdateProfile: React.FC = () => {
                   </label>
                   <input
                     type="date"
-                    value={birthDate ? birthDate.toISOString().substring(0, 10) : ''}
-                    onChange={(e) => setBirthDate(e.target.value ? new Date(e.target.value) : null)}
+                    value={
+                      birthDate ? birthDate.toISOString().substring(0, 10) : ''
+                    }
+                    onChange={(e) =>
+                      setBirthDate(
+                        e.target.value ? new Date(e.target.value) : null,
+                      )
+                    }
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-center"
                     disabled={isLoading}
                   />
@@ -84,7 +128,7 @@ const UpdateProfile: React.FC = () => {
                   <button
                     type="submit"
                     className={`px-4 py-2 rounded-md font-medium text-white ${
-                      isLoading 
+                      isLoading
                         ? 'bg-blue-300 cursor-not-allowed'
                         : 'bg-blue-500 hover:bg-blue-600 transition-colors'
                     }`}
