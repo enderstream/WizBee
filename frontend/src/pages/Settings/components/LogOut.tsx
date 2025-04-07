@@ -1,24 +1,25 @@
-// LogOut.tsx
 import React from 'react'
 import { useSettings } from '@/hooks/useSettings'
+import LogOutIcon from '@/assets/icons/LogOut.svg?react'
+import ArrowRightIcon from '@/assets/icons/ArrowRight.svg?react'
 
 const LogOut: React.FC = () => {
-  const {
-    isLoading,
-    showLogoutModal,
-    setShowLogoutModal,
-    handleLogout
-  } = useSettings()
+  const { isLoading, showLogoutModal, setShowLogoutModal, handleLogout } =
+    useSettings()
 
   return (
     <>
       {/* 로그아웃 버튼 */}
       <button
-        className="w-full py-4 px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-800 rounded-xl font-medium transition-colors touch-manipulation disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-between py-4 px-4 cursor-pointer text-left active:bg-gray-50 disabled:opacity-70 disabled:cursor-not-allowed"
         onClick={() => setShowLogoutModal(true)}
         disabled={isLoading}
       >
-        로그아웃
+        <div className="flex items-center">
+          <LogOutIcon width={24} height={24} className="mr-3" />
+          <span>로그아웃</span>
+        </div>
+        <ArrowRightIcon width={24} height={24} />
       </button>
 
       {/* 로그아웃 확인 모달 */}
@@ -29,7 +30,7 @@ const LogOut: React.FC = () => {
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
               <h3 className="text-lg font-semibold">로그아웃</h3>
               <button
-                className="text-2xl text-gray-500 hover:text-gray-800 transition-colors"
+                className="text-2xl text-gray-500 active:text-gray-800 transition-colors"
                 onClick={() => setShowLogoutModal(false)}
                 disabled={isLoading}
                 aria-label="닫기"
@@ -39,12 +40,14 @@ const LogOut: React.FC = () => {
             </div>
 
             <div className="p-5">
-              <p className="text-center text-gray-700 mb-5">정말로 로그아웃 하시겠습니까?</p>
-              
+              <p className="text-center text-gray-700 mb-5">
+                정말로 로그아웃 하시겠습니까?
+              </p>
+
               <div className="flex justify-end space-x-3 mt-5">
                 <button
                   onClick={() => setShowLogoutModal(false)}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors"
+                  className="px-4 py-2 bg-gray-100 active:bg-gray-200 rounded-md font-medium transition-colors"
                   disabled={isLoading}
                 >
                   취소
@@ -52,9 +55,9 @@ const LogOut: React.FC = () => {
                 <button
                   onClick={handleLogout}
                   className={`px-4 py-2 rounded-md font-medium text-white ${
-                    isLoading 
+                    isLoading
                       ? 'bg-blue-300 cursor-not-allowed'
-                      : 'bg-blue-500 hover:bg-blue-600 transition-colors'
+                      : 'bg-blue-500 active:bg-blue-600 transition-colors'
                   }`}
                   disabled={isLoading}
                 >
