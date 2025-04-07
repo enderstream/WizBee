@@ -1,4 +1,5 @@
 USE wizbee;
+-- 포맷팅 금지!!!
 
 -- 테이블 생성 (PK 정의 포함)
 CREATE TABLE `users` (
@@ -8,14 +9,18 @@ CREATE TABLE `users` (
     `user_birthday` DATE NULL COMMENT '회원가입 과정에서 추가로 받을 정보',
     `user_role` VARCHAR(20) NOT NULL COMMENT '생년월일 정보를 입력했느냐 안 했느냐 구분 용도',
     `user_machine` VARCHAR(20) NULL COMMENT '유저가 사용하는 라즈베리파이 기기 고유 번호',
-    `user_imgurl` VARCHAR(255) NULL COMMENT '사용자 이미지 URL',
-    PRIMARY KEY (`user_id`)
+    `user_imgurl` TEXT NULL COMMENT '사용자 이미지 URL',
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `UK_user_email` (`user_email`),
+    UNIQUE KEY `UK_user_machine` (`user_machine`)
 );
 
 CREATE TABLE `timelapse` (
     `timelapse_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `user_id` INTEGER NOT NULL COMMENT 'user테이블 참조',
-    `timelapse_url` VARCHAR(255) NOT NULL COMMENT 's3에 저장된 타임랩스 url',
+    `timelapse_url` VARCHAR(255) NULL COMMENT 's3에 저장된 타임랩스 url',
+    `timelapse_date` VARCHAR(255) NOT NULL DEFAULT "한국 시간" COMMENT '촬영 시작 시간',
+    `timelapse_title` VARCHAR(255) NOT NULL DEFAULT "제목없음" COMMENT '타임랩스 제목',
     PRIMARY KEY (`timelapse_id`)
 );
 
@@ -36,7 +41,7 @@ CREATE TABLE `chart` (
 
 CREATE TABLE `pose` (
     `pose_id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `user_id2` INTEGER NOT NULL COMMENT 'user_id FK',
+    `user_id` INTEGER NOT NULL COMMENT 'user_id FK',
     `pose_turtlecnt` INTEGER NULL DEFAULT 0 COMMENT '거북목 된 횟수',
     `pose_shouldercnt` INTEGER NULL DEFAULT 0 COMMENT '어깨 틀어짐 횟수',
     `pose_downcnt` INTEGER NULL DEFAULT 0 COMMENT '엎드림 횟수',
@@ -60,7 +65,7 @@ ALTER TABLE `chart`
 ADD CONSTRAINT `FK_users_TO_chart_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `pose`
-ADD CONSTRAINT `FK_users_TO_pose_1` FOREIGN KEY (`user_id2`) REFERENCES `users` (`user_id`);
+ADD CONSTRAINT `FK_users_TO_pose_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 ALTER TABLE `poseimage`
 ADD CONSTRAINT `FK_users_TO_poseimage_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
@@ -68,33 +73,77 @@ ADD CONSTRAINT `FK_users_TO_poseimage_1` FOREIGN KEY (`user_id`) REFERENCES `use
 ALTER TABLE `poseimage`
 ADD CONSTRAINT `FK_pose_TO_poseimage_1` FOREIGN KEY (`pose_id`) REFERENCES `pose` (`pose_id`);
 
--- 데이터 삽입
-INSERT INTO
-    `users` (
-        `user_name`,
-        `user_email`,
-        `user_birthday`,
-        `user_role`,
-        `user_machine`,
-        `user_imgurl`
-    )
-VALUES (
-        '김싸피',
-        'wizbee@example.com',
-        '2011-11-11',
-        'USER',
-        'RASPI-2023-001',
-        'example.png'
-    );
+-- 사용자 데이터 삽입
+INSERT INTO `users` (`user_name`, `user_email`, `user_role`) VALUES 
+('권동환', 'enderstream00@gmail.com', 'NO_BIRTH_USER'),
+('권동환', 'kwondhl9@gmail.com', 'NO_BIRTH_USER'),
+('이싸피', 'eebziw@example.com', 'NO_BIRTH_USER');
 
-INSERT INTO
-    `users` (
-        `user_name`,
-        `user_email`,
-        `user_role`
-    )
-VALUES (
-        '이싸피',
-        'eebziw@example.com',
-        'NO_BIRTH_USER'
-    );
+-- 추가 정보가 있는 사용자 삽입
+INSERT INTO `users` (`user_name`, `user_email`, `user_birthday`, `user_role`, `user_machine`, `user_imgurl`) VALUES 
+('김싸피', 'wizbee@example.com', '2011-11-11', 'USER', '03', 'example.png');
+
+-- 타임랩스 테이블 더미데이터 삽입
+INSERT INTO `timelapse` (`user_id`, `timelapse_url`, `timelapse_date`, `timelapse_title`) VALUES 
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-25 22:15:00', '도시의 밤'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-26 14:20:00', '꽃 피는 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-28 19:45:00', '요리 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
+(1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-31 18:30:00', '황혼 풍경'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-25 22:15:00', '도시의 밤'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-26 14:20:00', '꽃 피는 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-27 17:30:00', '출퇴근 시간 교통'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-28 19:45:00', '요리 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl1.mp4', '2025-03-29 13:10:00', '구름 형성 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl3.mp4', '2025-03-30 08:15:00', '식물 성장 과정'),
+(2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/tl2.mp4', '2025-03-31 18:30:00', '황혼 풍경');
+
+-- 차트 데이터 삽입
+INSERT INTO `chart` (`user_id`, `chart_date`, `chart_fulltime`, `chart_studytime`, `chart_sleepcnt`, `chart_sleeptime`, `chart_phonecnt`, `chart_phonetime`, `chart_outcnt`, `chart_outtime`) VALUES 
+(1, '2025-03-31', 500, 300, 2, 40, 3, 120, 1, 40),
+(2, '2025-03-31', 180, 120, 1, 20, 1, 10, 1, 30),
+(2, '2025-04-02', 500, 360, 1, 120, 1, 20, 0, 0),
+(2, '2025-04-03', 500, 180, 1, 20, 1, 210, 1, 90),
+(2, '2025-04-04', 500, 270, 1, 20, 1, 10, 1, 30),
+(2, '2025-04-05', 700, 600, 1, 20, 1, 10, 1, 30),
+(2, '2025-04-06', 500, 490, 1, 20, 1, 10, 1, 30),
+(2, '2025-04-07', 500, 200, 1, 20, 1, 10, 1, 30),
+(2, '2025-04-08', 620, 350, 1, 50, 1, 100, 2, 120),
+(2, '2025-04-09', 720, 480, 1, 20, 5, 200, 1, 20),
+(2, '2025-04-10', 360, 165, 0, 0, 2, 135, 2, 60),
+(2, '2025-04-11', 420, 320, 1, 27, 1, 10, 1, 63);
+
+-- 자세 데이터 삽입
+INSERT INTO `pose` (`user_id`, `pose_turtlecnt`, `pose_shouldercnt`, `pose_downcnt`, `pose_date`) VALUES 
+(2, 3, 3, 1, '2025-04-09'),
+(2, 3, 3, 1, '2025-04-10'),
+(2, 3, 3, 1, '2025-04-11');
+
+-- pose_id = 1, 2, 3에 대한 이미지 데이터
+INSERT INTO `poseimage` (`user_id`, `pose_id`, `poseimage_url`) VALUES 
+-- pose_id = 1의 이미지들
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'),
+(2, 1, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'),
+-- pose_id = 2의 이미지들
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'),
+(2, 2, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg'),
+-- pose_id = 3의 이미지들
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_01.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_02.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_03.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_04.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_05.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064_06.jpg'),
+(2, 3, 'https://desktests3.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20250402_145337064.jpg');

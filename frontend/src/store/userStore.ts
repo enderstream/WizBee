@@ -1,39 +1,32 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { IUser, UserState } from '@/types/User'
-
-const initialUserState: IUser = {
-    isLogin: false,
-    token: "",
-    userId: 0,
-    profileImageUrl: "",
-    email: "",
-    nickname: "",
-    birthday: "",
-    hasCompletedSignup: false,
-}
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { UserState, initialUserState } from '@/types/User'
 
 export const useUserStore = create<UserState>()(
-    persist(
-        (set) => ({
-            user: initialUserState,
-            setUser: (user) => set({ user }),
-            updateUser: (userUpdate) => set((state) => ({ user: { ...state.user, ...userUpdate } })),
-            resetUser: () => set({ user: initialUserState }),
-        })
-        , {
-            name: 'userPersist',
-        }
-    )
+  persist(
+    (set) => ({
+      user: initialUserState,
+      setUser: (user) => set({ user }),
+      updateUser: (userUpdate) => set((state) => ({
+        user: { ...state.user, ...userUpdate }
+      })),
+      resetUser: () => set({ user: initialUserState }),
+    }),
+    {
+      name: 'userPersist',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
 )
 
 // 편의를 위한 선택자 함수들
 export const selectUser = (state: UserState) => state.user
 export const selectIsLogin = (state: UserState) => state.user.isLogin
-export const selectToken = (state: UserState) => state.user.token
-export const selectUserId = (state: UserState) => state.user.userId
-export const selectProfileImageUrl = (state: UserState) => state.user.profileImageUrl
+export const selectUserId = (state: UserState) => state.user.id
+export const selectProfileImageUrl = (state: UserState) => state.user.imageUrl
 export const selectEmail = (state: UserState) => state.user.email
-export const selectNickname = (state: UserState) => state.user.nickname
+export const selectName = (state: UserState) => state.user.name
 export const selectBirthday = (state: UserState) => state.user.birthday
 export const selectHasCompletedSignup = (state: UserState) => state.user.hasCompletedSignup
+export const selectUserRole = (state: UserState) => state.user.role
+export const selectMachineId = (state: UserState) => state.user.machine
