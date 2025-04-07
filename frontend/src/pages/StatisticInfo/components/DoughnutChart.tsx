@@ -41,9 +41,9 @@ const DoughnutChart: React.FC = () => {
   const totalHours = 9
 
   return (
-    <div className="flex flex-col px-4 py-4">
+    <div className="flex flex-col px-4">
       {/* 스타일링된 헤더 */}
-      <header className="pt-2 pb-3 mb-3 border-b border-blue-200">
+      <header className="pt-4 pb-3 mb-3 border-b border-blue-200">
         <div className="flex items-center">
           <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
           <h1 className="text-xl font-bold text-gray-800">

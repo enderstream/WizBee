@@ -93,11 +93,11 @@ const LineGraph: React.FC = () => {
   return (
     <div className="flex flex-col px-4 pt-2">
       {/* 스타일링된 헤더 */}
-      <header className="pt-2 pb-3 mb-2 border-b border-blue-200">
+      <header className="pt-4 pb-3 mb-2 border-b border-blue-200">
         <div className="flex items-center">
           <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
           <h1 className="text-xl font-bold text-gray-800">
-            일주일 순공시간 변화량
+            주간 순공시간 변화량
           </h1>
         </div>
       </header>

@@ -2,24 +2,8 @@
 @import 'tailwindcss';
 
 /* iOS의 safe area를 지원하기 위한 스타일 */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
+/* @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .h-safe-area {
     height: env(safe-area-inset-bottom);
   }
-}
-
-/* 네비게이션 링크 스타일 */
-.nav-link {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* 아이콘 및 텍스트 색상 전환 애니메이션 */
-.text-blue-500, 
-.text-gray-500 {
-  transition: color 150ms ease-in-out;
-}
-
-/* 클릭 효과 */
-a:active {
-  opacity: 0.7;
-}
+} */

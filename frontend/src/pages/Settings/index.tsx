@@ -12,7 +12,7 @@ const Settings: React.FC = () => {
   } = useSettings()
 
   return (
-    <div className="flex flex-col w-full max-w-md mx-auto p-5 h-full relative">
+    <div className="flex flex-col w-full max-w-md mx-auto px-4 pb-4 h-full relative">
       {/* Status message */}
       {statusMessage && (
         <div className="fixed inset-0 backdrop-blur-[2px] bg-black/20 flex items-center justify-center z-50 px-4">
