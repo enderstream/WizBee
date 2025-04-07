@@ -1,33 +1,46 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useUserStore, selectName } from '@/store/userStore'
+import { useUserStore, selectMachineId } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
+import { timeLapseAPI } from '@/api/timeLapseAPI'
+import { log } from 'console'
 // import '@/styles/Record.css'
 
 const baseURL = import.meta.env.VITE_API_URL
 
 const Record: React.FC = () => {
   const navigate = useNavigate()
-  // const name = useUserStore(selectName)
+  const machineId = useUserStore(selectMachineId)
   const [isRecording, setIsRecording] = useState(false)
-  
-  // Spring 서버의 스트리밍 엔드포인트 URL
-  const streamUrl = `${baseURL}/video/stream`
+  const [timeLapseId, setTimeLapseId] = useState("0") 
+  const [streamURL, setStreamURL] = useState("")
 
   const handleGoToHome = () => {
     navigate(ROUTES.HOME)
   }
 
-  const handleStartRecording = () => {
+  const handleStartRecording = async () => {
     setIsRecording(true)
     // 여기에 실제 녹화 시작 로직을 추가할 수 있습니다
     console.log('타임랩스 촬영 시작')
+    const response = await timeLapseAPI.startRecordingTimeLapse(machineId)
+    console.log(response.data)
+    console.log(response.status)
+    setTimeLapseId(response.data.id)
+    setStreamURL(response.data.url)
+    console.log(streamURL)
   }
 
-  const handleStopRecording = () => {
+  const handleStopRecording = async () => {
     setIsRecording(false)
     // 여기에 실제 녹화 중지 로직을 추가할 수 있습니다
     console.log('타임랩스 촬영 중지')
+    const response = await timeLapseAPI.finishRecordingTimeLapse(
+      timeLapseId,
+      '나의 타임랩스',
+    )
+    console.log(response.status)
+    console.log(response.data)
   }
 
   return (
@@ -40,35 +53,21 @@ const Record: React.FC = () => {
         {/* MJPEG 스트리밍 화면 */}
         <h2>---</h2>
         <div className="camera-preview">
-          <img 
-            src={streamUrl} 
-            alt="타임랩스 비디오 스트림" 
-            style={{ width: '100%', borderRadius: '8px' }} 
-          />
+          {/* 여기에 stream url을 src로 */}
           <h2>---</h2>
         </div>
 
-
         <div className="record-controls">
           {!isRecording ? (
-            <button 
-              className="capture-button" 
-              onClick={handleStartRecording}
-            >
+            <button className="capture-button" onClick={handleStartRecording}>
               촬영
             </button>
           ) : (
-            <button 
-              className="stop-button" 
-              onClick={handleStopRecording}
-            >
+            <button className="stop-button" onClick={handleStopRecording}>
               중지
             </button>
           )}
-          <button 
-            className="home-button" 
-            onClick={handleGoToHome}
-          >
+          <button className="home-button" onClick={handleGoToHome}>
             홈으로
           </button>
         </div>
