@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useUserStore, selectMachineId } from '@/store/userStore'
 import { ROUTES } from '@/routes/routes'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
-import { log } from 'console'
 // import '@/styles/Record.css'
 
-const baseURL = import.meta.env.VITE_API_URL
+// const baseURL = import.meta.env.VITE_API_URL
 
 const Record: React.FC = () => {
   const navigate = useNavigate()
