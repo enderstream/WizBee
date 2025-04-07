@@ -16,9 +16,8 @@ import StartRecord from '@/pages/Home/components/StartRecord'
 import { userAPI } from '@/api/userAPI'
 import { machineAPI } from '@/api/machineAPI'
 import { initializeUserInfo } from '@/types/User'
-import reactLogo from '@/assets/react.svg?react'
+import reactLogo from '@/assets/react.svg'
 import RegisterIcon from '@/assets/icons/Register.svg?react'
-// import { stringify } from 'querystring'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -27,7 +26,6 @@ const Home: React.FC = () => {
   const { openModal } = useMachineRegister()
   const setUser = useUserStore((state) => state.setUser)
   // const userId = useUserStore(selectUserId)
-  // const machineId = useUserStore(selectMachineId)
 
   // 컴포넌트 마운트 시 사용자 정보 가져오기
   useEffect(() => {
