@@ -11,7 +11,6 @@ import { useMachineRegister } from '@/hooks/useMachineRegister'
 import { ROUTES } from '@/routes/routes'
 import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
 import StartRecord from '@/pages/Home/components/StartRecord'
-import '@/styles/Home.css'
 // import { statisticAPI } from '@/api/statisticAPI'
 // import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { userAPI } from '@/api/userAPI'
@@ -51,61 +50,73 @@ const Home: React.FC = () => {
   // 촬영 페이지로 이동
   const handleStartTimeLapse = async () => {
     console.log('타임랩스 세션 시작')
-
     navigate(ROUTES.RECORD)
-
+    
     // 오늘 불러오기
     // const today = new Date()
     // const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   }
 
   return (
-    <div className="home-page">
-      <div className="home-header">
-        <div className="home-avatar">
-          {profileImageUrl ? (
-            <img
-              src={reactLogo} // 이자리 우리 로고로 하자 그냥;;
-              alt="프로필 이미지"
-              className="profileImage"
-            />
-          ) : (
-            <img
-              src="@/assets/react.svg"
-              alt="기본 프로필"
-              className="profileImage"
-            />
-          )}
+    <div className="max-w-lg mx-auto px-5 py-6">
+      {/* 프로필 섹션 */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center">
+          <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden mr-4 flex-shrink-0">
+            {profileImageUrl ? (
+              <img
+                src={reactLogo}
+                alt="프로필 이미지"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <img
+                src={reactLogo}
+                alt="기본 프로필"
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">{name || '사용자'}님!</h2>
+            <p className="text-gray-500">오늘도 열공해봐요</p>
+          </div>
         </div>
-        <div className="home-greeting">
-          <h2>{name || '사용자'}님!</h2>
-          <p>오늘도 열공해봐요</p>
-        </div>
-        <div className="machine-registration">
-          <button
-            onClick={openModal}
-            className="bg-blue-500 active:bg-blue-700 rounded-lg p-2 transition-colors touch-manipulation"
-          >
-            <RegisterIcon width={24} height={24} />
-          </button>
-        </div>
+        
+        <button
+          onClick={openModal}
+          className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 active:bg-blue-700 text-white rounded-xl transition-colors touch-manipulation"
+        >
+          <RegisterIcon width={24} height={24} />
+          <span className="text-sm">기기 등록</span>
+        </button>
       </div>
 
-      {/* 분리된 타임랩스 컴포넌트 사용 */}
+      {/* 타임랩스 시작 컴포넌트 */}
       <StartRecord onStartClick={handleStartTimeLapse} />
 
-      <div className="timelapse-container">
-        <h3>평균 순공시간 </h3>
-        <br />
-        <h3>5시간 32분</h3>
+      {/* 평균 순공시간 */}
+      <div className="bg-blue-50 rounded-2xl p-6 mb-6 text-center">
+        <h3 className="text-gray-700 mb-2">평균 순공시간</h3>
+        <p className="text-xl font-bold text-gray-800">5시간 32분</p>
       </div>
 
-      <div className="timelapse-container indicator-container">
-        <div className="timelapse-container">
-          <h3>오늘의 공부 집중도</h3>
+      {/* 공부 지표 */}
+      <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="bg-blue-50 rounded-2xl p-6 text-center">
+          <h3 className="text-gray-700 text-sm mb-3">오늘의 공부 집중도</h3>
+          <div className="h-16 flex items-center justify-center">
+            {/* 여기에 집중도 지표 추가 */}
+            <p className="text-lg font-bold text-gray-800">85%</p>
+          </div>
         </div>
-        <div className="timelapse-container">
-          <h3>오늘의 자세 점수</h3>
+        
+        <div className="bg-blue-50 rounded-2xl p-6 text-center">
+          <h3 className="text-gray-700 text-sm mb-3">오늘의 자세 점수</h3>
+          <div className="h-16 flex items-center justify-center">
+            {/* 여기에 자세 점수 지표 추가 */}
+            <p className="text-lg font-bold text-gray-800">92점</p>
+          </div>
         </div>
       </div>
 
