@@ -9,9 +9,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  TooltipItem,
 } from 'chart.js'
 
+// ChartJS 컴포넌트 등록
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,6 +23,7 @@ ChartJS.register(
 )
 
 const LineGraph: React.FC = () => {
+  // 오늘부터 지난 7일간의 날짜 생성
   const getLast7Days = () => {
     const dates = []
     for (let i = 6; i >= 0; i--) {
@@ -35,7 +36,8 @@ const LineGraph: React.FC = () => {
   }
 
   const dates = getLast7Days()
-  const values = [5.5, 7.2, 4.8, 8.1, 3.5, 6.2, 2.4]
+  const values = [5.5, 7.2, 4.8, 8.1, 3.5, 6.2, 2.4] // 순공 시간 (시간 단위)
+
   const data = {
     labels: dates,
     datasets: [
@@ -48,7 +50,6 @@ const LineGraph: React.FC = () => {
         pointBorderWidth: 2,
         pointRadius: 4,
         tension: 0.3,
-        pointHitRadius: 10,
       },
     ],
   }
@@ -58,53 +59,39 @@ const LineGraph: React.FC = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: {
-        displayColors: false,
-        callbacks: {
-          title: function () { return '' },
-          label: function (context: TooltipItem<'line'>) { return `${context.label} : ${context.formattedValue} 시간` },
-        },
-        titleAlign: 'center' as const,
-        bodyAlign: 'center' as const,
-        padding: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-      }
+      tooltip: { callbacks: { label: function (context: any) { return `${context.raw} 시간` } } },
     },
     scales: {
       x: {
-        grid: {
-          display: true,
-          color: '#E5E5E5'
-        },
+        grid: { display: false },
         ticks: {
-          color: '#666666',
+          color: '#3B82F6',
           font: { size: 10 }
         },
-        offset: false,
-        border: { display: true }
       },
       y: {
-        display: true,
-        grid: {
-          color: '#E5E5E5',
-          display: true
-        },
-        ticks: {
-          color: '#666666',
-          font: { size: 10 },
-          stepSize: 2
-        },
+        display: false,
+        grid: { color: '#f0f0f0' },
         min: 0,
-        max: 10,
-        border: { display: true }
       },
     },
-    layout: { padding: { bottom: 5 } }
+    annotation: {
+      annotations: {
+        line1: {
+          type: 'line',
+          yMin: 5,
+          yMax: 5,
+          borderColor: '#FFCCCB',
+          borderWidth: 1.5,
+        },
+      },
+    },
   }
 
   return (
     <div className="flex flex-col px-4 pt-2">
-      <header className="pt-3 pb-2 mb-1 border-b border-blue-200">
+      {/* 스타일링된 헤더 */}
+      <header className="pt-4 pb-3 mb-2 border-b border-blue-200">
         <div className="flex items-center">
           <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
           <h1 className="text-xl font-bold text-gray-800">
@@ -113,10 +100,9 @@ const LineGraph: React.FC = () => {
         </div>
       </header>
 
-      <div className="w-full max-w-[95%] mx-auto">
-        <div className="h-[135px]">
-          <Line data={data} options={options} />
-        </div>
+      {/* 그래프 높이 줄임 (h-36 -> h-24) */}
+      <div className="w-full h-24 mb-5">
+        <Line data={data} options={options} />
       </div>
     </div>
   )
