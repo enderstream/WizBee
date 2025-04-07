@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   useUserStore,
   selectName,
-  selectProfileImageUrl,
+  // selectProfileImageUrl,
   // selectUserId,
   selectMachineId,
 } from '@/store/userStore'
@@ -16,13 +16,13 @@ import StartRecord from '@/pages/Home/components/StartRecord'
 import { userAPI } from '@/api/userAPI'
 import { machineAPI } from '@/api/machineAPI'
 import { initializeUserInfo } from '@/types/User'
-import WizBeeLogo from '@/assets/logos/wizbee.svg?react'
+import WizBeeLogo from '@/assets/logos/WizBee.svg?react'
 import RegisterIcon from '@/assets/icons/Register.svg?react'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
-  const profileImageUrl = useUserStore(selectProfileImageUrl)
+  // const profileImageUrl = useUserStore(selectProfileImageUrl)
   const { openModal } = useMachineRegister()
   const setUser = useUserStore((state) => state.setUser)
   const machineId = useUserStore(selectMachineId)
