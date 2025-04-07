@@ -1,9 +1,9 @@
-import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import React from "react"
+import { Doughnut } from "react-chartjs-2"
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 
 // ChartJS 컴포넌트 등록
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 const DoughnutChart: React.FC = () => {
   const data = {
@@ -16,7 +16,7 @@ const DoughnutChart: React.FC = () => {
         borderWidth: 1,
       },
     ],
-  };
+  }
 
   const options = {
     responsive: true,
@@ -27,57 +27,71 @@ const DoughnutChart: React.FC = () => {
       },
       tooltip: {
         callbacks: {
-          label: function(context:any) {
-            const value = context.raw;
-            return value >= 1 
-              ? `${value} 시간` 
-              : `${Math.round(value * 60)} 분`;
+          label: function (context: any) {
+            const value = context.raw
+            return value >= 1
+              ? `${value} 시간`
+              : `${Math.round(value * 60)} 분`
           }
         }
       }
     },
-  };
+  }
 
-  const totalHours = 9;
+  const totalHours = 9
 
   return (
-    <div className="flex flex-col items-center my-6 px-4">
-      <h2 className="text-2xl text-blue-400 mb-4">오늘의 통계</h2>
-      
-      <div className="relative w-64 h-64">
-        <Doughnut data={data} options={options} />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-4xl text-blue-400 font-medium">{totalHours}시간</span>
-        </div>
-      </div>
-      
-      <div className="w-full max-w-md grid grid-cols-2 gap-4 mt-4">
+    <div className="flex flex-col px-4 py-4">
+      {/* 스타일링된 헤더 */}
+      <header className="pt-2 pb-3 mb-3 border-b border-blue-200">
         <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-blue-400 mr-2"></div>
-          <span className="mr-2 text-blue-400">순공</span>
-          <span className="ml-auto text-blue-400">7 시간</span>
+          <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
+          <h1 className="text-xl font-bold text-gray-800">
+            오늘의 통계
+          </h1>
         </div>
-        
-        <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-green-400 mr-2"></div>
-          <span className="mr-2 text-blue-400">폰</span>
-          <span className="ml-auto text-blue-400">25 분</span>
+      </header>
+
+      <div className="flex flex-row items-center">
+        {/* 좌측 도넛 차트 */}
+        <div className="relative w-40 h-40">
+          <Doughnut data={data} options={options} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-2xl text-blue-400 font-medium">{totalHours}시간</span>
+          </div>
         </div>
         
-        <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-purple-400 mr-2"></div>
-          <span className="mr-2 text-blue-400">졸음</span>
-          <span className="ml-auto text-blue-400">35 분</span>
-        </div>
-        
-        <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-red-400 mr-2"></div>
-          <span className="mr-2 text-blue-400">자리 비움</span>
-          <span className="ml-auto text-blue-400">1 시간</span>
+        {/* 우측 범례 */}
+        <div className="flex-1 pl-4">
+          <div className="grid grid-cols-1 gap-2">
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full bg-blue-400 mr-2"></div>
+              <span className="mr-2 text-blue-400 text-sm">순공</span>
+              <span className="ml-auto text-blue-400 text-sm">7 시간</span>
+            </div>
+
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+              <span className="mr-2 text-blue-400 text-sm">폰</span>
+              <span className="ml-auto text-blue-400 text-sm">25 분</span>
+            </div>
+
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full bg-purple-400 mr-2"></div>
+              <span className="mr-2 text-blue-400 text-sm">졸음</span>
+              <span className="ml-auto text-blue-400 text-sm">35 분</span>
+            </div>
+
+            <div className="flex items-center">
+              <div className="w-3 h-3 rounded-full bg-red-400 mr-2"></div>
+              <span className="mr-2 text-blue-400 text-sm">자리 비움</span>
+              <span className="ml-auto text-blue-400 text-sm">1 시간</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DoughnutChart;
+export default DoughnutChart
