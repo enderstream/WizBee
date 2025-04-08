@@ -51,15 +51,6 @@ const StatisticInfo: React.FC = () => {
     enabled: !!userId,
   })
 
-  // 모든 데이터가 로드되면 콘솔에 출력
-  useEffect(() => {
-    if (wrongPoseImages) {
-      console.log('잘못된 자세 이미지:', wrongPoseImages)
-    }
-  }, [
-    wrongPoseImages,
-  ])
-
   // 날짜 변경 핸들러
   const handleDateChange = (date: Date | null) => {
     if (date) {
@@ -75,7 +66,7 @@ const StatisticInfo: React.FC = () => {
           weeklyFocused={weeklyFocused}
           formattedDate={formattedDate}
         />
-        <PoseCount poseData={poseData} wrongPoseImages={wrongPoseImages}/>
+        <PoseCount poseData={poseData} wrongPoseImages={wrongPoseImages} />
       </div>
       <DatePickerComponent onDateChange={handleDateChange} />
     </div>

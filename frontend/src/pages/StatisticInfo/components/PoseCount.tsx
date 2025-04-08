@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import PoseImageModal from './PoseImageModal'
 
 interface poseDataList {
   data: {
@@ -12,7 +13,7 @@ interface poseDataList {
 }
 
 interface wrongPoseImageSet {
-  data: { poseImageUrls: Array<String> }
+  data: { poseImageUrls: Array<{ poseImageUrl: string }> }
   status: number
 }
 
@@ -21,32 +22,86 @@ interface PoseDataProps {
   wrongPoseImages?: wrongPoseImageSet
 }
 
-const PoseCount: React.FC<PoseDataProps> = ({
-  poseData,
-  // wrongPoseImages,
-}) => {
+const PoseCount: React.FC<PoseDataProps> = ({ poseData, wrongPoseImages }) => {
+  // 이미지 URL을 저장할 상태
+  const [imageUrls, setImageUrls] = useState<string[]>([])
+  // 데이터 로딩 상태
+  const [isLoading, setIsLoading] = useState(true)
+  // 모달 표시 상태
+  const [showModal, setShowModal] = useState(false)
 
   // 각 자세의 횟수 데이터
   const poseCountData = [
     {
       name: '거북목',
-      count: poseData?.data?.sumTurtleCnt,
+      count: poseData?.data?.sumTurtleCnt || 0,
       bgColor: 'bg-green-100',
       textColor: 'text-green-600',
     },
     {
       name: '어깨 불균형',
-      count: poseData?.data?.sumShoulderCnt,
+      count: poseData?.data?.sumShoulderCnt || 0,
       bgColor: 'bg-red-100',
       textColor: 'text-red-600',
     },
     {
       name: '엎드림',
-      count: poseData?.data?.sumDownCnt,
+      count: poseData?.data?.sumDownCnt || 0,
       bgColor: 'bg-yellow-100',
       textColor: 'text-yellow-600',
     },
   ]
+
+  // 이미지 데이터를 처리하는 useEffect
+  useEffect(() => {
+    // 응답이 없는 경우 로딩 상태 유지
+    if (!wrongPoseImages) {
+      setIsLoading(true)
+      return
+    }
+
+    try {
+      // 상태 코드가 204인 경우 (No Content)
+      if (wrongPoseImages.status === 204) {
+        setImageUrls([])
+        setIsLoading(false)
+        return
+      }
+
+      // 데이터가 비어있는 경우 확인
+      if (
+        !wrongPoseImages.data ||
+        !wrongPoseImages.data.poseImageUrls ||
+        wrongPoseImages.data.poseImageUrls.length === 0
+      ) {
+        setImageUrls([])
+        setIsLoading(false)
+        return
+      }
+
+      // 데이터가 있을 때 처리
+      const urls = wrongPoseImages.data.poseImageUrls.map(
+        (item) => item.poseImageUrl,
+      )
+
+      // 상태 업데이트
+      setImageUrls(urls)
+      setIsLoading(false)
+    } catch (error) {
+      console.error('이미지 URL 처리 중 오류 발생:', error)
+      setIsLoading(false)
+    }
+  }, [wrongPoseImages])
+
+  // 모달 열기 함수
+  const openModal = () => {
+    setShowModal(true)
+  }
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowModal(false)
+  }
 
   return (
     <div className="flex flex-col px-4 pb-4">
@@ -56,7 +111,10 @@ const PoseCount: React.FC<PoseDataProps> = ({
           <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
           <h1 className="text-xl font-bold text-gray-800">오늘의 자세</h1>
           <div className="ml-auto">
-            <button className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm"
+              onClick={openModal}
+            >
               자세 보러가기
             </button>
           </div>
@@ -78,6 +136,16 @@ const PoseCount: React.FC<PoseDataProps> = ({
           </div>
         ))}
       </div>
+
+      {/* 이미지 모달 */}
+      {showModal && (
+        <PoseImageModal
+          isOpen={showModal}
+          onClose={closeModal}
+          imageUrls={imageUrls}
+          isLoading={isLoading}
+        />
+      )}
     </div>
   )
 }
