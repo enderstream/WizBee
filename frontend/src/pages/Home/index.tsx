@@ -51,7 +51,6 @@ const Home: React.FC = () => {
           // 백엔드에서 받아온 유저 정보를 스토어에 저장
           const userInfo = initializeUserInfo(response.data)
           setUser(userInfo)
-          console.log("유저 정보 로드 완료:", userInfo)
         }
       } catch (error) {
         console.error("유저 정보 로드 실패:", error)

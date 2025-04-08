@@ -4,8 +4,6 @@ import { ROUTES } from '@/routes/routes'
 import WizBeeLogo from '@/assets/logos/WizBee.svg?react'
 
 const NotFound: React.FC = () => {
-  console.log(`404 NOT FOUND`)
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12">
       <div className="max-w-md w-full text-center">
