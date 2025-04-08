@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import DoughnutChart from '@/pages/StatisticInfo/components/DoughnutChart'
 import LineGraph from '@/pages/StatisticInfo/components/LineGraph'
 import PoseCount from '@/pages/StatisticInfo/components/PoseCount'
