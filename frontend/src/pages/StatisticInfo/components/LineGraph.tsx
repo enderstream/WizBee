@@ -12,6 +12,7 @@ import {
   TooltipItem,
 } from 'chart.js'
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -61,45 +62,49 @@ const LineGraph: React.FC = () => {
       tooltip: {
         displayColors: false,
         callbacks: {
-          title: function () { return '' },
-          label: function (context: TooltipItem<'line'>) { return `${context.label} : ${context.formattedValue} 시간` },
+          title: function () {
+            return ''
+          },
+          label: function (context: TooltipItem<'line'>) {
+            return `${context.label} : ${context.formattedValue} 시간`
+          },
         },
         titleAlign: 'center' as const,
         bodyAlign: 'center' as const,
         padding: 10,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-      }
+      },
     },
     scales: {
       x: {
         grid: {
           display: true,
-          color: '#E5E5E5'
+          color: '#E5E5E5',
         },
         ticks: {
           color: '#666666',
-          font: { size: 10 }
+          font: { size: 10 },
         },
         offset: false,
-        border: { display: true }
+        border: { display: true },
       },
       y: {
         display: true,
         grid: {
           color: '#E5E5E5',
-          display: true
+          display: true,
         },
         ticks: {
           color: '#666666',
           font: { size: 10 },
-          stepSize: 2
+          stepSize: 2,
         },
         min: 0,
         max: 10,
-        border: { display: true }
+        border: { display: true },
       },
     },
-    layout: { padding: { bottom: 5 } }
+    layout: { padding: { bottom: 5 } },
   }
 
   return (
