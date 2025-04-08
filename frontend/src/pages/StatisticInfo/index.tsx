@@ -16,7 +16,7 @@ const StatisticInfo: React.FC = () => {
     const year = selectedDate.getFullYear()
     const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
     const day = String(selectedDate.getDate()).padStart(2, '0')
-    console.log(`${year}-${month}-${day}`)
+    // console.log(`${year}-${month}-${day}`)
     
     return `${year}-${month}-${day}`
   }, [selectedDate])
@@ -65,8 +65,8 @@ const StatisticInfo: React.FC = () => {
   useEffect(() => {
     if (todayDistraction && weeklyFocused && userFormulated && poseData && wrongPoseImages) {
       console.log('날짜:', formattedDate)
-      console.log('오늘의 딴짓 통계:', todayDistraction)
-      console.log('주간 순공시간 통계:', weeklyFocused)
+      // console.log('오늘의 딴짓 통계:', todayDistraction)
+      // console.log('주간 순공시간 통계:', weeklyFocused)
       console.log('유저 지표화 통계:', userFormulated)
       console.log('자세 통계:', poseData)
       console.log('잘못된 자세 이미지:', wrongPoseImages)
@@ -83,7 +83,7 @@ const StatisticInfo: React.FC = () => {
   return (
     <div className="w-full max-w-xl mx-auto bg-white">
       <div className="flex flex-col">
-        <DoughnutChart />
+        <DoughnutChart todayDistraction={todayDistraction} />
         <LineGraph weeklyFocused={weeklyFocused} formattedDate={formattedDate} />
         <BarGraph />
       </div>
