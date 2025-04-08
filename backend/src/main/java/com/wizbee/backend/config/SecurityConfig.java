@@ -6,6 +6,7 @@ import com.wizbee.backend.jwt.JWTUtil;
 import com.wizbee.backend.oauth2.CustomSuccessHandler;
 import com.wizbee.backend.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +55,11 @@ public class SecurityConfig implements WebMvcConfigurer {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // 단일 CorsConfigurationSource 빈을 사용하여 CORS 설정 통합
             .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+//            .exceptionHandling(exception -> exception
+//                .authenticationEntryPoint((request, response, authException) -> {
+//                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                }));
+
 
         // 로그아웃 필터
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTemplate), LogoutFilter.class);
@@ -69,7 +75,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/oauth2/**", "/login/**",
                         "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout",
-                        "/api/v1/study/save", "/api/v1/timelapse/**", "/api/v1/pose/score/**")
+                        "/api/v1/study/save", "/api/v1/timelapse/*", "/api/v1/pose/score/*",
+                        "/api/v1/timelapse/stream/**")
                 .permitAll()
                 .anyRequest().authenticated());
 

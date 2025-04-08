@@ -32,15 +32,15 @@ public class TimeLapseController {
     private final TimeLapseService timelapseService;
     private final RaspberryApiService raspberryApiService;
     private final UserService userService;
-    private final JWTUtil jwtUtil;
+
     public TimeLapseController(TimeLapseService timelapseService,
                                UserService userService,
-                               RaspberryApiService raspberryApiService,
-                               JWTUtil jwtUtil) {
+                               RaspberryApiService raspberryApiService
+                               ) {
         this.timelapseService = timelapseService;
         this.userService = userService;
         this.raspberryApiService = raspberryApiService;
-        this.jwtUtil = jwtUtil;
+
     }
 
     // 타입 랩스 영상 목록 조회 api
@@ -48,6 +48,9 @@ public class TimeLapseController {
     public ResponseEntity<?> getTimeLapse(@PathVariable("userId") int userId) {
         try {
             List<TimeLapseGetRequestDto> result = timelapseService.getTimeLapse(userId);
+            if (result.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest()
@@ -96,26 +99,11 @@ public class TimeLapseController {
      */
     @GetMapping("/stream/{machineId}")
     public Mono<ResponseEntity<String>> getStreamUrl(@PathVariable("machineId") String machineId,
-                                                     HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        String token = null;
-        if (cookies != null) {
-            for(Cookie cookie : cookies) {
-                if("access".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    break;
-                }
-            }
-        }
+                                                     Principal principal) {
 
-        if ( token == null ) {
-            return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token not found in cookies"));
+        String currentUserEmail = principal.getName();
 
-        }
-
-        int userId = jwtUtil.getId(token);
-
-        User currentUser = userService.findById(userId);
+        User currentUser = userService.findByEmail(currentUserEmail);
 
         // 만약 현재 사용자의 machineId가 다르면
         if(!machineId.equals(currentUser.getMachine())) {
@@ -147,7 +135,6 @@ public class TimeLapseController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
-
     }
 
     /*
