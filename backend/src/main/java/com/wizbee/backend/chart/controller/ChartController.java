@@ -47,7 +47,7 @@ public class ChartController {
         if(localDate == null) return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
 
         ChartAggregateDto oneDayChart = chartService.findByDate(user, localDate);
-        return (oneDayChart != null) ? ResponseEntity.ok(oneDayChart) : ResponseEntity.badRequest().body("해당 날짜에 통계 정보가 없습니다.");
+        return (oneDayChart != null) ? ResponseEntity.ok(oneDayChart) : ResponseEntity.noContent().build();
     }
 
     /**
@@ -62,6 +62,11 @@ public class ChartController {
 
         double userAvg = chartService.avgOfUser(user);
         double userYearAvg = chartService.avgOfUserAge(user);
+
+        if(userAvg == 0.0){
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.ok(new ChartAvgResponseDto(userAvg, userYearAvg));
     }
 
@@ -97,7 +102,7 @@ public class ChartController {
         if(localDate == null) return ResponseEntity.badRequest().body("잘못된 날짜 형식입니다. (yyyy-MM-dd)");
 
         List<ChartWeekStudyTimeResponseDto> weekChart = chartService.findWeekByDate(user, localDate);
-        return (weekChart != null) ? ResponseEntity.ok(weekChart) : ResponseEntity.badRequest().body("잘못된 요청입니다.");
+        return (weekChart != null && !weekChart.isEmpty()) ? ResponseEntity.ok(weekChart) : ResponseEntity.noContent().build();
     }
 
     /**
@@ -107,7 +112,14 @@ public class ChartController {
      */
     @GetMapping("/chart/avg/{userId}")
     public ResponseEntity<?> peerstatistics(@PathVariable("userId") int userId) {
-        return ResponseEntity.ok(chartService.getPeerStats(userId));
+
+        PeerStatisticsResponseDto result = chartService.getPeerStats(userId);
+
+        if(result.getAvgFullTime() == 0.0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     /**
@@ -117,6 +129,12 @@ public class ChartController {
      */
     @GetMapping("/chart/{userId}")
     public ResponseEntity<?> userStatistics(@PathVariable("userId") int userId) {
-        return ResponseEntity.ok(chartService.getUserStats(userId));
+
+        UserStatisticsResponseDto result = chartService.getUserStats(userId);
+        if(result.getAvgFullTime() == 0.0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(result);
     }
 }
