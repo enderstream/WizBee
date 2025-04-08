@@ -23,6 +23,16 @@ import { initializeUserInfo } from "@/types/User"
 import WizBeeLogo from "@/assets/logos/WizBee.svg?react"
 import RegisterIcon from "@/assets/icons/Register.svg?react"
 
+
+
+  // // 로그인 한 유저의 지표화된 통계 정보 조회
+  // const { data: userFormulated } = useQuery({
+  //   queryKey: ['userFormulatedData', userId],
+  //   queryFn: () => statisticAPI.userFormulatedData(userId),
+  //   staleTime: 30 * 60 * 1000,
+  //   enabled: !!userId,
+  // })
+
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
