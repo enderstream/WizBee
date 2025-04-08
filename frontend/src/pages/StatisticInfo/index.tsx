@@ -24,7 +24,7 @@ const StatisticInfo: React.FC = () => {
   // 오늘의 딴짓 통계 정보 조회
   const { data: todayDistraction } = useQuery({
     queryKey: ['todayDistractionData', formattedDate, userId],
-    queryFn: () => statisticAPI.todayDistractionData('2025-04-09', userId),
+    queryFn: () => statisticAPI.todayDistractionData(formattedDate, userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -32,7 +32,7 @@ const StatisticInfo: React.FC = () => {
   // 주간 순공시간 통계 정보 조회
   const { data: weeklyFocused } = useQuery({
     queryKey: ['weeklyFocusedData', formattedDate, userId],
-    queryFn: () => statisticAPI.weeklyFocusedData('2025-04-09', userId),
+    queryFn: () => statisticAPI.weeklyFocusedData(formattedDate, userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -48,7 +48,7 @@ const StatisticInfo: React.FC = () => {
   // 자세 통계
   const { data: poseData } = useQuery({
     queryKey: ['poseData', formattedDate, userId],
-    queryFn: () => statisticAPI.poseData('2025-04-09', 2),
+    queryFn: () => statisticAPI.poseData(formattedDate, userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -56,7 +56,7 @@ const StatisticInfo: React.FC = () => {
   // 잘못된 자세 이미지 모음
   const { data: wrongPoseImages } = useQuery({
     queryKey: ['wrongPoseImages', formattedDate, userId],
-    queryFn: () => statisticAPI.wrongPoseImages('2025-04-09', userId),
+    queryFn: () => statisticAPI.wrongPoseImages(formattedDate, userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -84,7 +84,7 @@ const StatisticInfo: React.FC = () => {
     <div className="w-full max-w-xl mx-auto bg-white">
       <div className="flex flex-col">
         <DoughnutChart />
-        <LineGraph />
+        <LineGraph weeklyFocused={weeklyFocused} formattedDate={formattedDate} />
         <BarGraph />
       </div>
       <DatePickerComponent onDateChange={handleDateChange} />

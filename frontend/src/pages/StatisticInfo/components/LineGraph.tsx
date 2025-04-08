@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
   TooltipItem,
+  ChartData,
 } from 'chart.js'
-
 
 ChartJS.register(
   CategoryScale,
@@ -23,36 +23,86 @@ ChartJS.register(
   Legend,
 )
 
-const LineGraph: React.FC = () => {
-  const getLast7Days = () => {
+interface WeeklyFocusedData {
+  data: Array<{
+    date: string
+    studyTime: number
+  }>
+  status: number
+}
+
+interface LineGraphProps {
+  weeklyFocused?: WeeklyFocusedData
+  formattedDate: string
+}
+
+const LineGraph: React.FC<LineGraphProps> = ({
+  weeklyFocused,
+  formattedDate,
+}) => {
+  // 선택된 날짜를 기준으로 지난 7일 계산
+  const getLast7Days = useMemo(() => {
     const dates = []
+    // formattedDate를 Date 객체로 변환
+    const selectedDate = new Date(formattedDate)
+
     for (let i = 6; i >= 0; i--) {
-      const date = new Date()
+      const date = new Date(selectedDate)
       date.setDate(date.getDate() - i)
-      const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
-      dates.push(formattedDate)
+      const formattedDay = `${date.getMonth() + 1}/${date.getDate()}`
+      dates.push(formattedDay)
     }
     return dates
-  }
+  }, [formattedDate])
 
-  const dates = getLast7Days()
-  const values = [5.5, 7.2, 4.8, 8.1, 3.5, 6.2, 2.4]
-  const data = {
-    labels: dates,
-    datasets: [
-      {
-        data: values,
-        borderColor: '#3B82F6',
-        backgroundColor: 'white',
-        pointBorderColor: '#3B82F6',
-        pointBackgroundColor: 'white',
-        pointBorderWidth: 2,
-        pointRadius: 4,
-        tension: 0.3,
-        pointHitRadius: 10,
-      },
-    ],
-  }
+  const dates = getLast7Days
+
+  // 타입 안전한 차트 데이터 생성
+  const chartData: ChartData<'line'> = useMemo(() => {
+    // 기본 데이터 구조 생성
+    const baseData: ChartData<'line'> = {
+      labels: dates,
+      datasets: [
+        {
+          data: [] as (number | null)[], // 명시적으로 타입 정의
+          borderColor: '#3B82F6',
+          backgroundColor: 'white',
+          pointBorderColor: '#3B82F6',
+          pointBackgroundColor: 'white',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          tension: 0.3,
+          pointHitRadius: 10,
+        },
+      ],
+    }
+
+    // weeklyFocused가 없거나 상태가 204이면 빈 데이터 반환
+    if (!weeklyFocused || weeklyFocused.status === 204) {
+      return baseData
+    }
+
+    // 상태가 200이면 데이터 매핑
+    if (weeklyFocused.status === 200) {
+      const dataMap = new Map<string, number>()
+
+      // weeklyFocused의 데이터를 날짜별로 맵에 저장
+      weeklyFocused.data.forEach((item) => {
+        const date = new Date(item.date)
+        const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
+        dataMap.set(formattedDate, item.studyTime / 60)
+      })
+
+      // 모든 날짜에 대해 데이터 추출 (없으면 null)
+      const values = dates.map((date) => {
+        return dataMap.has(date) ? dataMap.get(date) || null : null
+      }) as (number | null)[]
+
+      baseData.datasets[0].data = values
+    }
+
+    return baseData
+  }, [weeklyFocused, dates])
 
   const options = {
     responsive: true,
@@ -62,10 +112,10 @@ const LineGraph: React.FC = () => {
       tooltip: {
         displayColors: false,
         callbacks: {
-          title: function () {
+          title: () => {
             return ''
           },
-          label: function (context: TooltipItem<'line'>) {
+          label: (context: TooltipItem<'line'>) => {
             return `${context.label} : ${context.formattedValue} 시간`
           },
         },
@@ -107,6 +157,24 @@ const LineGraph: React.FC = () => {
     layout: { padding: { bottom: 5 } },
   }
 
+  // 빈 데이터 구조 (타입 명시적 정의)
+  const emptyData: ChartData<'line'> = {
+    labels: dates,
+    datasets: [
+      {
+        data: [] as (number | null)[],
+        borderColor: '#3B82F6',
+        backgroundColor: 'white',
+        pointBorderColor: '#3B82F6',
+        pointBackgroundColor: 'white',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        tension: 0.3,
+        pointHitRadius: 10,
+      },
+    ],
+  }
+
   return (
     <div className="flex flex-col px-4 pt-2">
       <header className="pt-3 pb-2 mb-1 border-b border-blue-200">
@@ -120,7 +188,11 @@ const LineGraph: React.FC = () => {
 
       <div className="w-full max-w-[95%] mx-auto">
         <div className="h-[135px]">
-          <Line data={data} options={options} />
+          {/* weeklyFocused 존재 여부에 관계없이 항상 Line 컴포넌트 렌더링 */}
+          <Line
+            data={weeklyFocused ? chartData : emptyData}
+            options={options}
+          />
         </div>
       </div>
     </div>
