@@ -129,7 +129,7 @@ public class TimeLapseService {
                 .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
 
         // 사용자 검증 과정
-        if (timeLapse.getUser().getEmail().equals(currentUserEmail)) {
+        if (!timeLapse.getUser().getEmail().equals(currentUserEmail)) {
             throw new RuntimeException("Unauthorizer delete attempt");
         }
 
@@ -143,8 +143,9 @@ public class TimeLapseService {
         TimeLapse timeLapse = timelapseRepository.findById(timelapseId)
                 .orElseThrow(() -> new RuntimeException("TimeLapse not found"));
 
+        System.out.println(timeLapse.getUser().getEmail());
         // 사용자 검증 과정
-        if (timeLapse.getUser().getEmail().equals(currentUserEmail)) {
+        if (!timeLapse.getUser().getEmail().equals(currentUserEmail)) {
             throw new RuntimeException("Unauthorizer delete attempt");
         }
         timeLapse.setTitle(dto.getTitle());
