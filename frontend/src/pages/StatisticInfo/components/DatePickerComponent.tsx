@@ -52,9 +52,9 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   
   // 네비게이션 버튼 스타일 클래스
   const getNavBtnClass = (buttonName: string) => {
-    return `flex items-center justify-center text-gray-600 relative rounded-md px-2
-      ${flashingButton === buttonName ? 'bg-blue-200' : ''} 
-      cursor-pointer`
+    return `flex items-center justify-center w-8 h-8 text-gray-600 relative rounded-full
+      ${flashingButton === buttonName ? 'bg-blue-200' : 'hover:bg-gray-100'} 
+      transition-colors duration-150 cursor-pointer`
   }
 
   // 날짜 포맷팅 함수 (YYYY-MM-DD 형식)
@@ -66,7 +66,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   }
 
   return (
-    <div className={`fixed bottom-[56px] left-0 right-0 flex justify-center items-center py-2 bg-white ${className}`}>
+    <div className={`fixed bottom-[56px] left-0 right-0 flex justify-center items-center py-3 bg-white border-t border-gray-200 shadow-sm ${className}`}>
       <div className="flex justify-center items-center">
         {/* 이전 날짜 버튼 (<-) */}
         <button
@@ -74,8 +74,11 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
           onClick={handlePrevDay}
           className={getNavBtnClass('prev')}
           aria-label="이전 날짜로 이동"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          &lt;
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 19L8 12L15 5" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
 
         {/* 날짜 표시 */}
@@ -85,11 +88,11 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
             onChange={handleDateChange}
             locale={ko}
             dateFormat="yyyy-MM-dd"
-            className="text-center border-none focus:outline-none cursor-pointer"
+            className="text-center text-gray-800 font-medium border-none focus:outline-none cursor-pointer"
             customInput={
-              <div className="flex items-center">
+              <div className="flex items-center bg-white px-2 py-1 rounded-md">
                 <span>{formatDate(selectedDate)}</span>
-                <button className="ml-2">
+                <button className="ml-2 text-blue-500">
                   <svg
                     width="20"
                     height="20"
@@ -99,7 +102,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
                   >
                     <path
                       d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                      stroke="#292D32"
+                      stroke="#3B82F6"
                       strokeWidth="1.5"
                       strokeMiterlimit="10"
                       strokeLinecap="round"
@@ -118,8 +121,11 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
           onClick={handleNextDay}
           className={getNavBtnClass('next')}
           aria-label="다음 날짜로 이동"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          &gt;
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 5L16 12L9 19" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
       </div>
     </div>

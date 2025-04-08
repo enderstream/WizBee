@@ -16,7 +16,6 @@ const SignUp: React.FC = () => {
   // 상태 관리 - DatePicker 사용을 위해 변경
   const [name, setName] = useState(user.name || '')
   const [birthDate, setBirthDate] = useState<Date | null>(null)
-  const [agreeTerms, setAgreeTerms] = useState(false)
 
   // Date 객체를 YYYY-MM-DD 형식으로 변환
   const formatDateToString = (date: Date | null) => {
@@ -30,9 +29,6 @@ const SignUp: React.FC = () => {
   }
 
   // 약관 동의 체크박스 핸들러
-  const handleTermsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAgreeTerms(e.target.checked)
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -74,10 +70,8 @@ const SignUp: React.FC = () => {
       <SignUpForm
         name={name}
         birthDate={birthDate}
-        agreeTerms={agreeTerms}
         setName={setName}
         setBirthDate={setBirthDate}
-        handleTermsChange={handleTermsChange}
         handleSubmit={handleSubmit}
         isLoading={isLoading}
       />
