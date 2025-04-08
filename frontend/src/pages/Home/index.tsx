@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom"
 import {
   useUserStore,
   selectName,
-  // selectProfileImageUrl,
-  // selectUserId,
+  selectUserId,
   selectMachineId,
 } from "@/store/userStore"
 import { useMachineRegister } from "@/hooks/useMachineRegister"
@@ -13,34 +12,32 @@ import { ROUTES } from "@/routes/routes"
 import MachineRegisterModal from "@/pages/Home/components/MachineRegisterModal"
 import StartRecord from "@/pages/Home/components/StartRecord"
 import AverageStudyTime from "@/pages/Home/components/AverageStudyTime"
-import TodayConcentration from "@/pages/Home/components/TodayConcentration"
-import PosePoint from "@/pages/Home/components/PosePoint"
-// import { statisticAPI } from '@/api/statisticAPI'
-// import { timeLapseAPI } from '@/api/timeLapseAPI'
+import Concentration from "./components/Concentration"
 import { userAPI } from "@/api/userAPI"
 import { machineAPI } from "@/api/machineAPI"
+import { statisticAPI } from "@/api/statisticAPI"
 import { initializeUserInfo } from "@/types/User"
 import WizBeeLogo from "@/assets/logos/WizBee.svg?react"
 import RegisterIcon from "@/assets/icons/Register.svg?react"
-
-
-
-  // // 로그인 한 유저의 지표화된 통계 정보 조회
-  // const { data: userFormulated } = useQuery({
-  //   queryKey: ['userFormulatedData', userId],
-  //   queryFn: () => statisticAPI.userFormulatedData(userId),
-  //   staleTime: 30 * 60 * 1000,
-  //   enabled: !!userId,
-  // })
+import { useQuery } from "@tanstack/react-query"
+import PoseScore from "./components/PoseScore"
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
   const name = useUserStore(selectName)
-  // const profileImageUrl = useUserStore(selectProfileImageUrl)
-  const { openModal } = useMachineRegister()
-  const setUser = useUserStore((state) => state.setUser)
+  const userId = useUserStore(selectUserId)
   const machineId = useUserStore(selectMachineId)
-  // const userId = useUserStore(selectUserId)
+  const setUser = useUserStore((state) => state.setUser)
+  const { openModal } = useMachineRegister()
+
+  // 날짜 포맷팅 유틸 함수
+  const getFormattedDate = () => {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const day = String(today.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
 
   // 컴포넌트 마운트 시 사용자 정보 가져오기
   useEffect(() => {
@@ -48,7 +45,6 @@ const Home: React.FC = () => {
       try {
         const response = await userAPI.userInfo()
         if (response.status === 200) {
-          // 백엔드에서 받아온 유저 정보를 스토어에 저장
           const userInfo = initializeUserInfo(response.data)
           setUser(userInfo)
         }
@@ -60,14 +56,50 @@ const Home: React.FC = () => {
     fetchUserInfo()
   }, [setUser])
 
+  // 평균 순공 시간
+  const { data: averageStudyTimeData } = useQuery({
+    queryKey: ['averageStudyTimeData', userId],
+    queryFn: () => statisticAPI.averageStudyTime(userId),
+    staleTime: 30 * 60 * 1000,
+    enabled: !!userId,
+  })
+
+  console.log(averageStudyTimeData)
+
+  // 오늘의 집중 점수
+  const { data: concentrationData } = useQuery({
+    queryKey: ['concentrationData', userId, getFormattedDate()],
+    // queryFn: () => statisticAPI.concentration(getFormattedDate(), userId),
+    queryFn: () => statisticAPI.concentration("2025-03-31", userId),
+    staleTime: 30 * 60 * 1000,
+    enabled: !!userId,
+  })
+
+  console.log(concentrationData)
+
+  // 오늘의 자세 점수
+  const { data: poseScoreData } = useQuery({
+    queryKey: ['poseScoreData', userId, getFormattedDate()],
+    // queryFn: () => statisticAPI.poseScore(getFormattedDate(), userId),
+    queryFn: () => statisticAPI.poseScore("2025-03-31", userId),
+    staleTime: 30 * 60 * 1000,
+    enabled: !!userId,
+  })
+
+  console.log(poseScoreData)
+
   // 촬영 페이지로 이동
   const handleStartTimeLapse = async () => {
-    console.log("타임랩스 세션 시작")
-    navigate(ROUTES.RECORD)
-    const response = await machineAPI.requestStream(machineId)
-    console.log(response.status)
-    console.log(response.data)
+    try {
+      console.log("타임랩스 세션 시작")
+      navigate(ROUTES.RECORD)
+      const response = await machineAPI.requestStream(machineId)
+      console.log(`Stream 요청 성공: ${response.status}`, response.data)
+    } catch (error) {
+      console.error("Stream 요청 실패:", error)
+    }
   }
+
 
   return (
     <div className="max-w-lg mx-auto px-5 py-6">
@@ -96,13 +128,14 @@ const Home: React.FC = () => {
       <StartRecord onStartClick={handleStartTimeLapse} />
 
       {/* 평균 순공시간 */}
-      <AverageStudyTime averageTime="5시간 32분" progressPercentage={70} />
+      <AverageStudyTime averageStudyTimeData={averageStudyTimeData} />
 
-      {/* 공부 지표 */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        <TodayConcentration concentrationPercentage={85} />
-        <PosePoint poseScore={92} starRating={4.5} />
-      </div>
+      {/* 공부 집중도 */}
+      <Concentration concentrationData={concentrationData} />
+
+      {/* 오늘의 자세 점수 */}
+      <PoseScore poseScoreData={poseScoreData} />
+
 
       {/* 기기 등록 모달 */}
       <MachineRegisterModal />

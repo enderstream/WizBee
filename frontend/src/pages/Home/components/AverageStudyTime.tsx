@@ -1,44 +1,63 @@
 import React from 'react'
+import ClockIcon from '@/assets/icons/Clock.svg?react'
+
+interface AverageStudyTimeData {
+  data: {
+    userAvg: number
+    userYearAvg: number
+  }
+  status: number
+}
 
 interface AverageStudyTimeProps {
-  averageTime?: string // 평균 순공시간
-  progressPercentage?: number // 진행률 퍼센티지
+  averageStudyTimeData?: AverageStudyTimeData
 }
 
 const AverageStudyTime: React.FC<AverageStudyTimeProps> = ({
-  averageTime = '5시간 32분',
-  progressPercentage = 70,
+  averageStudyTimeData
 }) => {
+  // 시간 계산 함수
+  const formatHours = (minutes: number) => {
+    return (minutes / 60).toFixed(1);
+  }
+  
+  const myHours = averageStudyTimeData ? formatHours(averageStudyTimeData.data.userAvg) : '0';
+  const peerHours = averageStudyTimeData ? formatHours(averageStudyTimeData.data.userYearAvg) : '0';
+
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl p-6 mb-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-gray-700 mb-1">평균 순공시간</h3>
-          <p className="text-2xl font-bold text-gray-800">{averageTime}</p>
+    <div className="bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl p-3 mb-6 shadow-sm">
+      <div className="flex">
+        {/* 아이콘 영역 */}
+        <div className="pr-4 border-r border-blue-300/50 flex items-center">
+          <ClockIcon className="w-16 h-16" />
         </div>
-        <div className="bg-white p-3 rounded-full shadow-md">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-blue-500"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
+        
+        {/* 텍스트 영역 */}
+        <div className="flex-1 pl-4">
+          {/* 제목 */}
+          <h1 className="text-center font-bold text-blue-800 text-lg mb-2">평균 순공 시간</h1>
+          
+          {/* 가로 구분선 */}
+          <div className="border-b border-blue-300/50 mb-2"></div>
+          
+          {/* 데이터 영역 */}
+          <div className="flex text-center">
+            {/* 내 시간 */}
+            <div className="flex-1 pr-2">
+              <h3 className="text-blue-700 font-medium mb-1">나</h3>
+              <p className="text-blue-900 font-bold text-xl">{myHours} 시간</p>
+            </div>
+            
+            {/* 세로 구분선 */}
+            <div className="border-r border-blue-300/50"></div>
+            
+            {/* 또래 평균 */}
+            <div className="flex-1 pl-2">
+              <h3 className="text-blue-700 font-medium mb-1">또래</h3>
+              <p className="text-blue-900 font-bold text-xl">{peerHours} 시간</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="mt-4 bg-white bg-opacity-50 h-2 rounded-full overflow-hidden">
-        <div 
-          className="bg-blue-500 h-full rounded-full" 
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
       </div>
     </div>
   )

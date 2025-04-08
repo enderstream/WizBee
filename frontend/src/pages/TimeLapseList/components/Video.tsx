@@ -77,13 +77,11 @@ const Video: React.FC<VideoProps> = ({
   }
 
   const handleEditClick = () => {
-    console.log('수정 버튼 클릭!', video.timelapseTitle)
     setShowEditModal(true)
     resetSlide()
   }
 
   const handleDeleteClick = async () => {
-    console.log('삭제 버튼 클릭!', video.timelapseTitle)
     try {
       await timeLapseAPI.deleteTimeLapse(video.timelapseId)
       alert('타임랩스 삭제에 성공했습니다.')
