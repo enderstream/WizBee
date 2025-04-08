@@ -103,18 +103,29 @@ const Home: React.FC = () => {
 
   return (
     <div className="max-w-lg mx-auto px-5 py-6">
-      {/* 프로필 섹션 */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-5">
+        {/* 프로필 영역 */}
         <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden mr-3 flex-shrink-0">
-            <WizBeeLogo className="w-full h-full object-cover" />
+          {/* 프로필 이미지 */}
+          <div className="relative w-12 h-12 overflow-hidden mr-4 flex-shrink-0">
+            {/* 절대 위치로 설정하고 크기를 키운 로고 */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <WizBeeLogo className="w-16 h-16 absolute" />
+            </div>
           </div>
+
+          {/* 프로필 텍스트 */}
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{name || "사용자"}님!</h2>
-            <p className="text-gray-500">오늘도 열공해봐요</p>
+            <div className="flex items-center">
+              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{name || "사용자"}님!</h2>
+            </div>
+            <p className="text-gray-600 font-medium">
+              오늘도 화이팅
+              <span className="text-blue-500 ml-1">✨</span>
+            </p>
           </div>
         </div>
-
+        {/* 기기 등록 버튼 - 원래대로 유지 */}
         <button
           onClick={openModal}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 active:bg-blue-700 text-white rounded-xl transition-colors touch-manipulation"
@@ -135,7 +146,6 @@ const Home: React.FC = () => {
 
       {/* 오늘의 자세 점수 */}
       <PoseScore poseScoreData={poseScoreData} />
-
 
       {/* 기기 등록 모달 */}
       <MachineRegisterModal />
