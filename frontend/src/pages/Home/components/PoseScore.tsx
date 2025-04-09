@@ -59,8 +59,11 @@ const calculateImprovedScore = (
 }
 
 const PoseScore: React.FC<PoseScoreProps> = ({ poseScoreData }) => {
-  // poseScoreData가 존재하면 계산된 점수를, 없으면 임시 하드코딩된 0점을 사용
-  const score = poseScoreData
+  // 데이터가 없거나 status가 204인 경우
+  const isNoData = !poseScoreData || poseScoreData.status === 204
+
+  // 점수 계산 (데이터가 있는 경우만)
+  const score = !isNoData
     ? calculateImprovedScore(
         poseScoreData.data.sumDownCnt,
         poseScoreData.data.sumShoulderCnt,
@@ -92,26 +95,36 @@ const PoseScore: React.FC<PoseScoreProps> = ({ poseScoreData }) => {
             오늘의 자세 점수
           </h1>
 
-          <div className="flex justify-center items-center mt-1">
-            {/* 점수 영역 */}
-            <div className="flex items-baseline pr-2">
-              <span className="text-2xl font-bold text-green-900">
-                {score.toFixed(0)}
-              </span>
-              <span className="text-xl font-bold text-green-700 ml-1">점</span>
+          {isNoData ? (
+            // 데이터가 없는 경우 서비스 이용 권유 메시지
+            <div className="flex justify-center items-center mt-1">
+              <p className="text-green-700 font-medium text-center">
+                자세 점수를 측정해봐요!
+              </p>
             </div>
+          ) : (
+            // 데이터가 있는 경우 점수와 피드백 표시
+            <div className="flex justify-center items-center mt-1">
+              {/* 점수 영역 */}
+              <div className="flex items-baseline pr-2">
+                <span className="text-2xl font-bold text-green-900">
+                  {score.toFixed(0)}
+                </span>
+                <span className="text-xl font-bold text-green-700 ml-1">점</span>
+              </div>
 
-            {/* 구분선 */}
-            <div className="h-6 border-r border-green-300/60 mx-1"></div>
+              {/* 구분선 */}
+              <div className="h-6 border-r border-green-300/60 mx-1"></div>
 
-            {/* 이모지와 멘트 영역 */}
-            <div className="flex items-center pl-2">
-              <span className="text-xl mr-1">{feedback.emoji}</span>
-              <span className="text-sm text-green-700 font-medium">
-                {feedback.message}
-              </span>
+              {/* 이모지와 멘트 영역 */}
+              <div className="flex items-center pl-2">
+                <span className="text-xl mr-1">{feedback.emoji}</span>
+                <span className="text-sm text-green-700 font-medium">
+                  {feedback.message}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
