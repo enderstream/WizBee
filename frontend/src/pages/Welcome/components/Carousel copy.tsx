@@ -29,13 +29,13 @@ const Carousel: React.FC = () => {
   const sliderRef = useRef<HTMLDivElement>(null)
 
   const goToPrevSlide = () => {
-    setCurrentSlide((prev) => 
+    setCurrentSlide((prev) =>
       prev === 0 ? carouselImages.length - 1 : prev - 1
     )
   }
 
   const goToNextSlide = () => {
-    setCurrentSlide((prev) => 
+    setCurrentSlide((prev) =>
       (prev + 1) % carouselImages.length
     )
   }
@@ -65,27 +65,27 @@ const Carousel: React.FC = () => {
 
   return (
     <div className="w-full max-w-md mx-auto relative">
-      <div 
+      <div
         className="w-full overflow-hidden relative p-2 mb-2"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {/* 이미지 슬라이더 컨테이너 */}
-        <div 
+        <div
           ref={sliderRef}
           className="w-full flex transition-transform duration-300 ease-in-out"
-          style={{ 
+          style={{
             transform: `translateX(-${currentSlide * 100}%)`,
           }}
         >
           {carouselImages.map((image) => (
             <div key={image.id} className="w-full flex-shrink-0">
-              <img 
-                src={image.src} 
+              <img
+                src={image.src}
                 alt={image.alt}
                 className="w-full h-auto object-contain"
-                style={{ 
+                style={{
                   aspectRatio: '750/1220',
                   maxHeight: '400px' // 이미지 최대 높이 제한
                 }}
@@ -95,15 +95,14 @@ const Carousel: React.FC = () => {
         </div>
 
       </div>
-      
+
       {/* 하단 인디케이터 */}
       <div className="flex justify-center gap-2 mt-1">
         {carouselImages.map((_, index) => (
           <button
             key={index}
-            className={`w-6 h-1 rounded-sm ${
-              currentSlide === index ? 'bg-blue-500' : 'bg-gray-300'
-            }`}
+            className={`w-6 h-1 rounded-sm ${currentSlide === index ? 'bg-blue-500' : 'bg-gray-300'
+              }`}
             onClick={() => setCurrentSlide(index)}
             aria-label={`슬라이드 ${index + 1}`}
           />

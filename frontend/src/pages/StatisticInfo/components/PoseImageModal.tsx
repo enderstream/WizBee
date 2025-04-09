@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 
 interface PoseImageModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  imageUrls: string[];
-  isLoading: boolean;
+  isOpen: boolean
+  onClose: () => void
+  imageUrls: string[]
+  isLoading: boolean
 }
 
 const PoseImageModal: React.FC<PoseImageModalProps> = ({
@@ -13,95 +13,95 @@ const PoseImageModal: React.FC<PoseImageModalProps> = ({
   imageUrls,
   isLoading,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
 
   // 모달 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen, onClose])
 
   // ESC 키 누를 시 모달 닫기
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
-    };
+    }
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscKey);
+      document.addEventListener('keydown', handleEscKey)
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscKey);
-    };
-  }, [isOpen, onClose]);
+      document.removeEventListener('keydown', handleEscKey)
+    }
+  }, [isOpen, onClose])
 
   // 터치 이벤트 핸들러
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
+    setTouchStart(e.targetTouches[0].clientX)
+  }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-    
+    if (!touchStart || !touchEnd) return
+
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
     if (isLeftSwipe && currentIndex < imageUrls.length - 1) {
       // 왼쪽으로 스와이프 (다음 이미지)
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex(currentIndex + 1)
     } else if (isRightSwipe && currentIndex > 0) {
       // 오른쪽으로 스와이프 (이전 이미지)
-      setCurrentIndex(currentIndex - 1);
+      setCurrentIndex(currentIndex - 1)
     }
-    
+
     // 터치 상태 초기화
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
+    setTouchStart(null)
+    setTouchEnd(null)
+  }
 
   // 이전 이미지로 이동
   const goToPrevious = () => {
-    const isFirstImage = currentIndex === 0;
-    const newIndex = isFirstImage ? imageUrls.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  };
+    const isFirstImage = currentIndex === 0
+    const newIndex = isFirstImage ? imageUrls.length - 1 : currentIndex - 1
+    setCurrentIndex(newIndex)
+  }
 
   // 다음 이미지로 이동
   const goToNext = () => {
-    const isLastImage = currentIndex === imageUrls.length - 1;
-    const newIndex = isLastImage ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  };
+    const isLastImage = currentIndex === imageUrls.length - 1
+    const newIndex = isLastImage ? 0 : currentIndex + 1
+    setCurrentIndex(newIndex)
+  }
 
   if (!isOpen) {
-    return null;
+    return null
   }
 
   return (
     <div className="fixed inset-0 backdrop-blur-[2px] bg-black/20 flex items-center justify-center z-50 p-4">
-      <div 
+      <div
         ref={modalRef}
         className="bg-white rounded-lg w-full max-w-md overflow-hidden shadow-xl"
       >
@@ -133,27 +133,27 @@ const PoseImageModal: React.FC<PoseImageModalProps> = ({
             </div>
           ) : (
             // 이미지 슬라이더
-            <div 
+            <div
               className="relative overflow-hidden h-64"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <div 
+              <div
                 className="flex transition-transform duration-300 ease-in-out h-full"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
                 {imageUrls.map((url, index) => (
                   <div key={index} className="min-w-full px-2">
-                    <img 
-                      src={url} 
-                      alt={`잘못된 자세 ${index + 1}`} 
+                    <img
+                      src={url}
+                      alt={`잘못된 자세 ${index + 1}`}
                       className="w-full h-full object-contain rounded"
                     />
                   </div>
                 ))}
               </div>
-              
+
               {/* 좌우 화살표 네비게이션 */}
               <button
                 onClick={goToPrevious}
@@ -164,7 +164,7 @@ const PoseImageModal: React.FC<PoseImageModalProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              
+
               <button
                 onClick={goToNext}
                 className="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-1 shadow"
@@ -174,31 +174,30 @@ const PoseImageModal: React.FC<PoseImageModalProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
-              
+
               {/* 페이지네이션 인디케이터 */}
               <div className="absolute bottom-2 left-0 right-0 flex justify-center">
                 {imageUrls.map((_, index) => (
                   <span
                     key={index}
-                    className={`inline-block w-2 h-2 rounded-full mx-1 ${
-                      index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
-                    }`}
+                    className={`inline-block w-2 h-2 rounded-full mx-1 ${index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
+                      }`}
                   />
                 ))}
               </div>
             </div>
           )}
         </div>
-        
+
         {/* 푸터 영역 - 현재 이미지 표시 (이미지가 있을 경우만) */}
-        {/* {!isLoading && imageUrls.length > 0 && (
+        {!isLoading && imageUrls.length > 0 && (
           <div className="px-4 py-3 border-t border-gray-200 text-center text-sm text-gray-600">
             {currentIndex + 1} / {imageUrls.length}
           </div>
-        )} */}
+        )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PoseImageModal;
+export default PoseImageModal
