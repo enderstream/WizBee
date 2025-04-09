@@ -38,7 +38,7 @@ const StatisticInfo: React.FC = () => {
   // 잘못된 자세 통계
   const { data: poseData } = useQuery({
     queryKey: ['poseData', formattedDate, userId],
-    queryFn: () => statisticAPI.poseData(formattedDate, userId),
+    queryFn: () => statisticAPI.poseScore(formattedDate, userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
