@@ -22,7 +22,6 @@ export const ROUTES = {
   SETTINGS: '/settings',
   RECORD: '/record',
   TIME_LAPSE_LIST: '/time-lapse-list',
-  QR_SCANNER: '/qr-scanner',
   STATISTIC_INFO: '/statistic-info',
 }
 
