@@ -150,7 +150,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
           stepSize: 2,
         },
         min: 0,
-        max: 10,
+        max: 12,
         border: { display: true },
       },
     },
