@@ -1,26 +1,26 @@
-import type React from "react"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import type React from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { machineAPI } from '@/api/machineAPI'
+import { statisticAPI } from '@/api/statisticAPI'
+import { userAPI } from '@/api/userAPI'
+import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
+import StartRecord from '@/pages/Home/components/StartRecord'
+import AverageStudyTime from '@/pages/Home/components/AverageStudyTime'
+import Concentration from '@/pages/Home/components/Concentration'
+import PoseScore from '@/pages/Home/components/PoseScore'
+import { useMachineRegister } from '@/hooks/useMachineRegister'
+import { ROUTES } from '@/routes/routes'
 import {
   useUserStore,
   selectName,
   selectUserId,
   selectMachineId,
-} from "@/store/userStore"
-import { useMachineRegister } from "@/hooks/useMachineRegister"
-import { ROUTES } from "@/routes/routes"
-import MachineRegisterModal from "@/pages/Home/components/MachineRegisterModal"
-import StartRecord from "@/pages/Home/components/StartRecord"
-import AverageStudyTime from "@/pages/Home/components/AverageStudyTime"
-import Concentration from "./components/Concentration"
-import { userAPI } from "@/api/userAPI"
-import { machineAPI } from "@/api/machineAPI"
-import { statisticAPI } from "@/api/statisticAPI"
-import { initializeUserInfo } from "@/types/User"
-import WizBeeLogo from "@/assets/logos/WizBee.svg?react"
-import RegisterIcon from "@/assets/icons/Register.svg?react"
-import { useQuery } from "@tanstack/react-query"
-import PoseScore from "./components/PoseScore"
+} from '@/store/userStore'
+import { initializeUserInfo } from '@/types/User'
+import RegisterIcon from '@/assets/icons/Register.svg?react'
+import WizBeeLogo from '@/assets/logos/WizBee.svg?react'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -49,7 +49,7 @@ const Home: React.FC = () => {
           setUser(userInfo)
         }
       } catch (error) {
-        console.error("유저 정보 로드 실패:", error)
+        console.error('유저 정보 로드 실패:', error)
       }
     }
 
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
   const { data: concentrationData } = useQuery({
     queryKey: ['concentrationData', userId, getFormattedDate()],
     // queryFn: () => statisticAPI.concentration(getFormattedDate(), userId),
-    queryFn: () => statisticAPI.concentration("2025-03-31", userId),
+    queryFn: () => statisticAPI.concentration('2025-03-31', userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -87,13 +87,14 @@ const Home: React.FC = () => {
   const handleStartTimeLapse = async () => {
     try {
       const response = await machineAPI.requestStream(machineId)
-      navigate(ROUTES.RECORD, { state: { streamingUrl: response.data.streaming_url }})
+      navigate(ROUTES.RECORD, {
+        state: { streamingUrl: response.data.streaming_url },
+      })
       console.log(response.data.streaming_url)
     } catch (error) {
-      console.error("Stream 요청 실패:", error)
+      console.error('Stream 요청 실패:', error)
     }
   }
-
 
   return (
     <div className="max-w-lg mx-auto px-5 py-6">
@@ -111,7 +112,9 @@ const Home: React.FC = () => {
           {/* 프로필 텍스트 */}
           <div>
             <div className="flex items-center">
-              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{name || "사용자"}님!</h2>
+              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {name || '사용자'}님!
+              </h2>
             </div>
             <p className="text-gray-600 font-medium">
               오늘도 화이팅
