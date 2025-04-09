@@ -64,8 +64,6 @@ const Home: React.FC = () => {
     enabled: !!userId,
   })
 
-  console.log(averageStudyTimeData)
-
   // 오늘의 집중 점수
   const { data: concentrationData } = useQuery({
     queryKey: ['concentrationData', userId, getFormattedDate()],
@@ -74,8 +72,6 @@ const Home: React.FC = () => {
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
-
-  console.log(concentrationData)
 
   // 오늘의 자세 점수
   const { data: poseScoreData } = useQuery({
@@ -86,8 +82,6 @@ const Home: React.FC = () => {
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
-
-  console.log(poseScoreData)
 
   // 촬영 페이지로 이동
   const handleStartTimeLapse = async () => {

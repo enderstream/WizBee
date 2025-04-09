@@ -22,8 +22,6 @@ const Record: React.FC = () => {
     // 여기에 실제 녹화 시작 로직을 추가할 수 있습니다
     console.log('타임랩스 촬영 시작')
     const response = await timeLapseAPI.startRecordingTimeLapse(machineId)
-    console.log(response.data)
-    console.log(response.status)
     setTimeLapseId(response.data.id)
   }
 
