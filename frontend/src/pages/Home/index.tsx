@@ -80,8 +80,9 @@ const Home: React.FC = () => {
   // 오늘의 자세 점수
   const { data: poseScoreData } = useQuery({
     queryKey: ['poseScoreData', userId, getFormattedDate()],
-    // queryFn: () => statisticAPI.poseScore(getFormattedDate(), userId),
-    queryFn: () => statisticAPI.poseScore("2025-03-31", userId),
+    queryFn: () => statisticAPI.poseScore(getFormattedDate(), userId),
+    // 테스트용으로 하드코딩한 함수
+    // queryFn: () => statisticAPI.poseScore("2025-04-10", userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
