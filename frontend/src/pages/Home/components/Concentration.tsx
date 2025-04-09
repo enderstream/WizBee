@@ -11,8 +11,11 @@ interface ConcentrationProps {
 }
 
 const Concentration: React.FC<ConcentrationProps> = ({ concentrationData }) => {
-  // 집중도 계산 및 포맷팅
-  const concentrationPercent = concentrationData
+  // 데이터가 없거나 status가 204인 경우
+  const isNoData = !concentrationData || concentrationData.status === 204
+
+  // 집중도 계산 및 포맷팅 (데이터가 있는 경우만)
+  const concentrationPercent = !isNoData
     ? Math.round(concentrationData.data * 100)
     : 0
 
@@ -40,26 +43,36 @@ const Concentration: React.FC<ConcentrationProps> = ({ concentrationData }) => {
             오늘의 집중 효율
           </h1>
 
-          <div className="flex justify-center items-center mt-1">
-            {/* 수치 영역 */}
-            <div className="flex items-baseline pr-2">
-              <span className="text-2xl font-bold text-purple-900">
-                {concentrationPercent}
-              </span>
-              <span className="text-xl font-bold text-purple-700 ml-1">%</span>
+          {isNoData ? (
+            // 데이터가 없는 경우 서비스 이용 권유 메시지
+            <div className="flex justify-center items-center mt-1">
+              <p className="text-purple-700 font-medium text-center">
+                집중 효율을 측정해봐요!
+              </p>
             </div>
+          ) : (
+            // 데이터가 있는 경우 점수와 피드백 표시
+            <div className="flex justify-center items-center mt-1">
+              {/* 수치 영역 */}
+              <div className="flex items-baseline pr-2">
+                <span className="text-2xl font-bold text-purple-900">
+                  {concentrationPercent}
+                </span>
+                <span className="text-xl font-bold text-purple-700 ml-1">%</span>
+              </div>
 
-            {/* 구분선 */}
-            <div className="h-6 border-r border-purple-300/60 mx-1"></div>
+              {/* 구분선 */}
+              <div className="h-6 border-r border-purple-300/60 mx-1"></div>
 
-            {/* 이모지와 멘트 영역 */}
-            <div className="flex items-center pl-2">
-              <span className="text-xl mr-1">{feedback.emoji}</span>
-              <span className="text-sm text-purple-700 font-medium">
-                {feedback.message}
-              </span>
+              {/* 이모지와 멘트 영역 */}
+              <div className="flex items-center pl-2">
+                <span className="text-xl mr-1">{feedback.emoji}</span>
+                <span className="text-sm text-purple-700 font-medium">
+                  {feedback.message}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
