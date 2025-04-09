@@ -81,12 +81,12 @@ const Record: React.FC = () => {
     try {
       setIsRecording(false)
       setIsCompleted(true)
-      console.log('타임랩스 촬영 중지')
+      console.log('타임랩스 촬영 종료')
       console.log(timeLapseId)
       
       const response = await timeLapseAPI.finishRecordingTimeLapse(
         timeLapseId,
-        '나의 타임랩스',
+        '나의 타임랩스', // 임시로 하드코딩 된 값
       )
       console.log(response.status)
       console.log(response.data)
