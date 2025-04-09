@@ -18,9 +18,19 @@ const TimeLapseList = () => {
   } = useQuery({
     queryKey: ['timeLapseList', userId],
     queryFn: () => timeLapseAPI.timeLapseList(userId),
-    staleTime: 30 * 60 * 1000,
+    staleTime: 30,
     enabled: !!userId,
-  })
+    select: (data) => {
+      // API 응답 데이터를 가공
+      return {
+        ...data,
+        data: [...data.data].sort((a, b) => {
+          // timelapseDate 기준으로 내림차순 정렬 (최신순)
+          return new Date(b.timelapseDate).getTime() - new Date(a.timelapseDate).getTime();
+        })
+      };
+    }
+  });
 
   const [isWindow, setIsWindow] = useState<boolean>(false)
   const [isPlaying] = useState<boolean>(false)
