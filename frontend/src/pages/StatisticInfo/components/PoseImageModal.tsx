@@ -175,24 +175,22 @@ const PoseImageModal: React.FC<PoseImageModalProps> = ({
                 </svg>
               </button>
 
-              {/* 페이지네이션 인디케이터 */}
-              <div className="absolute bottom-2 left-0 right-0 flex justify-center">
-                {imageUrls.map((_, index) => (
-                  <span
-                    key={index}
-                    className={`inline-block w-2 h-2 rounded-full mx-1 ${index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
-                      }`}
-                  />
-                ))}
-              </div>
+              {/* 슬라이더 내부의 페이지네이션 인디케이터 제거 - 푸터로 이동 */}
             </div>
           )}
         </div>
 
-        {/* 푸터 영역 - 현재 이미지 표시 (이미지가 있을 경우만) */}
+        {/* 푸터 영역 - 숫자 대신 납작한 인디케이터로 변경 */}
         {!isLoading && imageUrls.length > 0 && (
-          <div className="px-4 py-3 border-t border-gray-200 text-center text-sm text-gray-600">
-            {currentIndex + 1} / {imageUrls.length}
+          <div className="px-4 py-3 border-t border-gray-200 flex justify-center">
+            {imageUrls.map((_, index) => (
+              <span
+                key={index}
+                className={`inline-block w-16 h-1 rounded-sm mx-1 ${index === currentIndex ? 'bg-blue-500' : 'bg-gray-300'
+                  }`}
+                onClick={() => setCurrentIndex(index)}
+              />
+            ))}
           </div>
         )}
       </div>
