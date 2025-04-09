@@ -24,7 +24,7 @@ const Welcome: React.FC = () => {
           alt="Google logo"
           className="google-icon"
         />
-        {isLoading ? '로그인 중...' : 'Continue with Google'}
+        {isLoading ? '로그인 중...' : 'Google로 시작하기'}
       </button>
     </div>
   )

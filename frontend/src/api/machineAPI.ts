@@ -12,7 +12,7 @@ export const machineAPI = {
     }
   },
 
-  // 백엔드에 스트리밍 요청
+  // 라즈베리파이에 스트리밍 요청
   requestStream: async (machineId: string) => {
     try {
       const response = await apiClient.get(`/api/v1/timelapse/stream/${machineId}`)

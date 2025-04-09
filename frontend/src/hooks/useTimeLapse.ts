@@ -15,8 +15,6 @@ export const useTimeLapse = () => {
   const [error, setError] = useState<string | null>(null)
 
   const fetchTimeLapseList = async (page: number = 1) => {
-    console.log(page)
-
     if (!userId) {
       setError('로그인이 필요합니다')
       return
@@ -28,8 +26,6 @@ export const useTimeLapse = () => {
     try {
       const response = await timeLapseAPI.timeLapseList(userId)
       const timeLapseVideos: TimeLapseVideo[] = response.data
-      console.log('타임랩스 목록 응답:', timeLapseVideos)
-
       setTimelapseVideos(timeLapseVideos)
       setPagination({
         totalPages: Math.ceil(timeLapseVideos.length / 10), // 페이지당 10개 항목 가정
