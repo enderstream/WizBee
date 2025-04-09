@@ -71,12 +71,7 @@ export const useMachineRegister = () => {
         try {
             setIsSubmitting(true)
             setError(null)
-            console.log(userId)
             const response = await machineAPI.registerMachine(userId, serialNumber)
-            console.log(response.status)
-            console.log(response.data)
-
-
             if (response.status == 200) {
                 setSuccess(true)
             } else {

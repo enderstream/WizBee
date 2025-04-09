@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class PoseService {
@@ -63,7 +64,7 @@ public class PoseService {
     }
 
     // 자세 합산 조회
-    public PoseScoreResponseDto getPoseScore(String date, int userId) {
+    public Optional<PoseScoreResponseDto> getPoseScore(String date, int userId) {
 
         Date poseDate;
         try {
@@ -73,8 +74,7 @@ public class PoseService {
         }
 
         // 변환된 date와 userId를 사용해서 Repository 호출
-        return poseRepository.findPoseScore(userId, poseDate)
-                .orElseThrow(() -> new RuntimeException("No data found"));
+        return poseRepository.findPoseScore(userId, poseDate);
     }
 
     // 자세 이미지 조회

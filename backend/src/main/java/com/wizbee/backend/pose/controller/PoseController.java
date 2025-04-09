@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/pose")
 public class PoseController {
@@ -36,8 +38,11 @@ public class PoseController {
     @GetMapping("/score/{date}/{userId}")
     public ResponseEntity<?> getPoseScore(@PathVariable("date") String date, @PathVariable("userId") int userId) {
         try {
-            PoseScoreResponseDto poseScoreResponseDto = poseService.getPoseScore(date, userId);
-            return ResponseEntity.ok(poseScoreResponseDto);
+            Optional<PoseScoreResponseDto> result = poseService.getPoseScore(date, userId);
+            if (result.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(result.get());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
@@ -48,6 +53,10 @@ public class PoseController {
     public ResponseEntity<?> getPoseImage(@PathVariable("date") String date, @PathVariable("userId") int userId){
         try {
             PoseImageUrlsResponseDto poseImageUrlsResponseDto = poseService.getPoseImageUrls(userId, date);
+            if(poseImageUrlsResponseDto.getPoseImageUrls() == null ||
+                    poseImageUrlsResponseDto.getPoseImageUrls().isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(poseImageUrlsResponseDto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());

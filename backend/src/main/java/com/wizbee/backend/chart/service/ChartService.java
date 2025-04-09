@@ -81,11 +81,15 @@ public class ChartService {
     public ResponseEntity<?> getChartScore(User user, LocalDate date) {
         try {
             ChartAggregateDto oneDayChart = findByDate(user, date);
+            if(oneDayChart == null){
+                return ResponseEntity.noContent().build();
+            }
             int fullStudyTime = oneDayChart.getFullTime();
             int notStudyTime = oneDayChart.getSleepTime() + oneDayChart.getPhoneTime() + oneDayChart.getOutTime();
 
             if (fullStudyTime == 0) {
-                return ResponseEntity.badRequest().body("공부 기록이 없습니다.");
+//                return ResponseEntity.badRequest().body("공부 기록이 없습니다.");
+                return ResponseEntity.noContent().build();
             }
 
             double result = (double) notStudyTime / fullStudyTime;
@@ -104,20 +108,21 @@ public class ChartService {
     public PeerStatisticsResponseDto getPeerStats(Integer userId) {
         Object result = chartRepository.getPeerStatistics(userId);
         if (result == null) {
-            return new PeerStatisticsResponseDto();
+            return new PeerStatisticsResponseDto(); // 방어적 처리
         }
-        Object[] arr = (Object[]) result;
-        PeerStatisticsResponseDto peerStatisticsResponseDto = new PeerStatisticsResponseDto();
-        peerStatisticsResponseDto.setAvgFullTime(((BigDecimal) arr[0]).floatValue());
-        peerStatisticsResponseDto.setAvgStudyTime(((BigDecimal) arr[1]).floatValue());
-        peerStatisticsResponseDto.setAvgOutTime(((BigDecimal) arr[2]).floatValue());
-        peerStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
-        peerStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
-        peerStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
-        peerStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
-        peerStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
 
-        return peerStatisticsResponseDto;
+        Object[] arr = (Object[]) result;
+        PeerStatisticsResponseDto dto = new PeerStatisticsResponseDto();
+        dto.setAvgFullTime(toFloat(arr[0]));
+        dto.setAvgStudyTime(toFloat(arr[1]));
+        dto.setAvgOutTime(toFloat(arr[2]));
+        dto.setAvgOutCnt(toFloat(arr[3]));
+        dto.setAvgPhoneTime(toFloat(arr[4]));
+        dto.setAvgPhoneCnt(toFloat(arr[5]));
+        dto.setAvgSleepTime(toFloat(arr[6]));
+        dto.setAvgSleepCnt(toFloat(arr[7]));
+
+        return dto;
     }
 
     /**
@@ -128,21 +133,27 @@ public class ChartService {
     public UserStatisticsResponseDto getUserStats(Integer userId) {
         Object result = chartRepository.getUserStatistics(userId);
         if (result == null) {
-            return new UserStatisticsResponseDto();
+            return new UserStatisticsResponseDto(); // 방어 코드 (거의 안 들어오지만)
         }
-        Object[] arr = (Object[]) result;
-        UserStatisticsResponseDto userStatisticsResponseDto = new UserStatisticsResponseDto();
-        userStatisticsResponseDto.setAvgFullTime(((BigDecimal) arr[0]).floatValue());
-        userStatisticsResponseDto.setAvgStudyTime(((BigDecimal) arr[1]).floatValue());
-        userStatisticsResponseDto.setAvgOutTime(((BigDecimal) arr[2]).floatValue());
-        userStatisticsResponseDto.setAvgOutCnt(((BigDecimal) arr[3]).floatValue());
-        userStatisticsResponseDto.setAvgPhoneTime(((BigDecimal) arr[4]).floatValue());
-        userStatisticsResponseDto.setAvgPhoneCnt(((BigDecimal) arr[5]).floatValue());
-        userStatisticsResponseDto.setAvgSleepTime(((BigDecimal) arr[6]).floatValue());
-        userStatisticsResponseDto.setAvgSleepCnt(((BigDecimal) arr[7]).floatValue());
 
-        return userStatisticsResponseDto;
+        Object[] arr = (Object[]) result;
+        UserStatisticsResponseDto dto = new UserStatisticsResponseDto();
+        dto.setAvgFullTime(toFloat(arr[0]));
+        dto.setAvgStudyTime(toFloat(arr[1]));
+        dto.setAvgOutTime(toFloat(arr[2]));
+        dto.setAvgOutCnt(toFloat(arr[3]));
+        dto.setAvgPhoneTime(toFloat(arr[4]));
+        dto.setAvgPhoneCnt(toFloat(arr[5]));
+        dto.setAvgSleepTime(toFloat(arr[6]));
+        dto.setAvgSleepCnt(toFloat(arr[7]));
+
+        return dto;
     }
+
+    private float toFloat(Object obj) {
+        return (obj != null) ? ((BigDecimal) obj).floatValue() : 0.0f;
+    }
+
 
     /**
      * 라즈베리파이로부터 수신한 통계 요청을 처리하여 저장한다.
