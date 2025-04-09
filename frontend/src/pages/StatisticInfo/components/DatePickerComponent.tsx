@@ -64,8 +64,6 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
 
   const renderCustomHeader = ({
     date,
-    changeYear,
-    changeMonth,
     decreaseMonth,
     increaseMonth,
     prevMonthButtonDisabled,

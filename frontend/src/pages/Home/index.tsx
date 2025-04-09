@@ -86,10 +86,9 @@ const Home: React.FC = () => {
   // 촬영 페이지로 이동
   const handleStartTimeLapse = async () => {
     try {
-      console.log("타임랩스 세션 시작")
-      navigate(ROUTES.RECORD)
       const response = await machineAPI.requestStream(machineId)
-      console.log(`Stream 요청 성공: ${response.status}`, response.data)
+      navigate(ROUTES.RECORD, { state: { streamingUrl: response.data.streaming_url }})
+      console.log(response.data.streaming_url)
     } catch (error) {
       console.error("Stream 요청 실패:", error)
     }
