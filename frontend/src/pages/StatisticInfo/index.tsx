@@ -5,7 +5,7 @@ import PoseCount from '@/pages/StatisticInfo/components/PoseCount'
 import DatePickerComponent from '@/pages/StatisticInfo/components/DatePickerComponent'
 import { statisticAPI } from '@/api/statisticAPI'
 import { useQuery } from '@tanstack/react-query'
-import { selectUserId, useUserStore } from '@/store/userStore'
+import { selectUserId, useUserStore } from '@/stores/userStore'
 
 const StatisticInfo: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())

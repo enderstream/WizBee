@@ -79,7 +79,7 @@ const Carousel: React.FC = () => {
             transform: `translateX(-${currentSlide * 100}%)`,
           }}
         >
-          {carouselImages.map((image, index) => (
+          {carouselImages.map((image) => (
             <div key={image.id} className="w-full flex-shrink-0">
               <img 
                 src={image.src} 

@@ -4,7 +4,7 @@ import {
   useUserStore,
   selectIsLogin,
   selectHasCompletedSignup,
-} from '@/store/userStore'
+} from '@/stores/userStore'
 import { ROUTES } from '@/routes/routes'
 
 const ProtectedRoute: React.FC = () => {

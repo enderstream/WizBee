@@ -17,7 +17,7 @@ import {
   selectName,
   selectUserId,
   selectMachineId,
-} from '@/store/userStore'
+} from '@/stores/userStore'
 import { initializeUserInfo } from '@/types/User'
 import RegisterIcon from '@/assets/icons/Register.svg?react'
 import WizBeeLogo from '@/assets/logos/WizBee.svg?react'

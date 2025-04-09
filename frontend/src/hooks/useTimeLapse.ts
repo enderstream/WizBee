@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
-import { useUserStore, selectUserId } from '@/store/userStore'
+import { useUserStore, selectUserId } from '@/stores/userStore'
 import { TimeLapseVideo } from '@/types/TimeLapse'
 
 export const useTimeLapse = () => {

@@ -1,7 +1,7 @@
 // src/pages/SignUp/index.tsx
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { selectUser, useUserStore } from '@/store/userStore'
+import { selectUser, useUserStore } from '@/stores/userStore'
 import { ROUTES } from '@/routes/routes'
 import { userAPI } from '@/api/userAPI'
 import NicknameForm from '@/pages/SignUp/components/NicknameForm'
@@ -67,25 +67,25 @@ const SignUp: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-300 p-8">
         <h1 className="text-4xl font-bold text-center text-blue-500 mb-8">SIGN UP</h1>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 닉네임 입력 폼 */}
-          <NicknameForm 
-            name={name} 
-            setName={setName} 
-            isLoading={isLoading} 
+          <NicknameForm
+            name={name}
+            setName={setName}
+            isLoading={isLoading}
           />
-          
+
           {/* 생년월일 입력 폼 */}
-          <BirthdayForm 
-            birthDate={birthDate} 
-            setBirthDate={setBirthDate} 
-            isLoading={isLoading} 
+          <BirthdayForm
+            birthDate={birthDate}
+            setBirthDate={setBirthDate}
+            isLoading={isLoading}
           />
-          
+
           {/* 가입하기 버튼 */}
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading || !name || !birthDate}
           >

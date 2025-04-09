@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userAPI } from '@/api/userAPI'
-import { useUserStore } from '@/store/userStore'
+import { useUserStore } from '@/stores/userStore'
 import { OAuthCallbackResponse, initializeUserInfo } from '@/types/User'
 import { ROUTES } from '@/routes/routes'
 

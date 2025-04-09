@@ -4,7 +4,7 @@ import {
   useUserStore,
   selectIsLogin,
   selectHasCompletedSignup,
-} from '@/store/userStore'
+} from '@/stores/userStore'
 import Welcome from '@/pages/Welcome/index'
 import { ROUTES } from '@/routes/routes'
 
