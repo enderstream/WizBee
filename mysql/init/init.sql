@@ -1,5 +1,6 @@
 USE wizbee;
 -- 포맷팅 금지!!!
+-- 주의! 유저가 7번 유저 이상인 경우에만 inesert문을 실행시킬 것
 
 -- 테이블 생성 (PK 정의 포함)
 CREATE TABLE `users` (
