@@ -99,9 +99,14 @@ const Record: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       {/* 헤더 */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800">타임랩스 촬영</h2>
-      </div>
+      <header className="pt-3 pb-2 mb-1 border-b border-blue-200">
+        <div className="flex items-center">
+          <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
+          <h1 className="text-xl font-bold text-gray-800">
+          타임랩스 촬영
+          </h1>
+        </div>
+      </header>
 
       {/* 카메라 컨테이너 */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
