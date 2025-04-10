@@ -102,7 +102,7 @@ public class TimeLapseController {
                                                      Principal principal) {
 
         String currentUserEmail = principal.getName();
-
+        System.out.println("현재 유저 email : " + currentUserEmail);
         User currentUser = userService.findByEmail(currentUserEmail);
 
         // 만약 현재 사용자의 machineId가 다르면
