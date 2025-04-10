@@ -87,6 +87,8 @@ const Home: React.FC = () => {
       navigate(ROUTES.RECORD, {
         state: { streamingUrl: response.data.streaming_url },
       })
+      // console.log(response.data.streaming_url)
+      
     } catch (error) {
       console.error('Stream 요청 실패:', error)
     }
