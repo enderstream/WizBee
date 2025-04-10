@@ -73,8 +73,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/oauth2/**", "/login/**",
                         "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout",
-                        "/api/v1/study/save", "/api/v1/pose/score/*",
-                        "/api/v1/timelapse/stream/*")
+                        "/api/v1/study/save", "/api/v1/timelapse/**", "/api/v1/pose/score/*",
+                        "/api/v1/timelapse/stream/**")
                 .permitAll()
                 .requestMatchers(HttpMethod.PUT,"/api/v1/timelapse/*") // 라파 -> spring
                 .permitAll()

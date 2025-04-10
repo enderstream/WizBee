@@ -5,19 +5,27 @@ import DeleteIcon from '@/assets/icons/Delete.svg?react'
 import EditIcon from '@/assets/icons/Edit.svg?react'
 import PlayIcon from '@/assets/icons/Play.svg?react'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
+import EditTitleModal from '@/pages/TimeLapseList/components/EditTitleModal'
 
 interface VideoProps {
   video: TimeLapseVideo
   isPlaying: boolean
+  onVideoUpdate?: (id: string, newTitle: string) => void
+  onVideoDelete?: (id: string) => void
 }
 
-const Video: React.FC<VideoProps> = ({ video }) => {
+const Video: React.FC<VideoProps> = ({
+  video,
+  onVideoUpdate,
+  onVideoDelete,
+}) => {
   const playerWrapperRef = useRef<HTMLDivElement>(null)
   const videoInfoRef = useRef<HTMLDivElement>(null)
   const [showPlayer, setShowPlayer] = useState(false)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const [isSliding, setIsSliding] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   // 슬라이드 관련 함수들
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
@@ -68,22 +76,24 @@ const Video: React.FC<VideoProps> = ({ video }) => {
     }
   }
 
-  const handleEditClick = async () => {
-    console.log('수정 버튼 클릭!', video.timelapseTitle)
-    console.log(video)
-    const response = await timeLapseAPI.editTimeLapseTitle(video.timelapseId, "MY_TIME")
-    // const response = await timeLapseAPI.editTimeLapseTitle(video.timelapseId, video.timelapseTitle)
-    console.log(response.data)
-    console.log(response.status)
+  const handleEditClick = () => {
+    setShowEditModal(true)
     resetSlide()
   }
 
   const handleDeleteClick = async () => {
-    console.log('삭제 버튼 클릭!', video.timelapseTitle)
-    console.log(video)
-    const response = await timeLapseAPI.deleteTimeLapse(video.timelapseId)
-    console.log(response.data)
-    console.log(response.status)
+    try {
+      await timeLapseAPI.deleteTimeLapse(video.timelapseId)
+      alert('타임랩스 삭제에 성공했습니다.')
+
+      // 부모 컴포넌트에 삭제 알림
+      if (onVideoDelete) {
+        onVideoDelete(video.timelapseId)
+      }
+    } catch (error) {
+      console.error('타임랩스 삭제 오류:', error)
+      alert('타임랩스 삭제 중 오류가 발생했습니다.')
+    }
     resetSlide()
   }
 
@@ -133,80 +143,104 @@ const Video: React.FC<VideoProps> = ({ video }) => {
     handleCloseVideo()
   }
 
+  // 타이틀 업데이트 핸들러
+  const handleTitleUpdate = (id: string, newTitle: string) => {
+    // 부모 컴포넌트에 업데이트 알림
+    if (onVideoUpdate) {
+      onVideoUpdate(id, newTitle)
+    }
+  }
+
   return (
-    <div className="mb-4 rounded-lg border border-slate-200 shadow-sm overflow-hidden bg-white relative">
-      {!showPlayer ? (
-        // 영상 정보만 표시 (클릭 가능한 영역)
-        <div
-          ref={videoInfoRef}
-          className="p-4 cursor-pointer border-l-4 border-l-blue-500 flex justify-between items-center relative transform translate-x-0 transition-transform duration-300 bg-white touch-pan-x"
-          onClick={handleVideoItemClick}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className="flex items-center flex-1">
-            <div
-              className="flex items-center text-blue-500 font-medium mr-4 border-r border-r-slate-200 pr-4 cursor-pointer"
-              onClick={handlePlayButtonClick}
-            >
-              <PlayIcon className="mr-1 w-7 h-7" />
+    <>
+      <div className="mb-4 rounded-lg border border-slate-200 shadow-sm overflow-hidden bg-white relative">
+        {!showPlayer ? (
+          // 영상 정보만 표시 (클릭 가능한 영역)
+          <div
+            ref={videoInfoRef}
+            className="p-4 cursor-pointer border-l-4 border-l-blue-500 flex justify-between items-center relative transform translate-x-0 transition-transform duration-300 bg-white touch-pan-x"
+            onClick={handleVideoItemClick}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="flex items-center flex-1">
+              <div
+                className="flex items-center text-blue-500 font-medium mr-4 border-r border-r-slate-200 pr-4 cursor-pointer"
+                onClick={handlePlayButtonClick}
+              >
+                <PlayIcon className="mr-1 w-7 h-7" />
+              </div>
+              <div className="pl-2 cursor-default">
+                <h3 className="text-base font-semibold text-slate-700 mb-1">
+                  {video.timelapseTitle}
+                </h3>
+                <p className="text-sm text-slate-500">{video.timelapseDate}</p>
+              </div>
             </div>
-            <div className="pl-2 cursor-default">
-              <h3 className="text-base font-semibold text-slate-700 mb-1">{video.timelapseTitle}</h3>
+
+            {/* 슬라이드 시 나타나는 작업 버튼들 */}
+            <div className="absolute top-0 right-[-140px] h-full flex items-stretch">
+              <button
+                className="flex items-center justify-center w-[70px] text-white border-none cursor-pointer bg-blue-500"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleEditClick()
+                }}
+              >
+                <EditIcon className="w-5 h-5" />
+              </button>
+              <button
+                className="flex items-center justify-center w-[70px] text-white border-none cursor-pointer bg-red-500"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleDeleteClick()
+                }}
+              >
+                <DeleteIcon className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          // 플레이어 표시
+          <div>
+            <div ref={playerWrapperRef} className="p-4 relative">
+              <button
+                className="absolute top-2 right-2 z-10 bg-black bg-opacity-70 text-white border-none rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
+                onClick={handleCloseVideo}
+                title="닫기"
+              >
+                ✕
+              </button>
+              <ReactPlayer
+                url={video.timelapseUrl}
+                controls
+                playing={true}
+                width={'100%'}
+                height={'300px'}
+                onEnded={handleVideoEnded}
+              />
+            </div>
+            <div className="px-4 pb-4">
+              <h3 className="text-base font-semibold text-slate-700 mb-1">
+                {video.timelapseTitle}
+              </h3>
               <p className="text-sm text-slate-500">{video.timelapseDate}</p>
             </div>
           </div>
+        )}
+      </div>
 
-          {/* 슬라이드 시 나타나는 작업 버튼들 */}
-          <div className="absolute top-0 right-[-140px] h-full flex items-stretch">
-            <button
-              className="flex items-center justify-center w-[70px] text-white border-none cursor-pointer bg-blue-500"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleEditClick()
-              }}
-            >
-              <EditIcon className="w-5 h-5" />
-            </button>
-            <button
-              className="flex items-center justify-center w-[70px] text-white border-none cursor-pointer bg-red-500"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleDeleteClick()
-              }}
-            >
-              <DeleteIcon className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      ) : (
-        // 플레이어 표시
-        <div>
-          <div ref={playerWrapperRef} className="p-4 relative">
-            <button
-              className="absolute top-2 right-2 z-10 bg-black bg-opacity-70 text-white border-none rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
-              onClick={handleCloseVideo}
-              title="닫기"
-            >
-              ✕
-            </button>
-            <ReactPlayer
-              url={video.timelapseUrl}
-              controls
-              playing={true}
-              width={'100%'}
-              height={'300px'}
-              onEnded={handleVideoEnded}
-            />
-          </div>
-          <div className="px-4 pb-4">
-            <h3 className="text-base font-semibold text-slate-700 mb-1">{video.timelapseTitle}</h3>
-            <p className="text-sm text-slate-500">{video.timelapseDate}</p>
-          </div>
-        </div>
+      {/* 제목 수정 모달 */}
+      {showEditModal && (
+        <EditTitleModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          video={video}
+          onTitleUpdate={handleTitleUpdate}
+        />
       )}
-    </div>
+    </>
   )
 }
 

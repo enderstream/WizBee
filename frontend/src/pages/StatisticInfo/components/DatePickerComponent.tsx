@@ -2,21 +2,21 @@ import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/locale'
+import '@/styles/DatePickerComponent.css'
 
 interface DatePickerComponentProps {
-  className?: string // 추가 클래스명을 받을 수 있게 함
-  onDateChange?: (date: Date | null) => void // 날짜 변경 이벤트 핸들러
+  className?: string
+  onDateChange?: (date: Date | null) => void
 }
 
-const DatePickerComponent: React.FC<DatePickerComponentProps> = ({ 
+const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
   className = '',
-  onDateChange
+  onDateChange,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
   const [flashingButton, setFlashingButton] = useState<string | null>(null)
 
-  // 날짜 변경 처리 함수
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: Date | null): void => {
     if (date) {
       setSelectedDate(date)
       if (onDateChange) {
@@ -25,39 +25,36 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
     }
   }
 
-  // 전날로 이동
-  const handlePrevDay = () => {
+  const handlePrevDay = (): void => {
     const newDate = new Date(selectedDate)
     newDate.setDate(selectedDate.getDate() - 1)
     handleDateChange(newDate)
   }
 
-  // 다음날로 이동
-  const handleNextDay = () => {
+  const handleNextDay = (): void => {
     const newDate = new Date(selectedDate)
     newDate.setDate(selectedDate.getDate() + 1)
     handleDateChange(newDate)
   }
 
-  // 네비게이션 버튼 플래시 효과 처리 함수
-  const handleNavButtonTouch = (buttonName: string, action: () => void) => {
+  const handleNavButtonTouch = (
+    buttonName: string,
+    action: () => void,
+  ): void => {
     setFlashingButton(buttonName)
-    
-    // 깜박임 효과를 0.15초 동안 표시한 후 제거
+
     setTimeout(() => {
       setFlashingButton(null)
       action()
     }, 150)
   }
-  
-  // 네비게이션 버튼 스타일 클래스
-  const getNavBtnClass = (buttonName: string) => {
-    return `flex items-center justify-center text-gray-600 relative rounded-md px-2
-      ${flashingButton === buttonName ? 'bg-blue-200' : ''} 
-      cursor-pointer`
+
+  const getNavBtnClass = (buttonName: string): string => {
+    return `flex items-center justify-center w-8 h-8 text-gray-600 relative rounded-full
+      ${flashingButton === buttonName ? 'bg-blue-200' : 'hover:bg-gray-100'} 
+      transition-colors duration-150 cursor-pointer`
   }
 
-  // 날짜 포맷팅 함수 (YYYY-MM-DD 형식)
   const formatDate = (date: Date): string => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -65,8 +62,75 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
     return `${year}-${month}-${day}`
   }
 
+  const renderCustomHeader = ({
+    date,
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled,
+  }: any) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+
+    return (
+      <div className="flex items-center justify-between px-2 pt-2">
+        <button
+          onClick={decreaseMonth}
+          disabled={prevMonthButtonDisabled}
+          type="button"
+          className="p-1 text-gray-500 hover:text-gray-700"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 19L8 12L15 5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div className="text-lg font-normal text-gray-800">
+          {year} . {month}
+        </div>
+
+        <button
+          onClick={increaseMonth}
+          disabled={nextMonthButtonDisabled}
+          type="button"
+          className="p-1 text-gray-500 hover:text-gray-700"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 5L16 12L9 19"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    )
+  }
+
   return (
-    <div className={`fixed bottom-[56px] left-0 right-0 flex justify-center items-center py-2 bg-white ${className}`}>
+    <div
+      className={`fixed bottom-[56px] left-0 right-0 flex justify-center items-center py-3 bg-white border-t border-gray-200 shadow-sm ${className}`}
+    >
       <div className="flex justify-center items-center">
         {/* 이전 날짜 버튼 (<-) */}
         <button
@@ -74,8 +138,23 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
           onClick={handlePrevDay}
           className={getNavBtnClass('prev')}
           aria-label="이전 날짜로 이동"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          &lt;
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 19L8 12L15 5"
+              stroke="#4B5563"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
 
         {/* 날짜 표시 */}
@@ -85,11 +164,15 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
             onChange={handleDateChange}
             locale={ko}
             dateFormat="yyyy-MM-dd"
-            className="text-center border-none focus:outline-none cursor-pointer"
+            className="text-center text-gray-800 font-medium border-none focus:outline-none cursor-pointer"
+            renderCustomHeader={renderCustomHeader}
+            popperClassName="datepicker-popper"
+            popperPlacement="top"
+            showPopperArrow={false}
+            calendarClassName="shadow-lg border-none"
             customInput={
-              <div className="flex items-center">
-                <span>{formatDate(selectedDate)}</span>
-                <button className="ml-2">
+              <div className="flex items-center bg-white px-2 py-1 rounded-md">
+                <button className="mr-2 text-blue-500">
                   <svg
                     width="20"
                     height="20"
@@ -99,7 +182,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
                   >
                     <path
                       d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                      stroke="#292D32"
+                      stroke="#3B82F6"
                       strokeWidth="1.5"
                       strokeMiterlimit="10"
                       strokeLinecap="round"
@@ -107,6 +190,7 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
                     />
                   </svg>
                 </button>
+                <span>{formatDate(selectedDate)}</span>
               </div>
             }
           />
@@ -118,8 +202,23 @@ const DatePickerComponent: React.FC<DatePickerComponentProps> = ({
           onClick={handleNextDay}
           className={getNavBtnClass('next')}
           aria-label="다음 날짜로 이동"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          &gt;
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 5L16 12L9 19"
+              stroke="#4B5563"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
     </div>

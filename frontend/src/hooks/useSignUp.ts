@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore, selectUser } from '@/store/userStore'
+import { useUserStore, selectUser } from '@/stores/userStore'
 import { ROUTES } from '@/routes/routes'
 import { userAPI } from '@/api/userAPI'
 import { SignUpFormData } from '@/types/SignUp'

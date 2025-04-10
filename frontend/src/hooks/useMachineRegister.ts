@@ -3,10 +3,10 @@ import {
     useMachineStore,
     selectSerialNumber,
     selectIsRegistering
-} from '@/store/machineStore'
+} from '@/stores/machineStore'
 import { machineAPI } from '@/api/machineAPI'
 
-import { selectUserId, useUserStore } from '@/store/userStore'
+import { selectUserId, useUserStore } from '@/stores/userStore'
 
 export const useMachineRegister = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -36,14 +36,14 @@ export const useMachineRegister = () => {
 
     const handleSerialNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value
-        
+
         // 숫자만 입력할 수 있도록 필터링
         if (newValue !== '' && !/^\d*$/.test(newValue)) {
             return // 숫자가 아닌 문자는 입력되지 않도록 함
         }
-        
+
         setSerialNumber(newValue)
-        
+
         // 입력값이 있을 때만 유효성 검사 수행 (실시간 피드백)
         if (newValue && !/^\d{2}$/.test(newValue)) {
             setError('시리얼 번호는 2자리 숫자여야 합니다.')
@@ -71,12 +71,7 @@ export const useMachineRegister = () => {
         try {
             setIsSubmitting(true)
             setError(null)
-            console.log(userId)
             const response = await machineAPI.registerMachine(userId, serialNumber)
-            console.log(response.status)
-            console.log(response.data)
-
-
             if (response.status == 200) {
                 setSuccess(true)
             } else {

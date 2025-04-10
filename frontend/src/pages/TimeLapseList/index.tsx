@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
-import { selectUserId, useUserStore } from '@/store/userStore'
+import { selectUserId, useUserStore } from '@/stores/userStore'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { TimeLapseVideo } from '@/types/TimeLapse'
 import Pagination from '@/pages/TimeLapseList/components/Pagination'
 import Video from '@/pages/TimeLapseList/components/Video'
@@ -9,6 +9,8 @@ import '@/styles/TimeLapseList.css'
 
 const TimeLapseList = () => {
   const userId = useUserStore(selectUserId)
+  const queryClient = useQueryClient()
+
   const {
     data: timelapseVideos,
     isLoading,
@@ -16,9 +18,19 @@ const TimeLapseList = () => {
   } = useQuery({
     queryKey: ['timeLapseList', userId],
     queryFn: () => timeLapseAPI.timeLapseList(userId),
-    staleTime: 30 * 60 * 1000,
+    staleTime: 30,
     enabled: !!userId,
-  })
+    select: (data) => {
+      // API 응답 데이터를 가공
+      return {
+        ...data,
+        data: [...data.data].sort((a, b) => {
+          // timelapseDate 기준으로 내림차순 정렬 (최신순)
+          return new Date(b.timelapseDate).getTime() - new Date(a.timelapseDate).getTime();
+        })
+      };
+    }
+  });
 
   const [isWindow, setIsWindow] = useState<boolean>(false)
   const [isPlaying] = useState<boolean>(false)
@@ -38,7 +50,7 @@ const TimeLapseList = () => {
   // 하단 영역 높이 (하단바 + 페이지네이션)
   const bottomNavHeight = 56 // 하단바 높이
   const paginationHeight = 48 // 페이지네이션 높이
-  
+
   // 새 헤더 높이 계산 (헤더 + 마진)
   const headerHeight = 56 // h1(28px) + 패딩(16px 위 + 12px 아래)
 
@@ -46,16 +58,19 @@ const TimeLapseList = () => {
     setIsWindow(true)
 
     // 모바일 전용 뷰포트 설정
-    document.querySelector('meta[name="viewport"]')?.setAttribute(
-      'content',
-      'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-    )
+    document
+      .querySelector('meta[name="viewport"]')
+      ?.setAttribute(
+        'content',
+        'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+      )
 
     // 화면 크기에 따라 한 페이지에 표시할 아이템 수 계산
     const calculateItemsPerPage = () => {
       if (!containerRef.current) return
 
-      const availableHeight = window.innerHeight - bottomNavHeight - paginationHeight - headerHeight - 30
+      const availableHeight =
+        window.innerHeight - bottomNavHeight - paginationHeight - headerHeight
 
       // 화면에 표시할 수 있는 최대 아이템 수 계산
       let maxItems = Math.floor(availableHeight / totalVideoItemHeight)
@@ -86,10 +101,14 @@ const TimeLapseList = () => {
   // 현재 페이지 아이템 계산
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = timelapseVideos?.data ? timelapseVideos.data.slice(indexOfFirstItem, indexOfLastItem) : []
+  const currentItems = timelapseVideos?.data
+    ? timelapseVideos.data.slice(indexOfFirstItem, indexOfLastItem)
+    : []
 
   // 총 페이지 수 계산
-  const totalPages = Math.ceil((timelapseVideos?.data?.length || 0) / itemsPerPage)
+  const totalPages = Math.ceil(
+    (timelapseVideos?.data?.length || 0) / itemsPerPage,
+  )
 
   // 페이지네이션이 필요한지 확인 (모든 아이템이 한 페이지에 표시되는 경우)
   const needsPagination = (timelapseVideos?.data?.length || 0) > itemsPerPage
@@ -100,16 +119,55 @@ const TimeLapseList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // 비디오 제목 업데이트 핸들러
+  const handleVideoUpdate = (id: string, newTitle: string) => {
+    if (!timelapseVideos?.data) return
+
+    // React Query 캐시 업데이트
+    queryClient.setQueryData(['timeLapseList', userId], {
+      ...timelapseVideos,
+      data: timelapseVideos.data.map((video: TimeLapseVideo) =>
+        video.timelapseId === id
+          ? { ...video, timelapseTitle: newTitle }
+          : video,
+      ),
+    })
+  }
+
+  // 비디오 삭제 핸들러
+  const handleVideoDelete = (id: string) => {
+    if (!timelapseVideos?.data) return
+
+    // React Query 캐시 업데이트
+    const updatedData = timelapseVideos.data.filter(
+      (video: TimeLapseVideo) => video.timelapseId !== id,
+    )
+
+    queryClient.setQueryData(['timeLapseList', userId], {
+      ...timelapseVideos,
+      data: updatedData,
+    })
+
+    // 현재 페이지가 비었고, 이전 페이지가 있으면 이전 페이지로 이동
+    if (currentItems.length === 1 && currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">
-      <div className="text-base text-gray-600">로딩 중...</div>
-    </div>
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-base text-gray-600">로딩 중...</div>
+      </div>
+    )
   }
 
   if (error) {
-    return <div className="flex justify-center items-center h-screen">
-      <div className="text-base text-red-500">에러가 발생했습니다.</div>
-    </div>
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-base text-red-500">에러가 발생했습니다.</div>
+      </div>
+    )
   }
 
   return (
@@ -119,16 +177,16 @@ const TimeLapseList = () => {
         <header className="pt-4 pb-3 mb-3 border-b border-blue-200">
           <div className="flex items-center">
             <div className="w-1 h-6 bg-blue-500 rounded-full mr-3"></div>
-            <h1 className="text-xl font-bold text-gray-800">
-              타임랩스 목록
-            </h1>
+            <h1 className="text-xl font-bold text-gray-800">타임랩스 목록</h1>
             <div className="ml-auto bg-blue-100 text-blue-600 text-xs font-medium rounded-full px-2 py-1">
               {timelapseVideos?.data?.length || 0}개
             </div>
           </div>
         </header>
 
-        {isWindow && timelapseVideos?.data && timelapseVideos.data.length > 0 ? (
+        {isWindow &&
+          timelapseVideos?.data &&
+          timelapseVideos.data.length > 0 ? (
           <div>
             <div className={`${needsPagination ? 'mb-16' : 'mb-4'}`}>
               {currentItems.map((video: TimeLapseVideo) => (
@@ -136,6 +194,8 @@ const TimeLapseList = () => {
                   key={video.timelapseId}
                   video={video}
                   isPlaying={isPlaying}
+                  onVideoUpdate={handleVideoUpdate}
+                  onVideoDelete={handleVideoDelete}
                 />
               ))}
             </div>
@@ -151,7 +211,9 @@ const TimeLapseList = () => {
           </div>
         ) : (
           <div className="flex justify-center items-center py-8">
-            <div className="text-base text-gray-500">표시할 타임랩스 영상이 없습니다.</div>
+            <div className="text-base text-gray-500">
+              표시할 타임랩스 영상이 없습니다.
+            </div>
           </div>
         )}
       </div>
