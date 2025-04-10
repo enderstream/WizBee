@@ -1,26 +1,26 @@
-import type React from "react"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import type React from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { machineAPI } from '@/api/machineAPI'
+import { statisticAPI } from '@/api/statisticAPI'
+import { userAPI } from '@/api/userAPI'
+import MachineRegisterModal from '@/pages/Home/components/MachineRegisterModal'
+import StartRecord from '@/pages/Home/components/StartRecord'
+import AverageStudyTime from '@/pages/Home/components/AverageStudyTime'
+import Concentration from '@/pages/Home/components/Concentration'
+import PoseScore from '@/pages/Home/components/PoseScore'
+import { useMachineRegister } from '@/hooks/useMachineRegister'
+import { ROUTES } from '@/routes/routes'
 import {
   useUserStore,
   selectName,
   selectUserId,
   selectMachineId,
-} from "@/store/userStore"
-import { useMachineRegister } from "@/hooks/useMachineRegister"
-import { ROUTES } from "@/routes/routes"
-import MachineRegisterModal from "@/pages/Home/components/MachineRegisterModal"
-import StartRecord from "@/pages/Home/components/StartRecord"
-import AverageStudyTime from "@/pages/Home/components/AverageStudyTime"
-import Concentration from "./components/Concentration"
-import { userAPI } from "@/api/userAPI"
-import { machineAPI } from "@/api/machineAPI"
-import { statisticAPI } from "@/api/statisticAPI"
-import { initializeUserInfo } from "@/types/User"
-import WizBeeLogo from "@/assets/logos/WizBee.svg?react"
-import RegisterIcon from "@/assets/icons/Register.svg?react"
-import { useQuery } from "@tanstack/react-query"
-import PoseScore from "./components/PoseScore"
+} from '@/stores/userStore'
+import { initializeUserInfo } from '@/types/User'
+import RegisterIcon from '@/assets/icons/Register.svg?react'
+import WizBeeLogo from '@/assets/logos/WizBee.svg?react'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -49,7 +49,7 @@ const Home: React.FC = () => {
           setUser(userInfo)
         }
       } catch (error) {
-        console.error("유저 정보 로드 실패:", error)
+        console.error('유저 정보 로드 실패:', error)
       }
     }
 
@@ -67,8 +67,7 @@ const Home: React.FC = () => {
   // 오늘의 집중 점수
   const { data: concentrationData } = useQuery({
     queryKey: ['concentrationData', userId, getFormattedDate()],
-    // queryFn: () => statisticAPI.concentration(getFormattedDate(), userId),
-    queryFn: () => statisticAPI.concentration("2025-03-31", userId),
+    queryFn: () => statisticAPI.concentration('2025-03-31', userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -77,8 +76,6 @@ const Home: React.FC = () => {
   const { data: poseScoreData } = useQuery({
     queryKey: ['poseScoreData', userId, getFormattedDate()],
     queryFn: () => statisticAPI.poseScore(getFormattedDate(), userId),
-    // 테스트용으로 하드코딩한 함수
-    // queryFn: () => statisticAPI.poseScore("2025-04-10", userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
@@ -87,22 +84,21 @@ const Home: React.FC = () => {
   const handleStartTimeLapse = async () => {
     try {
       const response = await machineAPI.requestStream(machineId)
-      navigate(ROUTES.RECORD, { state: { streamingUrl: response.data.streaming_url }})
-      console.log(response.data.streaming_url)
+      navigate(ROUTES.RECORD, {
+        state: { streamingUrl: response.data.streaming_url },
+      })
+      // console.log(response.data.streaming_url)
+      
     } catch (error) {
-      console.error("Stream 요청 실패:", error)
+      console.error('Stream 요청 실패:', error)
     }
   }
-
 
   return (
     <div className="max-w-lg mx-auto px-5 py-6">
       <div className="flex items-center justify-between mb-5">
-        {/* 프로필 영역 */}
         <div className="flex items-center">
-          {/* 프로필 이미지 */}
           <div className="relative w-12 h-12 overflow-hidden mr-4 flex-shrink-0">
-            {/* 절대 위치로 설정하고 크기를 키운 로고 */}
             <div className="absolute inset-0 flex items-center justify-center">
               <WizBeeLogo className="w-16 h-16 absolute" />
             </div>
@@ -111,7 +107,9 @@ const Home: React.FC = () => {
           {/* 프로필 텍스트 */}
           <div>
             <div className="flex items-center">
-              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{name || "사용자"}님!</h2>
+              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {name || '사용자'}님!
+              </h2>
             </div>
             <p className="text-gray-600 font-medium">
               오늘도 화이팅
@@ -119,7 +117,7 @@ const Home: React.FC = () => {
             </p>
           </div>
         </div>
-        {/* 기기 등록 버튼 - 원래대로 유지 */}
+        {/* 기기 등록 버튼 */}
         <button
           onClick={openModal}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 active:bg-blue-700 text-white rounded-xl transition-colors touch-manipulation"

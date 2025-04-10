@@ -1,7 +1,7 @@
 // useSettings.ts
 import { create } from 'zustand'
 import { userAPI } from '@/api/userAPI'
-import { useUserStore } from '@/store/userStore'
+import { useUserStore } from '@/stores/userStore'
 
 // Settings 상태 및 프로필 업데이트/계정 관리 기능을 통합한 인터페이스
 interface SettingsState {
@@ -11,11 +11,11 @@ interface SettingsState {
   showDeleteModal: boolean
   isLoading: boolean
   statusMessage: string
-  
+
   // 프로필 정보
   name: string
   birthDate: Date | null
-  
+
   // 모달 상태 관리
   setShowProfileModal: (show: boolean) => void
   setShowLogoutModal: (show: boolean) => void
@@ -23,13 +23,13 @@ interface SettingsState {
   setIsLoading: (loading: boolean) => void
   setStatusMessage: (message: string) => void
   resetState: () => void
-  
+
   // 프로필 업데이트 관련
   setName: (name: string) => void
   setBirthDate: (date: Date | null) => void
   handleOpenProfileModal: () => void
   handleSaveProfile: (e: React.FormEvent) => Promise<void>
-  
+
   // 계정 관리 관련
   handleLogout: () => Promise<void>
   handleDeleteAccount: () => Promise<void>
@@ -42,7 +42,7 @@ const initialState = {
   showDeleteModal: false,
   isLoading: false,
   statusMessage: '',
-  
+
   // 프로필 정보 초기값
   name: '',
   birthDate: null,
@@ -51,7 +51,7 @@ const initialState = {
 export const useSettings = create<SettingsState>((set, get) => ({
   // 초기 상태 적용
   ...initialState,
-  
+
   // 모달 상태 관리 함수
   setShowProfileModal: (show) => set({ showProfileModal: show }),
   setShowLogoutModal: (show) => set({ showLogoutModal: show }),
@@ -59,11 +59,11 @@ export const useSettings = create<SettingsState>((set, get) => ({
   setIsLoading: (loading) => set({ isLoading: loading }),
   setStatusMessage: (message) => set({ statusMessage: message }),
   resetState: () => set(initialState),
-  
+
   // 프로필 정보 업데이트 함수
   setName: (name) => set({ name }),
   setBirthDate: (date) => set({ birthDate: date }),
-  
+
   // 프로필 모달 열기
   handleOpenProfileModal: () => {
     // 저장된 사용자 정보로 폼 초기화
@@ -82,7 +82,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
       showProfileModal: true
     })
   },
-  
+
   // 프로필 저장
   handleSaveProfile: async (e: React.FormEvent) => {
     e.preventDefault()
@@ -139,7 +139,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
       set({ isLoading: false })
     }
   },
-  
+
   // 로그아웃 처리
   handleLogout: async () => {
     set({ isLoading: true })
@@ -175,7 +175,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
       set({ isLoading: false })
     }
   },
-  
+
   // 회원 탈퇴 처리
   handleDeleteAccount: async () => {
     set({ isLoading: true })

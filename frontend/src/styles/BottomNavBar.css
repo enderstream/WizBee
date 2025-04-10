@@ -1,9 +1,0 @@
-/* BottomNavBar.css */
-@import 'tailwindcss';
-
-/* iOS의 safe area를 지원하기 위한 스타일 */
-/* @supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .h-safe-area {
-    height: env(safe-area-inset-bottom);
-  }
-} */

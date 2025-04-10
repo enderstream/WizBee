@@ -94,7 +94,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                 "http://localhost:18080",         // 개발용 로컬 주소
                 "http://localhost:15173",         // 개발용 로컬 주소
                 "http://192.168.137.66",         // 라즈베리파이 IP1
-                "http://192.168.137.126"         // 라즈베리파이 IP2
+                "http://192.168.137.126",         // 라즈베리파이 IP2
+                "http://192.168.137.2",         // 라즈베리파이 IP3
+                "http://192.168.137.73"        // 라즈베리파이 IP4
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));

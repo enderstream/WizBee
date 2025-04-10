@@ -5,7 +5,6 @@ import AccountIcon from '@/assets/icons/Account.svg?react'
 import GraphIcon from '@/assets/icons/Graph.svg?react'
 import HomeIcon from '@/assets/icons/Home.svg?react'
 import TimeLapseIcon from '@/assets/icons/TimeLapse.svg?react'
-import '@/styles/BottomNavBar.css'
 
 interface NavItemProps {
   to: string

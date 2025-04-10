@@ -5,8 +5,8 @@ import {
   useUserStore,
   selectIsLogin,
   selectHasCompletedSignup,
-} from '@/store/userStore'
-import Welcome from '@/pages/Welcome'
+} from '@/stores/userStore'
+import Welcome from '@/pages/Welcome/index'
 import { ROUTES } from '@/routes/routes'
 
 const IndexRoute: React.FC = () => {
