@@ -65,10 +65,10 @@ const PoseScore: React.FC<PoseScoreProps> = ({ poseScoreData }) => {
   // 점수 계산 (데이터가 있는 경우만)
   const score = !isNoData
     ? calculateImprovedScore(
-        poseScoreData.data.sumDownCnt,
-        poseScoreData.data.sumShoulderCnt,
-        poseScoreData.data.sumTurtleCnt,
-      )
+      poseScoreData.data.sumDownCnt,
+      poseScoreData.data.sumShoulderCnt,
+      poseScoreData.data.sumTurtleCnt,
+    )
     : 0
 
   // 점수에 따른 피드백 제공

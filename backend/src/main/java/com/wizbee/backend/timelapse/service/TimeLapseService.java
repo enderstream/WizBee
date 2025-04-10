@@ -59,6 +59,7 @@ public class TimeLapseService {
     public Mono<TimeLapse> startTimeLapse (String machineId) {
         // 사용자 조회
         User user = userRepository.findByMachine(machineId);
+        System.out.println(user.getEmail());
         if (user == null) {
             throw new NoSuchElementException("user not found");
         }

@@ -61,11 +61,10 @@ const DeleteUser: React.FC = () => {
                 </button>
                 <button
                   onClick={handleDeleteAccount}
-                  className={`px-4 py-2 rounded-md font-medium text-white ${
-                    isLoading
+                  className={`px-4 py-2 rounded-md font-medium text-white ${isLoading
                       ? 'bg-red-300 cursor-not-allowed'
                       : 'bg-red-500 active:bg-red-600 transition-colors'
-                  }`}
+                    }`}
                   disabled={isLoading}
                 >
                   {isLoading ? '처리 중...' : '탈퇴'}

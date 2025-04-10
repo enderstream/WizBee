@@ -132,14 +132,14 @@ const Record: React.FC = () => {
       setIsRecording(false)
       setIsSaving(true) // 저장 시작
       setSaveStatus(null)
-      
+
       const response = await timeLapseAPI.finishRecordingTimeLapse(
         timeLapseId,
         timeLapseTitle, // 사용자가 입력한 제목 사용
       )
-      
+
       // 응답 코드에 따른 상태 설정
-      if (response.status === 200) { 
+      if (response.status === 200) {
         setSaveStatus('success')
         setIsCompleted(true)
         alert("타임랩스가 성공적으로 저장되었습니다")
@@ -161,23 +161,23 @@ const Record: React.FC = () => {
     if (isSaving) {
       return "타임랩스 저장중입니다..."
     }
-    
+
     if (saveStatus === 'error') {
       return "타임랩스 저장에 실패했습니다!"
     }
-    
+
     if (isCompleted) {
       return "타임랩스 촬영이 완료되었습니다."
     }
-    
+
     if (!isRecording) {
       return "타임랩스 촬영을 시작하려면 촬영 버튼을 누르세요."
     }
-    
+
     if (isStopButtonDisabled) {
       return `타임랩스 촬영 중...\n${remainingSeconds}초 후 종료할 수 있습니다.`
     }
-    
+
     return "타임랩스 촬영 중...\n종료하려면 종료 버튼을 누르세요."
   }
 
@@ -262,7 +262,7 @@ const Record: React.FC = () => {
           <button
             className={`w-full py-3 font-semibold rounded-lg border flex items-center justify-center
               ${(isRecording || isSaving)
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50' 
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
                 : 'border-gray-300 text-gray-700 bg-white active:bg-gray-100'}`}
             onClick={handleGoToHome}
             disabled={isRecording || isSaving}

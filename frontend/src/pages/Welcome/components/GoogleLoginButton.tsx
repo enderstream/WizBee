@@ -11,7 +11,7 @@ const GoogleLoginButton: React.FC = () => {
 
   return (
     <button
-      className="flex items-center justify-center mt-8 px-5 py-2.5 bg-white text-gray-600 font-bold border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:shadow-md transition-all duration-300"
+      className="flex items-center justify-center mt-8 px-5 py-2.5 bg-white text-gray-600 border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:shadow-md transition-all duration-300"
       onClick={handleGoogleLogin}
       disabled={isLoading}
     >

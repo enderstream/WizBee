@@ -86,8 +86,8 @@ public class RaspberryApiService {
                             );
                 })
                 .bodyToMono(Void.class)
-                .doOnSuccess(v -> log.info("촬영 시작 요청 성공 - timeLapseId: {}", timelapseId))
-                .doOnError(error -> log.error("촬영 시작 요청 에러 - timeLapseId: {}", timelapseId, error));
+                .doOnSuccess(v -> log.info("촬영 종료 요청 성공 - timeLapseId: {}", timelapseId))
+                .doOnError(error -> log.error("촬영 종료 요청 에러 - timeLapseId: {}", timelapseId, error));
 
     }
 }
