@@ -54,11 +54,10 @@ const LogOut: React.FC = () => {
                 </button>
                 <button
                   onClick={handleLogout}
-                  className={`px-4 py-2 rounded-md font-medium text-white ${
-                    isLoading
+                  className={`px-4 py-2 rounded-md font-medium text-white ${isLoading
                       ? 'bg-blue-300 cursor-not-allowed'
                       : 'bg-blue-500 active:bg-blue-600 transition-colors'
-                  }`}
+                    }`}
                   disabled={isLoading}
                 >
                   {isLoading ? '처리 중...' : '로그아웃'}

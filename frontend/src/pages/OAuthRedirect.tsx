@@ -13,12 +13,9 @@ const OAuthRedirect: React.FC = () => {
   useEffect(() => {
     const handleOAuth = async (): Promise<void> => {
       try {
-        // console.log('OAuth 리다이렉트 페이지 진입')
-
         // HTTP‑only 쿠키가 자동 포함된 요청으로 사용자 정보 획득
         const response = await userAPI.userInfo()
         const userResponse: OAuthCallbackResponse = response.data
-        // console.log('유저 정보:', userResponse)
 
         // API 응답을 기반으로 사용자 상태 생성 (nullable 값은 기본값 처리)
         const user = initializeUserInfo(userResponse)

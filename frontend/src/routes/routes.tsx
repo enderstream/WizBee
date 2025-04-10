@@ -5,7 +5,7 @@ import AuthLayout from '@/components/layouts/AuthLayout'
 import PublicLayout from '@/components/layouts/PublicLayout'
 import PublicIndex from '@/pages/PublicIndex'
 import Home from '@/pages/Home'
-import SignUp from '@/pages/SignUp'
+import SignUp from '../pages/SignUp/index'
 import Settings from '@/pages/Settings'
 import Record from '@/pages/Record'
 import TimeLapseList from '@/pages/TimeLapseList'
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ROUTES.STATISTIC_INFO,
-                element: <StatisticInfo/>
+                element: <StatisticInfo />
               },
             ],
           },
