@@ -25,9 +25,7 @@ public class ChartService {
      * @param chart 통계 엔티티 객체
      * @return 저장된 Chart 객체
      */
-    public Chart saveChart(Chart chart){
-        return chartRepository.save(chart);
-    }
+
 
     /**
      * 유저와 날짜를 기준으로 집계된 통계 데이터를 조회한다.
@@ -179,7 +177,7 @@ public class ChartService {
 
         chart.setStudyTime(chart.getFullTime() - (chart.getOutTime() + chart.getPhoneTime() + chart.getSleepTime()));
 
-        Chart savedChart = saveChart(chart);
+        Chart savedChart = chartRepository.save(chart);
         if (savedChart != null) {
             return ResponseEntity.ok("통계 등록에 성공했습니다.");
         } else {
