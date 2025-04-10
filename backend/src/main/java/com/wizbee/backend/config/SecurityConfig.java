@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -55,10 +56,7 @@ public class SecurityConfig implements WebMvcConfigurer {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // 단일 CorsConfigurationSource 빈을 사용하여 CORS 설정 통합
             .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-//            .exceptionHandling(exception -> exception
-//                .authenticationEntryPoint((request, response, authException) -> {
-//                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-//                }));
+
 
 
         // 로그아웃 필터
@@ -75,9 +73,12 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/oauth2/**", "/login/**",
                         "/api/v1/auth/signup", "/api/v1/auth/reissue", "/api/v1/auth/logout",
-                        "/api/v1/study/save", "/api/v1/timelapse/*", "/api/v1/pose/score/*",
-                        "/api/v1/timelapse/stream/**")
+                        "/api/v1/study/save", "/api/v1/pose/score/*",
+                        "/api/v1/timelapse/stream/*")
                 .permitAll()
+                .requestMatchers(HttpMethod.PUT,"/api/v1/timelapse/*") // 라파 -> spring
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/timelapse/*").authenticated() // react -> spring
                 .anyRequest().authenticated());
 
 
