@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMachineRegister } from '@/hooks/useMachineRegister'
-import { selectMachineId, useUserStore } from '@/store/userStore'
+import { selectMachineId, useUserStore } from '@/stores/userStore'
 
 const MachineRegisterModal: React.FC = () => {
   const {
@@ -85,11 +85,10 @@ const MachineRegisterModal: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className={`px-4 py-2 rounded-md font-medium text-white ${
-                  isSubmitting || success || !serialNumber.trim()
-                    ? 'bg-blue-300 cursor-not-allowed'
-                    : 'bg-blue-500 active:bg-blue-600 transition-colors'
-                }`}
+                className={`px-4 py-2 rounded-md font-medium text-white ${isSubmitting || success || !serialNumber.trim()
+                  ? 'bg-blue-300 cursor-not-allowed'
+                  : 'bg-blue-500 active:bg-blue-600 transition-colors'
+                  }`}
                 disabled={isSubmitting || success || !serialNumber.trim()}
               >
                 {isSubmitting ? '등록 중...' : '등록하기'}

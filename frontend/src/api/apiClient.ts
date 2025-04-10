@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
-import { useUserStore } from '@/store/userStore'
+import { useUserStore } from '@/stores/userStore'
 
 const baseURL = import.meta.env.VITE_API_URL
 

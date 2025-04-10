@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PoseImageModal from './PoseImageModal'
+import PoseImageModal from '@/pages/StatisticInfo/components/PoseImageModal'
 
 interface poseDataList {
   data: {

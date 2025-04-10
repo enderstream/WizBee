@@ -5,7 +5,7 @@ import DeleteIcon from '@/assets/icons/Delete.svg?react'
 import EditIcon from '@/assets/icons/Edit.svg?react'
 import PlayIcon from '@/assets/icons/Play.svg?react'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
-import EditTitleModal from './EditTitleModal'
+import EditTitleModal from '@/pages/TimeLapseList/components/EditTitleModal'
 
 interface VideoProps {
   video: TimeLapseVideo

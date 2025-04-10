@@ -8,15 +8,15 @@ interface PaginationProps {
   className?: string // 추가 클래스명을 받을 수 있게 함
 }
 
-const Pagination: React.FC<PaginationProps> = ({ 
-  currentPage, 
-  totalPages, 
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
   onPageChange,
-  className = '' 
+  className = ''
 }) => {
   // 네비게이션 버튼 깜박임 효과를 위한 상태
   const [flashingButton, setFlashingButton] = useState<string | null>(null);
-  
+
   // 항상 5개의 버튼이 보이도록 범위 계산
   const getPageRange = () => {
     const displayCount = 5 // 5개 표시로 수정
@@ -40,7 +40,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   // 첫 페이지 여부 확인
   const isFirstPage = currentPage === 1;
-  
+
   // 마지막 페이지 여부 확인
   const isLastPage = currentPage === totalPages;
 
@@ -49,35 +49,34 @@ const Pagination: React.FC<PaginationProps> = ({
     // 첫 페이지에서 이전 버튼, 마지막 페이지에서 다음 버튼은 작동하지 않음
     if ((buttonName === 'first' || buttonName === 'prev') && isFirstPage) return;
     if ((buttonName === 'last' || buttonName === 'next') && isLastPage) return;
-    
+
     setFlashingButton(buttonName);
-    
+
     // 깜박임 효과를 0.15초 동안 표시한 후 제거
     setTimeout(() => {
       setFlashingButton(null);
       action();
     }, 150);
   };
-  
+
   // 네비게이션 버튼 스타일 클래스
   const getNavBtnClass = (buttonName: string) => {
     // 첫 페이지에서는 왼쪽 버튼들 비활성화, 마지막 페이지에서는 오른쪽 버튼들 비활성화
-    const isDisabled = 
-      ((buttonName === 'first' || buttonName === 'prev') && isFirstPage) || 
+    const isDisabled =
+      ((buttonName === 'first' || buttonName === 'prev') && isFirstPage) ||
       ((buttonName === 'last' || buttonName === 'next') && isLastPage);
-    
+
     return `w-8 h-8 flex items-center justify-center text-gray-600 relative rounded-md
       ${flashingButton === buttonName ? 'bg-blue-200' : ''} 
       ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`;
   };
-  
+
   // 페이지 번호 버튼 스타일 클래스
   const getPageBtnClass = (isActive: boolean) => {
-    return `w-8 h-8 flex items-center justify-center mx-1 cursor-pointer rounded-md ${
-      isActive 
-        ? 'bg-blue-500 text-white' 
+    return `w-8 h-8 flex items-center justify-center mx-1 cursor-pointer rounded-md ${isActive
+        ? 'bg-blue-500 text-white'
         : 'text-gray-600'
-    }`;
+      }`;
   };
 
   return (

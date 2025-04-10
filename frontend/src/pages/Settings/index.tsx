@@ -59,10 +59,10 @@ const Settings: React.FC = () => {
         <div className="bg-white rounded-md overflow-hidden divide-y divide-gray-200">
           {/* 내 정보 수정 */}
           <UpdateProfile />
-          
+
           {/* 로그아웃 */}
           <LogOut />
-          
+
           {/* 회원 탈퇴 */}
           <DeleteUser />
         </div>
@@ -78,14 +78,14 @@ const Settings: React.FC = () => {
             </h1>
           </div>
         </header>
-        
+
         <div className="bg-white rounded-md overflow-hidden divide-y divide-gray-200">
           {/* 개인정보 처리 방침 */}
           <PrivacyPolicy />
-          
+
           {/* 도움말 */}
           <Help />
-          
+
           {/* 버전 정보 */}
           <AppVersion />
         </div>

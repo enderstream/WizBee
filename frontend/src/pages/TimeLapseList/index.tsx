@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { selectUserId, useUserStore } from '@/store/userStore'
+import { selectUserId, useUserStore } from '@/stores/userStore'
 import { timeLapseAPI } from '@/api/timeLapseAPI'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { TimeLapseVideo } from '@/types/TimeLapse'
@@ -185,8 +185,8 @@ const TimeLapseList = () => {
         </header>
 
         {isWindow &&
-        timelapseVideos?.data &&
-        timelapseVideos.data.length > 0 ? (
+          timelapseVideos?.data &&
+          timelapseVideos.data.length > 0 ? (
           <div>
             <div className={`${needsPagination ? 'mb-16' : 'mb-4'}`}>
               {currentItems.map((video: TimeLapseVideo) => (

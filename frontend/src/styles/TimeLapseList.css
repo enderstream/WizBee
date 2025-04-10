@@ -2,7 +2,8 @@
 @import 'tailwindcss';
 
 /* 모바일 최적화 */
-html, body {
+html,
+body {
   overscroll-behavior: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -19,9 +20,15 @@ html, body {
 
 /* 페이지네이션 버튼 깜박임 효과 */
 @keyframes flash {
-  0% { background-color: transparent; }
-  50% { background-color: #bfdbfe; }
-  100% { background-color: transparent; }
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #bfdbfe;
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
 .btn-flash {

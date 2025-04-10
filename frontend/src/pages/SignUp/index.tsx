@@ -1,11 +1,11 @@
 // src/pages/SignUp/index.tsx
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { selectUser, useUserStore } from '@/store/userStore'
+import { selectUser, useUserStore } from '@/stores/userStore'
 import { ROUTES } from '@/routes/routes'
 import { userAPI } from '@/api/userAPI'
-import SignUpForm from '@/pages/SignUp/components/SignUpForm'
-import '@/styles/SignUp.css'
+import NicknameForm from '@/pages/SignUp/components/NicknameForm'
+import BirthdayForm from '@/pages/SignUp/components/BirthdayForm'
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate()
@@ -13,7 +13,7 @@ const SignUp: React.FC = () => {
   const user = useUserStore(selectUser)
   const [isLoading, setIsLoading] = useState(false)
 
-  // 상태 관리 - DatePicker 사용을 위해 변경
+  // 상태 관리
   const [name, setName] = useState(user.name || '')
   const [birthDate, setBirthDate] = useState<Date | null>(null)
 
@@ -27,8 +27,6 @@ const SignUp: React.FC = () => {
 
     return `${year}-${month}-${day}`
   }
-
-  // 약관 동의 체크박스 핸들러
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +44,7 @@ const SignUp: React.FC = () => {
 
       // 추가 정보 입력 API 호출
       await userAPI.signUp(name, birthday)
+
 
       // 스토어 업데이트
       updateUser({
@@ -65,16 +64,35 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <div className="signup-page">
-      <h1 className="signup-title">SIGN UP</h1>
-      <SignUpForm
-        name={name}
-        birthDate={birthDate}
-        setName={setName}
-        setBirthDate={setBirthDate}
-        handleSubmit={handleSubmit}
-        isLoading={isLoading}
-      />
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-300 p-8">
+        <h1 className="text-4xl font-bold text-center text-blue-500 mb-8">SIGN UP</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* 닉네임 입력 폼 */}
+          <NicknameForm
+            name={name}
+            setName={setName}
+            isLoading={isLoading}
+          />
+
+          {/* 생년월일 입력 폼 */}
+          <BirthdayForm
+            birthDate={birthDate}
+            setBirthDate={setBirthDate}
+            isLoading={isLoading}
+          />
+
+          {/* 가입하기 버튼 */}
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading || !name || !birthDate}
+          >
+            {isLoading ? "처리 중..." : "가입 완료!"}
+          </button>
+        </form>
+      </div>
     </div>
   )
 }
