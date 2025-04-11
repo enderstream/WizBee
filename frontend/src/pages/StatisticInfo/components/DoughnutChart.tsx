@@ -25,16 +25,16 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
     [key: string]: number
   }>({})
 
-  // 시간 표시 포맷 함수: 60분 미만이면 분으로, 그 이상이면 시간으로 표시
+  // 시간 표시 포맷 함수: 1분 미만이면 초으로, 그 이상이면 분으로 표시
   const formatTime = (
     minutes: number | undefined,
   ): { value: number; unit: string } => {
-    if (!minutes) return { value: 0, unit: '분' }
+    if (!minutes) return { value: 0, unit: '초' }
 
     if (minutes < 60) {
-      return { value: minutes, unit: '분' }
+      return { value: minutes, unit: '초' }
     } else {
-      return { value: minutes / 60, unit: '시간' }
+      return { value: minutes / 60, unit: '분' }
     }
   }
 
@@ -75,7 +75,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
     }
   }, [todayDistraction])
 
-  // 총 시간 계산 (분 -> 시간)
+  // 총 시간 계산 (초 -> 분)
   const totalHours = useMemo(() => {
     return todayDistraction?.data?.fullTime
       ? todayDistraction.data.fullTime / 60
@@ -89,12 +89,12 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
     ? Math.round((effectiveMinutes / todayDistraction.data.fullTime) * 100)
     : 0
 
-  // 차트 데이터 구성 - 모든 데이터는 시간 단위로 통일
+  // 차트 데이터 구성 - 모든 데이터는 분 단위로 통일
   const chartData = {
     labels: Object.keys(activityData),
     datasets: [
       {
-        data: Object.values(activityData).map((item) => item.rawMinutes / 60), // 분 -> 시간으로 통일
+        data: Object.values(activityData).map((item) => item.rawMinutes / 60), // 초 -> 분으로 통일
         backgroundColor: Object.values(activityData).map((item) => item.color),
         borderColor: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
         borderWidth: 2,
@@ -119,14 +119,14 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
         callbacks: {
           label: function (context: any) {
-            const hourValue = context.raw // 시간 단위
+            const hourValue = context.raw // 분 단위
             const label = context.label || ''
             const minutes = Math.round(hourValue * 60)
 
             if (minutes < 60) {
-              return `${label}: ${minutes} 분`
+              return `${label}: ${minutes} 초`
             } else {
-              return `${label}: ${hourValue.toFixed(1)} 시간`
+              return `${label}: ${hourValue.toFixed(1)} 분`
             }
           },
         },
@@ -135,9 +135,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
     animation: { animateRotate: true },
   }
 
-  // 진행 바의 최대값 설정 (시간 단위로 통일)
+  // 진행 바의 최대값 설정 (분 단위로 통일)
   const totalTime = Object.values(activityData).reduce(
-    (sum, item) => sum + item.rawMinutes / 60, // 분 -> 시간으로 통일
+    (sum, item) => sum + item.rawMinutes / 60, // 초 -> 분으로 통일
     0,
   )
 
@@ -174,7 +174,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
 
   // 시간 형식 포맷팅 (소수점 설정)
   const formatDisplayValue = (value: number, unit: string): string => {
-    if (unit === '시간') {
+    if (unit === '분') {
       return value.toFixed(1)
     } else {
       return Math.round(value).toString()
@@ -190,8 +190,8 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
           <div className="ml-auto bg-blue-100 text-blue-600 text-xs font-medium rounded-full px-2 py-1">
             총{' '}
             {totalHours < 1
-              ? `${Math.round(totalHours * 60)} 분`
-              : `${totalHours.toFixed(1)} 시간`}
+              ? `${Math.round(totalHours * 60)} 초`
+              : `${totalHours.toFixed(1)} 분`}
           </div>
         </div>
       </header>
@@ -202,8 +202,8 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ todayDistraction }) => {
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-xl text-blue-500 font-semibold">
               {effectiveHours < 1
-                ? `${Math.round(effectiveMinutes)} 분`
-                : `${effectiveHours.toFixed(1)} 시간`}
+                ? `${Math.round(effectiveMinutes)} 초`
+                : `${effectiveHours.toFixed(1)} 분`}
             </span>
             <span className="text-xs text-gray-500">
               효율 {effectivePercentage}%
