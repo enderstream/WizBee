@@ -14,7 +14,7 @@
 
 
 
-<img src="./docs/WizBeeLogo2.png" height=300> 
+<img src="./image/WizBeeLogo2.png" height=300> 
 
 ## 1. 서비스소개
 
@@ -141,10 +141,10 @@
 ### 4) Figma
 
 ## 6. 시스템 아키텍쳐
-<img src="./docs/Architecture.png" height=300>
+<img src="./image/Architecture.png" height=300>
 
 ## 7. ERD
-<img src="./docs/ERD.png" height=300>
+<img src="./image/ERD.png" height=300>
 
 
 
