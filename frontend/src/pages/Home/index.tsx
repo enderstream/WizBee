@@ -67,7 +67,7 @@ const Home: React.FC = () => {
   // 오늘의 집중 점수
   const { data: concentrationData } = useQuery({
     queryKey: ['concentrationData', userId, getFormattedDate()],
-    queryFn: () => statisticAPI.concentration('2025-03-31', userId),
+    queryFn: () => statisticAPI.concentration(getFormattedDate(), userId),
     staleTime: 30 * 60 * 1000,
     enabled: !!userId,
   })
