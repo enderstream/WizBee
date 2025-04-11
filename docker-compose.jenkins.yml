@@ -5,14 +5,17 @@ services:
     expose:
       - "18443"
     volumes:
-      - ./jenkins/jenkins_home:/var/jenkins_home:rw # << ./ 해주면 현재 디렉토리에 jenkins_home을 생성함
+      - ./jenkins/jenkins_home:/var/jenkins_home:rw
       - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+      - /var/run/docker.sock:/var/run/docker.sock  # 🔥 추가: Docker 권한
+      - ./:/workspace  # 🔥 추가: Jenkins에서 전체 프로젝트 접근
     networks:
       - wizbee
     restart: unless-stopped
     environment:
       TZ: Asia/Seoul
       JENKINS_OPTS: "--httpPort=18443 --prefix=/jenkins"
+    user: root  # 🔥 권한 문제 예방
 
 networks:
   wizbee:
