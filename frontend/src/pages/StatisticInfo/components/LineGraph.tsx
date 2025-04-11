@@ -116,7 +116,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
             return ''
           },
           label: (context: TooltipItem<'line'>) => {
-            return `${context.label} : ${context.formattedValue} 시간`
+            return `${context.label} : ${context.formattedValue} 분`
           },
         },
         titleAlign: 'center' as const,
