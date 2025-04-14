@@ -196,8 +196,8 @@
       REDIS_PASSWORD=REDIS_PASSWORD
 
       # Google OAuth2 설정
-      GOOGLE_CLIENT_ID=622186014503-5eb0ut2fa6sv4opbh0il4ude814m1rt6.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET=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
+      GOOGLE_CLIENT_ID=********************
+      GOOGLE_CLIENT_SECRET=********************
       GOOGLE_REDIRECT_URI=https://j12b102.p.ssafy.io/login/oauth2/code/google
 
       # JWT 비밀 키
